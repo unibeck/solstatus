@@ -8,6 +8,8 @@
 
 An uptime monitoring service that is easy and cheap to run at scale. Create endpoint checks for uptime, latency, and status code. Supports OpsGenie, for alerts when there are two or more consecutive failures.
 
+> **Note:** This project is being migrated from NextJS to RedwoodSDK. See [the migration guide](./docs/REDWOOD_MIGRATION.md) for details.
+
 ![Demo dashboard](./docs/dashboard-demo.gif)
 
 TODO: expectations for cost
