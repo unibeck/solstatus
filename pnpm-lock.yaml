@@ -138,8 +138,8 @@ importers:
         specifier: ^0.3.1
         version: 0.3.1(drizzle-orm@0.43.1(@libsql/client@0.15.7)(gel@2.0.2))
       drizzle-zod:
-        specifier: ^0.8.1
-        version: 0.8.1(drizzle-orm@0.43.1(@libsql/client@0.15.7)(gel@2.0.2))(zod@3.25.20)
+        specifier: 0.7.1
+        version: 0.7.1(drizzle-orm@0.43.1(@libsql/client@0.15.7)(gel@2.0.2))(zod@3.25.28)
       embla-carousel-autoplay:
         specifier: 8.6.0
         version: 8.6.0(embla-carousel@8.6.0)
@@ -196,7 +196,7 @@ importers:
         version: 2.0.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       stoker:
         specifier: ^1.4.2
-        version: 1.4.2(@asteasolutions/zod-to-openapi@7.3.0(zod@3.25.20))(@hono/zod-openapi@0.19.6(hono@4.7.7)(zod@3.25.20))(hono@4.7.7)(openapi3-ts@4.4.0)
+        version: 1.4.2(@asteasolutions/zod-to-openapi@7.3.0(zod@3.25.28))(@hono/zod-openapi@0.19.6(hono@4.7.7)(zod@3.25.28))(hono@4.7.7)(openapi3-ts@4.4.0)
       tailwind-merge:
         specifier: ^3.3.0
         version: 3.3.0
@@ -214,7 +214,7 @@ importers:
         version: 1.1.2(@types/react-dom@19.1.5(@types/react@19.1.5))(@types/react@19.1.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       zod:
         specifier: ^3.25.20
-        version: 3.25.20
+        version: 3.25.28
       zustand:
         specifier: ^5.0.5
         version: 5.0.5(@types/react@19.1.5)(immer@10.1.1)(react@19.1.0)(use-sync-external-store@1.5.0(react@19.1.0))
@@ -224,7 +224,7 @@ importers:
         version: 2.0.0-beta.5
       '@hono/zod-openapi':
         specifier: ^0.19.6
-        version: 0.19.6(hono@4.7.7)(zod@3.25.20)
+        version: 0.19.6(hono@4.7.7)(zod@3.25.28)
       '@libsql/client':
         specifier: ^0.15.7
         version: 0.15.7
@@ -3252,11 +3252,11 @@ packages:
       drizzle-orm:
         optional: true
 
-  drizzle-zod@0.8.1:
-    resolution: {integrity: sha512-k2/2cwBz3Vjb7CWPVCeMNajZpG43V7SqhNrZ8LsWJOz8TztQ5YtU2ifgnfnxqZXsxeHmdQnsl6eXm7GwDZnq/Q==}
+  drizzle-zod@0.7.1:
+    resolution: {integrity: sha512-nZzALOdz44/AL2U005UlmMqaQ1qe5JfanvLujiTHiiT8+vZJTBFhj3pY4Vk+L6UWyKFfNmLhk602Hn4kCTynKQ==}
     peerDependencies:
       drizzle-orm: '>=0.36.0'
-      zod: ^3.25.1
+      zod: '>=3.0.0'
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -4489,8 +4489,8 @@ packages:
   zod@3.22.3:
     resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
 
-  zod@3.25.20:
-    resolution: {integrity: sha512-z03fqpTMDF1G02VLKUMt6vyACE7rNWkh3gpXVHgPTw28NPtDFRGvcpTtPwn2kMKtQ0idtYJUTxchytmnqYswcw==}
+  zod@3.25.28:
+    resolution: {integrity: sha512-/nt/67WYKnr5by3YS7LroZJbtcCBurDKKPBPWWzaxvVCGuG/NOsiKkrjoOhI8mJ+SQUXEbUzeB3S+6XDUEEj7Q==}
 
   zustand@5.0.5:
     resolution: {integrity: sha512-mILtRfKW9xM47hqxGIxCv12gXusoY/xTSHBYApXozR0HmQv299whhBeeAcRy+KrPPybzosvJBCOmVjq6x12fCg==}
@@ -4558,10 +4558,10 @@ snapshots:
       '@ast-grep/napi-win32-ia32-msvc': 0.35.0
       '@ast-grep/napi-win32-x64-msvc': 0.35.0
 
-  '@asteasolutions/zod-to-openapi@7.3.0(zod@3.25.20)':
+  '@asteasolutions/zod-to-openapi@7.3.0(zod@3.25.28)':
     dependencies:
       openapi3-ts: 4.4.0
-      zod: 3.25.20
+      zod: 3.25.28
 
   '@aws-crypto/crc32@5.2.0':
     dependencies:
@@ -5880,17 +5880,17 @@ snapshots:
     dependencies:
       '@hapi/hoek': 9.3.0
 
-  '@hono/zod-openapi@0.19.6(hono@4.7.7)(zod@3.25.20)':
+  '@hono/zod-openapi@0.19.6(hono@4.7.7)(zod@3.25.28)':
     dependencies:
-      '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.25.20)
-      '@hono/zod-validator': 0.5.0(hono@4.7.7)(zod@3.25.20)
+      '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.25.28)
+      '@hono/zod-validator': 0.5.0(hono@4.7.7)(zod@3.25.28)
       hono: 4.7.7
-      zod: 3.25.20
+      zod: 3.25.28
 
-  '@hono/zod-validator@0.5.0(hono@4.7.7)(zod@3.25.20)':
+  '@hono/zod-validator@0.5.0(hono@4.7.7)(zod@3.25.28)':
     dependencies:
       hono: 4.7.7
-      zod: 3.25.20
+      zod: 3.25.28
 
   '@hookform/resolvers@5.0.1(react-hook-form@7.56.4(react@19.1.0))':
     dependencies:
@@ -7950,10 +7950,10 @@ snapshots:
     optionalDependencies:
       drizzle-orm: 0.43.1(@libsql/client@0.15.7)(gel@2.0.2)
 
-  drizzle-zod@0.8.1(drizzle-orm@0.43.1(@libsql/client@0.15.7)(gel@2.0.2))(zod@3.25.20):
+  drizzle-zod@0.7.1(drizzle-orm@0.43.1(@libsql/client@0.15.7)(gel@2.0.2))(zod@3.25.28):
     dependencies:
       drizzle-orm: 0.43.1(@libsql/client@0.15.7)(gel@2.0.2)
-      zod: 3.25.20
+      zod: 3.25.28
 
   dunder-proto@1.0.1:
     dependencies:
@@ -8560,7 +8560,7 @@ snapshots:
 
   next-zod-route@0.2.6:
     dependencies:
-      zod: 3.25.20
+      zod: 3.25.28
 
   next@15.3.2(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
@@ -8971,13 +8971,13 @@ snapshots:
 
   statuses@2.0.1: {}
 
-  stoker@1.4.2(@asteasolutions/zod-to-openapi@7.3.0(zod@3.25.20))(@hono/zod-openapi@0.19.6(hono@4.7.7)(zod@3.25.20))(hono@4.7.7)(openapi3-ts@4.4.0):
+  stoker@1.4.2(@asteasolutions/zod-to-openapi@7.3.0(zod@3.25.28))(@hono/zod-openapi@0.19.6(hono@4.7.7)(zod@3.25.28))(hono@4.7.7)(openapi3-ts@4.4.0):
     dependencies:
-      '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.25.20)
+      '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.25.28)
       hono: 4.7.7
       openapi3-ts: 4.4.0
     optionalDependencies:
-      '@hono/zod-openapi': 0.19.6(hono@4.7.7)(zod@3.25.20)
+      '@hono/zod-openapi': 0.19.6(hono@4.7.7)(zod@3.25.28)
 
   stoppable@1.1.0: {}
 
@@ -9258,7 +9258,7 @@ snapshots:
 
   zod@3.22.3: {}
 
-  zod@3.25.20: {}
+  zod@3.25.28: {}
 
   zustand@5.0.5(@types/react@19.1.5)(immer@10.1.1)(react@19.1.0)(use-sync-external-store@1.5.0(react@19.1.0)):
     optionalDependencies:
