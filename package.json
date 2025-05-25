@@ -3,7 +3,7 @@
   "version": "1.7.0",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@10.8.1",
+  "packageManager": "pnpm@10.11.0",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "concurrently --kill-others --names \"API,APP\" --prefix-colors \"bgWhite,bgWhiteBright\" \"pnpm dev:api\" \"wait-on http://localhost:8788 && pnpm dev:app\"",
@@ -77,7 +77,7 @@
     "diffable-objects": "^0.1.1",
     "drizzle-orm": "^0.43.1",
     "drizzle-seed": "^0.3.1",
-    "drizzle-zod": "^0.8.1",
+    "drizzle-zod": "0.7.1",
     "embla-carousel-autoplay": "8.6.0",
     "embla-carousel-react": "8.6.0",
     "geist": "^1.4.2",
