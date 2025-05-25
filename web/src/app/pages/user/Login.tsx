@@ -1,78 +1,193 @@
-"use client";
+"use client"
 
-import { useState, useTransition } from "react";
-import { startAuthentication } from "@simplewebauthn/browser";
-import { finishPasskeyLogin, startPasskeyLogin } from "./functions";
-import { Button } from "@/app/components/ui/button";
-import { AuthLayout } from "@/app/layouts/AuthLayout";
-import { Alert, AlertTitle } from "@/app/components/ui/alert";
-import { AlertCircle } from "lucide-react";
-import { link } from "@/app/shared/links";
+import { useState, useTransition } from "react"
+import { setupAuthClient } from "@/lib/auth-client"
+import { link } from "@/app/shared/links"
+import { Button } from "@/app/shared/components/ui/button"
+import { Card, CardContent } from "@/app/shared/components/ui/card"
+import { Input } from "@/app/shared/components/ui/input"
+import {
+  Form,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/app/shared/components/ui/form"
+import { AppContext } from "@/worker"
 
-export function Login() {
-  const [username, setUsername] = useState("");
-  const [result, setResult] = useState("");
-  const [isPending, startTransition] = useTransition();
+export function Login({ ctx }: { ctx: AppContext }) {
+  const { authUrl } = ctx
+  const [email, setEmail] = useState("")
+  const [otp, setOtp] = useState("")
+  const [result, setResult] = useState("")
+  const [isPending, startTransition] = useTransition()
+  const [showOtpInput, setShowOtpInput] = useState(false)
+  const [emailError, setEmailError] = useState("")
+  const [otpError, setOtpError] = useState("")
+  const authClient = setupAuthClient(authUrl)
 
-  const passkeyLogin = async () => {
-    // 1. Get a challenge from the worker
-    const options = await startPasskeyLogin();
+  const validateEmail = (email: string) => {
+    if (!email) return "Email is required"
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      return "Please enter a valid email address"
+    return ""
+  }
 
-    // 2. Ask the browser to sign the challenge
-    const login = await startAuthentication({ optionsJSON: options });
+  const validateOtp = (otp: string) => {
+    if (!otp) return "Verification code is required"
+    if (otp.length !== 6) return "Verification code must be 6 digits"
+    return ""
+  }
 
-    // 3. Give the signed challenge to the worker to finish the login process
-    const success = await finishPasskeyLogin(login);
+  const handleSendOtp = (e: React.FormEvent) => {
+    e.preventDefault()
+    const error = validateEmail(email)
+    setEmailError(error)
 
-    if (!success) {
-      setResult("Login failed");
-    } else {
-      window.location.href = "/";
-    }
-  };
+    if (error) return
 
-  const handlePerformPasskeyLogin = () => {
-    startTransition(() => void passkeyLogin());
-  };
+    startTransition(() => {
+      authClient.emailOtp.sendVerificationOtp(
+        {
+          email,
+          type: "sign-in",
+        },
+        {
+          onRequest: () => setResult("Sending verification code..."),
+          onSuccess: () => {
+            setShowOtpInput(true)
+            setResult("Check your email for the verification code")
+          },
+          onError: (ctx) => {
+            console.log("error sending OTP", ctx.error)
+            setResult(`Error: ${ctx.error.message}`)
+          },
+        },
+      )
+    })
+  }
+
+  const handleVerifyOtp = (e: React.FormEvent) => {
+    e.preventDefault()
+    const error = validateOtp(otp)
+    setOtpError(error)
+
+    if (error) return
+
+    startTransition(() => {
+      authClient.signIn.emailOtp(
+        {
+          email,
+          otp,
+        },
+        {
+          onRequest: () => setResult("Verifying code..."),
+          onSuccess: () => {
+            window.location.href = link("/home")
+          },
+          onError: (ctx) => {
+            console.log("error verifying OTP", ctx.error)
+            setResult(`Error: ${ctx.error.message}`)
+          },
+        },
+      )
+    })
+  }
+
+  const handleBackToEmail = () => {
+    setShowOtpInput(false)
+    setOtp("")
+    setOtpError("")
+    setResult("")
+  }
 
   return (
-    <AuthLayout>
-      <div className="absolute top-0 right-0 p-10">
-        <a
-          href={link("/user/signup")}
-          className="font-display font-bold text-black text-sm underline underline-offset-8 hover:decoration-primary"
-        >
-          Register
+    <div className="p-8 max-w-md mx-auto">
+      <div className="text-center mb-6">
+        <img src="/images/logoipsum.svg" alt="Logo" className="mx-auto" />
+        <h1 className="text-2xl font-semibold mb-4">Continue with Email</h1>
+      </div>
+
+      <Card>
+        <CardContent className="p-6">
+          {!showOtpInput ? (
+            <Form onSubmit={handleSendOtp}>
+              <FormItem>
+                <FormLabel htmlFor="email">Email</FormLabel>
+                <FormControl>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    autoComplete="email"
+                  />
+                </FormControl>
+                <FormMessage>{emailError}</FormMessage>
+              </FormItem>
+
+              {result && (
+                <FormMessage
+                  variant={result.includes("Error") ? "destructive" : "success"}
+                >
+                  {result}
+                </FormMessage>
+              )}
+
+              <Button type="submit" disabled={isPending} className="w-full">
+                {isPending ? "Sending Code..." : "Continue with Email"}
+              </Button>
+            </Form>
+          ) : (
+            <Form onSubmit={handleVerifyOtp}>
+              <FormItem>
+                <FormLabel htmlFor="otp">Verification Code</FormLabel>
+                <FormControl>
+                  <Input
+                    id="otp"
+                    type="text"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    placeholder="Enter 6-digit code"
+                    maxLength={6}
+                    autoComplete="one-time-code"
+                  />
+                </FormControl>
+                <FormMessage>{otpError}</FormMessage>
+              </FormItem>
+
+              {result && (
+                <FormMessage
+                  variant={result.includes("Error") ? "destructive" : "success"}
+                >
+                  {result}
+                </FormMessage>
+              )}
+
+              <div className="flex gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleBackToEmail}
+                  disabled={isPending}
+                >
+                  ← Back
+                </Button>
+                <Button type="submit" disabled={isPending} className="flex-1">
+                  {isPending ? "Verifying..." : "Verify Code"}
+                </Button>
+              </div>
+            </Form>
+          )}
+        </CardContent>
+      </Card>
+
+      <p className="mt-4 text-sm text-gray-600 text-center">
+        <a href="/" className="text-blue-600 hover:underline">
+          Back to Landing Page
         </a>
-      </div>
-      <div className="auth-form max-w-[400px] w-full mx-auto px-10">
-        <h1 className="text-center page-title">Login</h1>
-        <p className="py-6">Enter your username below to sign-in.</p>
-        {result && (
-          <Alert variant="destructive" className="mb-5">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>{result}</AlertTitle>
-          </Alert>
-        )}
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Username"
-        />
-        <Button
-          onClick={handlePerformPasskeyLogin}
-          disabled={isPending}
-          className="font-display w-full mb-6"
-        >
-          {isPending ? <>...</> : "Login with passkey"}
-        </Button>
-        <p>
-          By clicking continue, you agree to our{" "}
-          <a href={link("/legal/terms")}>Terms of Service</a> and{" "}
-          <a href={link("/legal/privacy")}>Privacy Policy</a>.
-        </p>
-      </div>
-    </AuthLayout>
-  );
+      </p>
+    </div>
+  )
 }

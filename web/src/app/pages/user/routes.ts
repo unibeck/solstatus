@@ -1,19 +1,15 @@
-import { route } from "rwsdk/router";
-import { Login } from "./Login";
-import { Signup } from "./Signup";
-import { sessions } from "@/session/store";
+import { route } from "rwsdk/router"
+import { Login } from "@/app/pages/user/Login"
+import type { AppContext } from "@/worker"
+import { link } from "@/app/shared/links"
 
-export const userRoutes = [
-  route("/login", [Login]),
-  route("/signup", [Signup]),
-  route("/logout", async function ({ request }) {
-    const headers = new Headers();
-    await sessions.remove(request, headers);
-    headers.set("Location", "/");
-
+const redirectIfAuthenticated = ({ ctx }: { ctx: AppContext }) => {
+  if (ctx.user) {
     return new Response(null, {
       status: 302,
-      headers,
-    });
-  }),
-];
+      headers: { Location: link("/home") },
+    })
+  }
+}
+
+export const userRoutes = [route("/login", [redirectIfAuthenticated, Login])]

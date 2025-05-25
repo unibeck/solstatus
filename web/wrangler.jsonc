@@ -1,37 +1,23 @@
+// Initial temporary wrangler.json
+// Running `bun infra:up will update and overwrite this file
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "finished",
+  "name": "fullstack-cf-example-site",
   "main": "src/worker.tsx",
-  "compatibility_date": "2024-09-23",
+  "compatibility_date": "2025-04-20",
   "compatibility_flags": ["nodejs_compat"],
-  "assets": {
-    "binding": "ASSETS"
-  },
-  "observability": {
-    "enabled": true
-  },
-  "durable_objects": {
-    "bindings": [
-      {
-        "name": "SESSION_DURABLE_OBJECT",
-        "class_name": "SessionDurableObject"
-      }
-    ]
-  },
-  "vars": {
-    "WEBAUTHN_APP_NAME": "finished"
-  },
-  "migrations": [
+  "assets": { "directory": "dist/client", "binding": "ASSETS" },
+  "kv_namespaces": [
     {
-      "tag": "v1",
-      "new_sqlite_classes": ["SessionDurableObject"]
+      "binding": "SESSIONS_KV",
+      "id": "__"
     }
   ],
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "finished-international-urial",
-      "database_id": "f2ed1c97-a37f-4b54-89b1-9f617e7bd5ca"
+      "migrations_dir": "src/db/migrations",
+      "database_name": "__",
+      "database_id": "__"
     }
   ]
 }

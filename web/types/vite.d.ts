@@ -1,4 +1,4 @@
 declare module "*?url" {
-  const result: string;
-  export default result;
+  const result: string
+  export default result
 }

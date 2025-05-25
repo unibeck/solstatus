@@ -1,62 +1,128 @@
-# Standard RedwoodSDK Starter
+# Fullstack cloudflare example
 
-This "standard starter" is the recommended implementation for RedwoodSDK. You get a Typescript project with:
+This repo contain a fullstack example to build on Cloudflare with the following stack:
 
-- Vite
-- database (Prisma via D1)
-- Session Management (via DurableObjects)
-- Passkey authentication (Webauthn)
-- Storage (via R2)
+## Stack
 
-## Creating your project
+- **RedwoodSDK**: A React framework to run react 19 with SSR/RSC/ServerFunctions/etc.. on Cloudflare
+- **Drizzle ORM**: Lightweight, type-safe SQL ORM with migrations
+- **Better-auth**: Simple, flexible authentication library - The example is setup to use OTP
+- **Alchemy**: Infrastructure-as-Code without the dead weight
+- **Shadcn**: A set of beautifully-designed, accessible components to build your component library
+- **Bun**: a fast JavaScript all-in-one toolkit
 
-```shell
-npx degit redwoodjs/sdk/starters/standard my-project-name
-cd my-project-name
-pnpm install
-```
+## Resources
 
-## Running the dev server
+- D1 (as main DB)
+- KV (for sessions)
+- Website running on workers using RedwoodSDK
 
-```shell
-pnpm dev
-```
+All the required resources are configured via Alchmey in alchemy.run.ts
 
-Point your browser to the URL displayed in the terminal (e.g. `http://localhost:5173/`). You should see a "Hello World" message in your browser.
+## Credits
 
-## Deploying your app
+- **MJ Meyer**: this example was eavily inspired and borrow alot from his [repo](https://github.com/mj-meyer/rwsdk-better-auth-drizzle), adding little things here and there, mainly Alchemy as IaC.
+  - Check /types/env.d.ts to see how our IaC help defining our types (no need to generate types with Wrangler)
+  - Check ./alchemy.run.ts to see how the whole infra is defined as code via Alchemy
 
-### Wrangler Setup
+## Getting Started
 
-Within your project's `wrangler.jsonc`:
-
-- Replace the `__change_me__` placeholders with a name for your application
-
-- Create a new D1 database:
+### 1 Create your new project:
 
 ```shell
-npx wrangler d1 create my-project-db
+git clone https://github.com/nickbalestra/fullstack-cf-example
+cd fullstack-cf-example
+bun install
 ```
 
-Copy the database ID provided and paste it into your project's `wrangler.jsonc` file:
+### 2 Setup your env virables
 
-```jsonc
-{
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "my-project-db",
-      "database_id": "your-database-id",
-    },
-  ],
-}
+Create an .env file (look at the provided env.example for reference)
+
+### 3 Run the application locally with all the resources needed like db, ...
+
+```shell
+bun dev
 ```
 
-### Authentication Setup
+The application will be available at the URL displayed in your terminal (typically `http://localhost:5173`)
 
-For authentication setup and configuration, including optional bot protection, see the [Authentication Documentation](https://docs.rwsdk.com/core/authentication).
+### 4 Deploy to Cloudflare
 
-## Further Reading
+This will provision all the resources needed like db, ...
+The application will be available at the Cloudflare URL displayed in your terminal.
 
-- [RedwoodSDK Documentation](https://docs.rwsdk.com/)
-- [Cloudflare Workers Secrets](https://developers.cloudflare.com/workers/runtime-apis/secrets/)
+```shell
+bun infra:up
+```
+
+## Application Routes
+
+This example includes several key routes:
+
+- **/** - The landing page with a link to the protected home page
+- **/home** - A protected page that requires authentication (redirects to login if not authenticated)
+- **/user/login** - The login page where users can authenticate
+
+## Authentication Flow
+
+This example includes a complete authentication system with:
+
+- OTP for signup and login
+- Session management using a seperate KV database
+- Protected routes
+- Logout functionality
+
+## Database Configuration
+
+### Local Development
+
+The project uses Cloudflare D1 (SQLite) with Drizzle ORM. A local development database will automatically setup when you first run `bun dev` in `./wrangler`
+
+### Database Schema
+
+The authentication schema is defined in `src/db/schema` and includes tables for:
+
+- Users
+- Sessions
+- Accounts
+
+### Making Schema Changes
+
+When you need to update your database schema:
+
+1. Modify the schema files in `src/db/schema`
+2. Generate a new migration: `bun migrate:new --name="your_migration_name"`
+3. Apply the migration: `bun migrate:dev`
+
+## Deployment
+
+To deploy the whole application (app, db, ecc) to Cloudflare:
+
+1. Run the infra:up command to spin up and deploy: `bun infra:up`
+2. Run the infra:destroy to tear it down `bun infra:destroy`
+
+Everytime you change anything to the infra definition and run `infra:up` your whole infra will be updated, that's it.
+
+## Project Structure
+
+```
+├── src/
+│   ├── app/               # UI components
+│   │   ├── pages/         # Page components
+│   │   ├── shared/        # Shared components
+│   │   └── document/      # Root document/headers/css
+│   ├── db/                # Database configuration
+│   │   ├── migrations/    # Database migrations
+│   │   ├── schema/        # Drizzle schema definitions
+│   │   ├── scripts/       # Database scripts for ie seeding
+│   │   └── db.ts          # Database connection
+│   ├── lib/               # Application logic
+│   │   ├── auth.ts        # Server-side auth configuration
+│   │   └── auth-client.ts # Client-side auth configuration
+│   ├── types/             # Project wide & system types
+│   ├── client.tsx         # Client entry point
+│   └── worker.tsx         # Server entry point
+├── infra.run.ts           # Alchemy main script for orchestrating infrastructure's resources
+└── *.config               # Various configuration files (drizzle, vite, wrangler, typescript)
+```
