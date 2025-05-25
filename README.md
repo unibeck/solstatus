@@ -39,12 +39,14 @@ Built 100% on Cloudflare, using Workers, Durable Objects, and D1. A quick explan
 You can find this code in the `./api` directory.
 
 ## Frontend
-Standard NextJS v15, shadcn, TailwindCSS v4, and Drizzle stack. Some other notable points:
+RedwoodSDK with React 19, shadcn, and TailwindCSS v4. Some other notable points:
 - pnpm as package manager
 - biome as linter/formatter
 - zustand for state management
-- opennext with the CF adapter (not that it changes much)
-- OpenAPI support via scalar
+- Prisma ORM for database interactions
+- Built-in Cloudflare Workers integration
+
+For details about the migration from NextJS to RedwoodSDK, see [REDWOOD-MIGRATION.md](./REDWOOD-MIGRATION.md).
 
 You can find this code in the `./src` directory.
 
