@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/unibeck/solstatus/compare/solstatus@v1.7.0...solstatus@v1.7.1) (2025-05-25)
+
+
+### Bug Fixes
+
+* Revert drizzle-zod dependency update ([7221c18](https://github.com/unibeck/solstatus/commit/7221c183dcb427d1799f8dc63175aef2baa4a8cb)), closes [#74](https://github.com/unibeck/solstatus/issues/74)
+
 ## [1.7.0](https://github.com/unibeck/solstatus/compare/solstatus@v1.6.2...solstatus@v1.7.0) (2025-05-22)
 
 
