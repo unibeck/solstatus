@@ -27,15 +27,22 @@ export function Login({ ctx }: { ctx: AppContext }) {
   const authClient = setupAuthClient(authUrl)
 
   const validateEmail = (email: string) => {
-    if (!email) return "Email is required"
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+    if (!email) {
+      return "Email is required"
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return "Please enter a valid email address"
+    }
     return ""
   }
 
   const validateOtp = (otp: string) => {
-    if (!otp) return "Verification code is required"
-    if (otp.length !== 6) return "Verification code must be 6 digits"
+    if (!otp) {
+      return "Verification code is required"
+    }
+    if (otp.length !== 6) {
+      return "Verification code must be 6 digits"
+    }
     return ""
   }
 
@@ -44,7 +51,9 @@ export function Login({ ctx }: { ctx: AppContext }) {
     const error = validateEmail(email)
     setEmailError(error)
 
-    if (error) return
+    if (error) {
+      return
+    }
 
     startTransition(() => {
       authClient.emailOtp.sendVerificationOtp(
@@ -72,7 +81,9 @@ export function Login({ ctx }: { ctx: AppContext }) {
     const error = validateOtp(otp)
     setOtpError(error)
 
-    if (error) return
+    if (error) {
+      return
+    }
 
     startTransition(() => {
       authClient.signIn.emailOtp(

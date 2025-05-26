@@ -1,6 +1,7 @@
 "use client"
 
 import { useTransition } from "react"
+import { Button } from "@/app/registry/new-york-v4/ui/button"
 import { link } from "@/app/shared/links"
 import { setupAuthClient } from "@/lib/auth-client"
 
@@ -44,13 +45,13 @@ export function LogoutButton({ className, authUrl }: LogoutButtonProps) {
   }
 
   return (
-    <button
+    <Button
       onClick={handleSignOut}
       disabled={isPending}
       style={isPending ? disabledButtonStyles : buttonStyles}
       className={className}
     >
       {isPending ? "Logging out..." : "Log Out"}
-    </button>
+    </Button>
   )
 }
