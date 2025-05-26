@@ -77,7 +77,7 @@
     "diffable-objects": "^0.1.1",
     "drizzle-orm": "^0.43.1",
     "drizzle-seed": "^0.3.1",
-    "drizzle-zod": "0.7.1",
+    "drizzle-zod": "0.8.2",
     "embla-carousel-autoplay": "8.6.0",
     "embla-carousel-react": "8.6.0",
     "geist": "^1.4.2",
