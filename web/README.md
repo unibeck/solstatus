@@ -11,20 +11,6 @@ This repo contain a fullstack example to build on Cloudflare with the following 
 - **Shadcn**: A set of beautifully-designed, accessible components to build your component library
 - **Bun**: a fast JavaScript all-in-one toolkit
 
-## Resources
-
-- D1 (as main DB)
-- KV (for sessions)
-- Website running on workers using RedwoodSDK
-
-All the required resources are configured via Alchmey in alchemy.run.ts
-
-## Credits
-
-- **MJ Meyer**: this example was eavily inspired and borrow alot from his [repo](https://github.com/mj-meyer/rwsdk-better-auth-drizzle), adding little things here and there, mainly Alchemy as IaC.
-  - Check /types/env.d.ts to see how our IaC help defining our types (no need to generate types with Wrangler)
-  - Check ./alchemy.run.ts to see how the whole infra is defined as code via Alchemy
-
 ## Getting Started
 
 ### 1 Create your new project:
@@ -35,7 +21,7 @@ cd fullstack-cf-example
 bun install
 ```
 
-### 2 Setup your env virables
+### 2 Setup your env variables
 
 Create an .env file (look at the provided env.example for reference)
 
@@ -104,25 +90,8 @@ To deploy the whole application (app, db, ecc) to Cloudflare:
 
 Everytime you change anything to the infra definition and run `infra:up` your whole infra will be updated, that's it.
 
-## Project Structure
+## TODO:
+- [] fix useform ssr
+- [] Fix fonts
+- [] implement bun workspaces
 
-```
-├── src/
-│   ├── app/               # UI components
-│   │   ├── pages/         # Page components
-│   │   ├── shared/        # Shared components
-│   │   └── document/      # Root document/headers/css
-│   ├── db/                # Database configuration
-│   │   ├── migrations/    # Database migrations
-│   │   ├── schema/        # Drizzle schema definitions
-│   │   ├── scripts/       # Database scripts for ie seeding
-│   │   └── db.ts          # Database connection
-│   ├── lib/               # Application logic
-│   │   ├── auth.ts        # Server-side auth configuration
-│   │   └── auth-client.ts # Client-side auth configuration
-│   ├── types/             # Project wide & system types
-│   ├── client.tsx         # Client entry point
-│   └── worker.tsx         # Server entry point
-├── infra.run.ts           # Alchemy main script for orchestrating infrastructure's resources
-└── *.config               # Various configuration files (drizzle, vite, wrangler, typescript)
-```

@@ -1,4 +1,4 @@
-import type { site } from "@root/infra.config"
+import type { site } from "@root/alchemy.run"
 
 export type WorkerEnv = typeof site.Env
 

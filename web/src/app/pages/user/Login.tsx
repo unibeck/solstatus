@@ -14,6 +14,7 @@ import {
 } from "@/registry/new-york-v4/ui/form"
 import { Input } from "@/registry/new-york-v4/ui/input"
 import type { AppContext } from "@/worker"
+import { useForm } from "react-hook-form"
 
 export function Login({ ctx }: { ctx: AppContext }) {
   const { authUrl } = ctx
@@ -112,6 +113,22 @@ export function Login({ ctx }: { ctx: AppContext }) {
     setResult("")
   }
 
+  const emailFormId = "email-form"
+  const emailForm = useForm<{ email: string}>({
+    // resolver: zodResolver(endpointMonitorsInsertDTOSchema),
+    defaultValues: {
+      email: "",
+    }
+  })
+
+  const otpFormId = "otp-form"
+  const otpForm = useForm<{ otp: string}>({
+    // resolver: zodResolver(endpointMonitorsInsertDTOSchema),
+    defaultValues: {
+      otp: "",
+    }
+  })
+
   return (
     <div className="p-8 max-w-md mx-auto">
       <div className="text-center mb-6">
@@ -122,73 +139,98 @@ export function Login({ ctx }: { ctx: AppContext }) {
       <Card>
         <CardContent className="p-6">
           {!showOtpInput ? (
-            <Form onSubmit={handleSendOtp}>
-              <FormItem>
-                <FormLabel htmlFor="email">Email</FormLabel>
-                <FormControl>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email"
-                    autoComplete="email"
-                  />
-                </FormControl>
-                <FormMessage>{emailError}</FormMessage>
-              </FormItem>
+            <Form {...emailForm}>
+              <form
+                id={emailFormId}
+                onSubmit={handleSendOtp}
+                // onSubmit={form.handleSubmit(handleSendOtp)}
+              >
+                {/* <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter your email" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        A friendly name to identify this endpoint monitor
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                /> */}
 
-              {result && (
-                <FormMessage
-                  variant={result.includes("Error") ? "destructive" : "success"}
-                >
-                  {result}
-                </FormMessage>
-              )}
+                <FormItem>
+                  <FormLabel htmlFor="email">Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      autoComplete="email"
+                    />
+                  </FormControl>
+                  <FormMessage>{emailError}</FormMessage>
+                </FormItem>
 
-              <Button type="submit" disabled={isPending} className="w-full">
-                {isPending ? "Sending Code..." : "Continue with Email"}
-              </Button>
+                {result && (
+                  <FormMessage
+                  >
+                    {result}
+                  </FormMessage>
+                )}
+
+                <Button type="submit" disabled={isPending} className="w-full">
+                  {isPending ? "Sending Code..." : "Continue with Email"}
+                </Button>
+              </form>
             </Form>
           ) : (
-            <Form onSubmit={handleVerifyOtp}>
-              <FormItem>
-                <FormLabel htmlFor="otp">Verification Code</FormLabel>
-                <FormControl>
-                  <Input
-                    id="otp"
-                    type="text"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                    placeholder="Enter 6-digit code"
-                    maxLength={6}
-                    autoComplete="one-time-code"
-                  />
-                </FormControl>
-                <FormMessage>{otpError}</FormMessage>
-              </FormItem>
+            <Form {...otpForm}>
+              <form
+                id={otpFormId}
+                onSubmit={handleVerifyOtp}
+              >
+                <FormItem>
+                  <FormLabel htmlFor="otp">Verification Code</FormLabel>
+                  <FormControl>
+                    <Input
+                      id="otp"
+                      type="text"
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value)}
+                      placeholder="Enter 6-digit code"
+                      maxLength={6}
+                      autoComplete="one-time-code"
+                    />
+                  </FormControl>
+                  <FormMessage>{otpError}</FormMessage>
+                </FormItem>
 
-              {result && (
-                <FormMessage
-                  variant={result.includes("Error") ? "destructive" : "success"}
-                >
-                  {result}
-                </FormMessage>
-              )}
+                {result && (
+                  <FormMessage>
+                    {result}
+                  </FormMessage>
+                )}
 
-              <div className="flex gap-3">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={handleBackToEmail}
-                  disabled={isPending}
-                >
-                  ← Back
-                </Button>
-                <Button type="submit" disabled={isPending} className="flex-1">
-                  {isPending ? "Verifying..." : "Verify Code"}
-                </Button>
-              </div>
+                <div className="flex gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleBackToEmail}
+                    disabled={isPending}
+                  >
+                    ← Back
+                  </Button>
+                  <Button type="submit" disabled={isPending} className="flex-1">
+                    {isPending ? "Verifying..." : "Verify Code"}
+                  </Button>
+                </div>
+              </form>
             </Form>
           )}
         </CardContent>
