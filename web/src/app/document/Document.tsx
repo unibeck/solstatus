@@ -1,4 +1,5 @@
 import styles from "./styles.css?url"
+import theme from "./theme.css?url"
 
 export const Document: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -10,6 +11,7 @@ export const Document: React.FC<{ children: React.ReactNode }> = ({
       <title>Fullstack CF Example</title>
       <link rel="modulepreload" href="/src/client.tsx" />
       <link rel="stylesheet" href={styles} />
+      <link rel="stylesheet" href={theme} />
     </head>
     <body>
       <div id="root">{children}</div>
