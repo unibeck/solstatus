@@ -1,5 +1,5 @@
 import alchemy from "alchemy"
-import { Website, D1Database, KVNamespace } from "alchemy/cloudflare"
+import { D1Database, KVNamespace, Website } from "alchemy/cloudflare"
 
 const APP_NAME = "fullstack-cf-example"
 

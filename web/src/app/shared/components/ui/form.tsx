@@ -1,8 +1,7 @@
-import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
-
-import { cn } from "@/lib/utils"
+import * as React from "react"
 import { Label } from "@/app/shared/components/ui/label"
+import { cn } from "@/lib/utils"
 
 // Simple form wrapper - just a div with form styling
 const Form = React.forwardRef<

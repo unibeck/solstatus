@@ -1,5 +1,5 @@
-import { defineApp } from "rwsdk/worker"
 import { prefix, render, route } from "rwsdk/router"
+import { defineApp } from "rwsdk/worker"
 
 import { Document } from "@/app/document/Document"
 import { setCommonHeaders } from "@/app/document/headers"
@@ -7,9 +7,9 @@ import { setCommonHeaders } from "@/app/document/headers"
 import { Home } from "@/app/pages/Home"
 import { Landing } from "@/app/pages/Landing"
 import { userRoutes } from "@/app/pages/user/routes"
-import { auth } from "@/lib/auth"
-import { User } from "@/db/schema/auth-schema"
 import { link } from "@/app/shared/links"
+import type { User } from "@/db/schema/auth-schema"
+import { auth } from "@/lib/auth"
 
 export type AppContext = {
   user: User | undefined

@@ -1,4 +1,3 @@
-import { link } from "@/app/shared/links"
 import { Button } from "@/app/shared/components/ui/button"
 import {
   Card,
@@ -6,6 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/shared/components/ui/card"
+import { link } from "@/app/shared/links"
 
 export function Landing() {
   return (

@@ -1,12 +1,10 @@
+import { env } from "cloudflare:workers"
+import { betterAuth } from "better-auth"
+import { drizzleAdapter } from "better-auth/adapters/drizzle"
+import { emailOTP } from "better-auth/plugins"
 import { db } from "@/db/db"
 import * as schema from "@/db/schema"
-
-import { betterAuth } from "better-auth"
-import { emailOTP } from "better-auth/plugins"
-import { drizzleAdapter } from "better-auth/adapters/drizzle"
 import { secondaryStorage } from "@/db/secondaryStorage"
-
-import { env } from "cloudflare:workers"
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {

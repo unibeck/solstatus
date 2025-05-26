@@ -1,7 +1,7 @@
-import path from "path"
-import { defineConfig } from "vite"
-import { redwood } from "rwsdk/vite"
 import tailwindcss from "@tailwindcss/vite"
+import path from "path"
+import { redwood } from "rwsdk/vite"
+import { defineConfig } from "vite"
 
 export default defineConfig({
   environments: {

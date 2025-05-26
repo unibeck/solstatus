@@ -1,5 +1,5 @@
-import { SecondaryStorage } from "better-auth"
 import { env } from "cloudflare:workers"
+import type { SecondaryStorage } from "better-auth"
 
 export const secondaryStorage: SecondaryStorage = {
   async get(key) {

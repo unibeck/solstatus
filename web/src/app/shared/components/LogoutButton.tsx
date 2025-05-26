@@ -1,8 +1,8 @@
 "use client"
 
 import { useTransition } from "react"
-import { setupAuthClient } from "@/lib/auth-client"
 import { link } from "@/app/shared/links"
+import { setupAuthClient } from "@/lib/auth-client"
 
 type LogoutButtonProps = {
   className?: string

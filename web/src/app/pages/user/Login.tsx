@@ -1,19 +1,19 @@
 "use client"
 
 import { useState, useTransition } from "react"
-import { setupAuthClient } from "@/lib/auth-client"
-import { link } from "@/app/shared/links"
 import { Button } from "@/app/shared/components/ui/button"
 import { Card, CardContent } from "@/app/shared/components/ui/card"
-import { Input } from "@/app/shared/components/ui/input"
 import {
   Form,
+  FormControl,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@/app/shared/components/ui/form"
-import { AppContext } from "@/worker"
+import { Input } from "@/app/shared/components/ui/input"
+import { link } from "@/app/shared/links"
+import { setupAuthClient } from "@/lib/auth-client"
+import type { AppContext } from "@/worker"
 
 export function Login({ ctx }: { ctx: AppContext }) {
   const { authUrl } = ctx

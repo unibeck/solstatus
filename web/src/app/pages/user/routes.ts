@@ -1,7 +1,7 @@
 import { route } from "rwsdk/router"
 import { Login } from "@/app/pages/user/Login"
-import type { AppContext } from "@/worker"
 import { link } from "@/app/shared/links"
+import type { AppContext } from "@/worker"
 
 const redirectIfAuthenticated = ({ ctx }: { ctx: AppContext }) => {
   if (ctx.user) {

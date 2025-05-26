@@ -1,13 +1,13 @@
-import { db } from "@/db/db"
-import { user } from "@/db/schema"
 import { LogoutButton } from "@/app/shared/components"
-import { AppContext } from "@/worker"
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "@/app/shared/components/ui/card"
+import { db } from "@/db/db"
+import { user } from "@/db/schema"
+import type { AppContext } from "@/worker"
 
 const Home = async ({ ctx }: { ctx: AppContext }) => {
   const allUsers = await db.select().from(user).all()
