@@ -82,7 +82,7 @@
     "includes": [
       "**",
       "!**/src/registry",
-      "!**/web/src/app/registry",
+      "!**/web/src/registry",
       "!**/cloudflare-env-gen.d.ts",
       "!**/meta/*.json",
       "!**/dist",

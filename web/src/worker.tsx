@@ -7,9 +7,9 @@ import { setCommonHeaders } from "@/app/document/headers"
 import { Home } from "@/app/pages/Home"
 import { Landing } from "@/app/pages/Landing"
 import { userRoutes } from "@/app/pages/user/routes"
-import { link } from "@/app/shared/links"
 import type { User } from "@/db/schema/auth-schema"
 import { auth } from "@/lib/auth"
+import { link } from "@/lib/links"
 
 export type AppContext = {
   user: User | undefined

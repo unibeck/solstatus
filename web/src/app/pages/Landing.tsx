@@ -1,11 +1,11 @@
-import { Button } from "@/app/shared/components/ui/button"
+import { link } from "@/lib/links"
+import { Button } from "@/registry/new-york-v4/ui/button"
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/app/shared/components/ui/card"
-import { link } from "@/app/shared/links"
+} from "@/registry/new-york-v4/ui/card"
 
 export function Landing() {
   return (

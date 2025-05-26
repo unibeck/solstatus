@@ -1,16 +1,16 @@
-import { LogoutButton } from "@/app/shared/components"
+import { LogoutButton } from "@/components/LogoutButton"
+import { db } from "@/db/db"
+import { UserTable } from "@/db/schema"
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/app/shared/components/ui/card"
-import { db } from "@/db/db"
-import { user } from "@/db/schema"
+} from "@/registry/new-york-v4/ui/card"
 import type { AppContext } from "@/worker"
 
 const Home = async ({ ctx }: { ctx: AppContext }) => {
-  const allUsers = await db.select().from(user).all()
+  const allUsers = await db.select().from(UserTable).all()
   const { authUrl } = ctx
 
   return (

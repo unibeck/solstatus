@@ -1,18 +1,18 @@
 "use client"
 
 import { useState, useTransition } from "react"
-import { Button } from "@/app/shared/components/ui/button"
-import { Card, CardContent } from "@/app/shared/components/ui/card"
+import { setupAuthClient } from "@/lib/auth-client"
+import { link } from "@/lib/links"
+import { Button } from "@/registry/new-york-v4/ui/button"
+import { Card, CardContent } from "@/registry/new-york-v4/ui/card"
 import {
   Form,
   FormControl,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/app/shared/components/ui/form"
-import { Input } from "@/app/shared/components/ui/input"
-import { link } from "@/app/shared/links"
-import { setupAuthClient } from "@/lib/auth-client"
+} from "@/registry/new-york-v4/ui/form"
+import { Input } from "@/registry/new-york-v4/ui/input"
 import type { AppContext } from "@/worker"
 
 export function Login({ ctx }: { ctx: AppContext }) {
