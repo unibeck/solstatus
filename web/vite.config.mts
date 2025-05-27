@@ -11,6 +11,9 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+
+      // workaround(justinvdm, 27 May 2025): https://github.com/redwoodjs/sdk/issues/449
+      "react-hook-form": import.meta.resolve("react-hook-form"),
     },
   },
 })
