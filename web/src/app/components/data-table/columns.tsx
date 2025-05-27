@@ -7,7 +7,7 @@ import {
 import type { ColumnDef } from "@tanstack/react-table"
 import Link from "next/link"
 import type { z } from "zod"
-import { LatencyLimitChart } from "@/components/latency-limit-chart"
+import { LatencyLimitChart } from "@/app/components/latency-limit-chart"
 import type { endpointMonitorsSelectSchema } from "@/db/zod-schema"
 import { secsToHumanReadable } from "@/lib/formatters"
 import { Badge } from "@/registry/new-york-v4/ui/badge"

@@ -1,4 +1,4 @@
-import { LogoutButton } from "@/components/LogoutButton"
+import { LogoutButton } from "@/app/components/LogoutButton"
 import { db } from "@/db/db"
 import { UserTable } from "@/db/schema"
 import {

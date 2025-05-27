@@ -23,7 +23,7 @@ import {
   YAxis,
 } from "recharts"
 import type { z } from "zod"
-import { PolkaDots } from "@/components/bg-patterns/polka-dots"
+import { PolkaDots } from "@/app/components/bg-patterns/polka-dots"
 import type { uptimeChecksSelectSchema } from "@/db/zod-schema"
 import type { TimeRange } from "@/types/endpointMonitor"
 

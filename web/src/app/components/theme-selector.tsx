@@ -1,6 +1,6 @@
 "use client"
 
-import { useThemeConfig } from "@/components/active-theme"
+import { useThemeConfig } from "@/app/components/active-theme"
 import { Label } from "@/registry/new-york-v4/ui/label"
 import {
   Select,

@@ -17,10 +17,10 @@ import {
   IconTargetArrow,
 } from "@tabler/icons-react"
 import type * as React from "react"
-import SolStatusLogo from "@/components/icons/solstatus-logo"
+import SolStatusLogo from "@/app/components/icons/solstatus-logo"
 
-import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
+import { NavMain } from "@/app/components/nav-main"
+import { NavSecondary } from "@/app/components/nav-secondary"
 import { fontUnboundedCN } from "@/lib/fonts"
 import {
   Sidebar,

@@ -91,7 +91,9 @@ To deploy the whole application (app, db, ecc) to Cloudflare:
 Everytime you change anything to the infra definition and run `infra:up` your whole infra will be updated, that's it.
 
 ## TODO:
-- [] fix useform ssr
+- [x] fix useform ssr
 - [] Fix fonts
 - [] implement bun workspaces
+- [] move src/app/components back to src/components (pending https://discord.com/channels/679514959968993311/1374981422925746236)
+
 
