@@ -81,10 +81,7 @@
   "files": {
     "includes": [
       "**",
-      "!**/src/registry",
-      "!**/web/src/registry",
-      "!**/cloudflare-env-gen.d.ts",
-      "!**/meta/*.json",
+      "!**/packages/app/src/registry",
       "!**/dist",
       "!**/tsconfig.json",
       "!**/node_modules/**"

@@ -1,1 +1,0 @@
-ALTER TABLE `uptimeChecks` ADD `isExpectedStatus` integer NOT NULL DEFAULT 1;

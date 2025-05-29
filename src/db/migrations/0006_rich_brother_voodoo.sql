@@ -1,1 +1,0 @@
-ALTER TABLE `uptimeChecks` DROP COLUMN `isUp`;

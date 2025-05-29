@@ -1,0 +1,23 @@
+{
+  "name": "@solstatus/infra",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "infra:up": "bun alchemy.run.ts",
+    "infra:destroy": "bun alchemy.run.ts destroy",
+    "format": "biome check . --write",
+    "types": "tsc"
+  },
+  "dependencies": {
+    "@solstatus/api": "workspace:*",
+    "alchemy": "catalog:"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "typescript": "catalog:",
+    "@types/node": "catalog:",
+    "wrangler": "catalog:",
+    "dotenv": "catalog:"
+  }
+}

@@ -1,1 +1,0 @@
-ALTER TABLE `websites` ADD `expectedStatusCode` integer;
