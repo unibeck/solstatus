@@ -17,6 +17,7 @@
     "types": [
       "@types/node",
       "@cloudflare/workers-types",
+      "./types/env.d.ts",
     ],
     "baseUrl": "./",
     "paths": {
