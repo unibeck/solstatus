@@ -115,6 +115,7 @@
       },
       "devDependencies": {
         "@biomejs/biome": "catalog:",
+        "@cloudflare/workers-types": "catalog:",
         "@types/node": "catalog:",
         "drizzle-kit": "catalog:",
         "typescript": "catalog:",

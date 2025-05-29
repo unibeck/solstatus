@@ -18,6 +18,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
+    "@cloudflare/workers-types": "catalog:",
     "typescript": "catalog:",
     "@types/node": "catalog:",
     "wrangler": "catalog:",
