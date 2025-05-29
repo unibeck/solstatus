@@ -93,17 +93,18 @@
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
+    "@cloudflare/workers-types": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "alchemy": "catalog:",
     "concurrently": "^9.1.2",
+    "dotenv": "catalog:",
     "drizzle-kit": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:",
+    "vite": "^6.3.5",
     "wait-on": "^8.0.3",
-    "wrangler": "catalog:",
-    "alchemy": "catalog:",
-    "dotenv": "catalog:",
-    "vite": "^6.3.5"
+    "wrangler": "catalog:"
   }
 }

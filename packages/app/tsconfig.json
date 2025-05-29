@@ -23,7 +23,6 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@root/*": ["./*"]
     },
     // Enable importing .json files
     "resolveJsonModule": true,

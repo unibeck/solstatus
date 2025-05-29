@@ -12,6 +12,18 @@ An uptime monitoring service that is easy and cheap to run at scale. Create endp
 
 TODO: expectations for cost
 
+## v2 TODO:
+- [x] fix useform ssr
+- [] Fix fonts
+- [x] implement bun workspaces/catalog
+- [] fix monorepo deps and types
+- [] remove all next/nextjs references
+- [] react compiler
+- [] move src/app/components back to src/components (pending https://discord.com/channels/679514959968993311/1374981422925746236)
+- [] app version
+- [] rpc type inference https://x.com/samgoodwin89/status/1928040299030343994
+- [] update CI
+
 ## Quick Deploy
 
 0) Fork the repo

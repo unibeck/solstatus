@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "exports": {
+    ".": "./src/alchemy.run.ts"
+  },
   "scripts": {
     "infra:up": "bun alchemy.run.ts",
     "infra:destroy": "bun alchemy.run.ts destroy",
