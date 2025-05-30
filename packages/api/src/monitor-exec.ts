@@ -14,7 +14,6 @@ import type {
   endpointMonitorsSelectSchema,
 } from "@solstatus/common/db"
 import { endpointSignature } from "@solstatus/common/utils"
-import { PRE_ID } from "@solstatus/common/utils"
 import { createEndpointMonitorDownAlert } from "@solstatus/common/utils"
 
 import type { monitorExecWorker } from "@solstatus/infra"

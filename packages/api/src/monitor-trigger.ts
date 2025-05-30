@@ -8,6 +8,9 @@ import { EndpointMonitorsTable } from "@/db/schema"
 import { MonitorTriggerNotInitializedError } from "@/lib/errors"
 import { endpointSignature } from "@/lib/formatters"
 
+import type { monitorTriggerWorker } from "@solstatus/infra"
+type MonitorTriggerEnv = typeof monitorTriggerWorker.Env
+
 // Define types for state and init payload
 type MonitorType = "endpoint" | "synthetic"
 type Runtime = "playwright-cf-latest" | "puppeteer-cf-latest"
@@ -31,7 +34,7 @@ export interface InitPayload {
 /**
  * Durable Object that triggers checks for both Endpoint Monitors and Synthetic Monitors.
  */
-export class MonitorTrigger extends DurableObject<CloudflareEnv> {
+export class MonitorTrigger extends DurableObject<MonitorTriggerEnv> {
   @diffable
   #state: MonitorState = {
     monitorId: null,
@@ -289,7 +292,7 @@ export class MonitorTrigger extends DurableObject<CloudflareEnv> {
   }
 }
 
-export default class MonitorTriggerRPC extends WorkerEntrypoint<CloudflareEnv> {
+export default class MonitorTriggerRPC extends WorkerEntrypoint<MonitorTriggerEnv> {
   async fetch(_request: Request) {
     //Use service or RPC binding to work with the Monitor Durable Object
     return new Response(
