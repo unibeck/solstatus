@@ -1,7 +1,6 @@
 import alchemy from "alchemy"
-import { D1Database, DurableObjectNamespace, KVNamespace, Website } from "alchemy/cloudflare"
-import { MonitorExec } from "@solstatus/api/src"
-// import { MonitorExec } from "@solstatus/api/src/monitor-exec.js"
+import { Worker, D1Database, DurableObjectNamespace, KVNamespace, Website } from "alchemy/cloudflare"
+import { MonitorExec, MonitorTriggerRPC } from "@solstatus/api"
 
 const APP_NAME = "solstatus"
 const stage = process.argv[3] || "dev"
@@ -16,11 +15,6 @@ const infra = await alchemy(APP_NAME, {
   password: process.env.SECRET_ALCHEMY_PASSPHRASE,
 })
 
-const monitorExecDO = new DurableObjectNamespace<MonitorExec>(`${RES_PREFIX}-monitor-exec`, {
-  className: "MonitorExec",
-  sqlite: true
-});
-
 const kv = await KVNamespace(`${RES_PREFIX}-app-sessions-storage`, {
   title: `${RES_PREFIX}-app-sessions-storage`,
   adopt: true,
@@ -34,6 +28,31 @@ const db = await D1Database(`${RES_PREFIX}-db`, {
   readReplication: {
     mode: "auto",
   },
+})
+
+export const monitorExecWorker = await Worker(`${RES_PREFIX}-monitor-exec`, {
+  name: `${RES_PREFIX}-monitor-exec`,
+  entrypoint: "",
+  // rpc: MonitorExec,
+  bindings:{
+    DB: db,
+    OPSGENIE_API_KEY: alchemy.secret(process.env.OPSGENIE_API_KEY),
+    APP_ENV: stage,
+  }
+})
+
+export const monitorTriggerWorker = await Worker(`${RES_PREFIX}-monitor-trigger`, {
+  name: `${RES_PREFIX}-monitor-trigger`,
+  entrypoint: "",
+  rpc: MonitorTriggerRPC,
+  bindings: {
+    DB: db,
+    MONITOR_EXEC: monitorExecWorker,
+    MONITOR_TRIGGER: new DurableObjectNamespace(`${RES_PREFIX}-monitor-trigger`, {
+      className: "MonitorTrigger",
+      sqlite: true
+    }),
+  }
 })
 
 export const app = await Website(`${RES_PREFIX}-app`, {
@@ -52,7 +71,7 @@ export const app = await Website(`${RES_PREFIX}-app`, {
     DB: db,
     SESSIONS_KV: kv,
     BETTER_AUTH_SECRET: alchemy.secret(process.env.BETTER_AUTH_SECRET),
-    MONITOR_EXEC: monitorExecDO,
+    MONITOR_EXEC: monitorExecWorker,
   },
 })
 console.log(`${RES_PREFIX}-app: ${app.url}`)

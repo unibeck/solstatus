@@ -12,12 +12,16 @@ import { EndpointMonitorsTable, UptimeChecksTable } from "@solstatus/common/db/s
 import type {
   endpointMonitorsPatchSchema,
   endpointMonitorsSelectSchema,
-} from "@solstatus/common/db/zod-schema"
-import { endpointSignature } from "@/lib/formatters"
-import { PRE_ID } from "@/lib/ids"
-import { createEndpointMonitorDownAlert } from "@/lib/opsgenie"
+} from "@solstatus/common/db"
+import { endpointSignature } from "@solstatus/common/utils"
+import { PRE_ID } from "@solstatus/common/utils"
+import { createEndpointMonitorDownAlert } from "@solstatus/common/utils"
 
-export default class MonitorExec extends WorkerEntrypoint<CloudflareEnv> {
+import type { monitorExecWorker } from "@solstatus/infra"
+type MonitorExecEnv = typeof monitorExecWorker.Env
+
+export default class MonitorExec extends WorkerEntrypoint<MonitorExecEnv> {
+// export default class MonitorExec extends WorkerEntrypoint {
   async fetch(_request: Request) {
     //Use service or RPC binding to work with the Monitor Durable Object
     return new Response(
@@ -43,44 +47,9 @@ export default class MonitorExec extends WorkerEntrypoint<CloudflareEnv> {
       console.error(
         `EndpointMonitor [${endpointMonitorId}] does not exist. Deleting Durable Object...`,
       )
-      await this.env.MONITOR_TRIGGER_RPC.deleteDo(endpointMonitorId)
+      //TODO: This causes a cyclic dependency, so we cannot delete the DO here.
+      // await this.env.MONITOR_TRIGGER_RPC.deleteDo(endpointMonitorId)
 
-      // TODO: Remove this migration logic after some time/versions have passed
-      if (endpointMonitorId.includes("webs_")) {
-        console.log(
-          `[${endpointMonitorId}] is an obsolete website monitor id and needs to be updated . Will attempt to migrate to a new DO...`,
-        )
-
-        const newEndpointMonitorId = endpointMonitorId.replace(
-          "webs_",
-          PRE_ID.endpointMonitor,
-        )
-        const newEndpointMonitor = await db
-          .select()
-          .from(EndpointMonitorsTable)
-          .where(eq(EndpointMonitorsTable.id, newEndpointMonitorId))
-          .then(takeFirstOrNull)
-
-        if (!newEndpointMonitor) {
-          console.error(
-            `EndpointMonitor [${newEndpointMonitorId}] does not exist. Migration failed.`,
-          )
-          return
-        }
-
-        console.log(
-          `Found updated EndpointMonitor ${endpointSignature(newEndpointMonitor)} for obsolete [${endpointMonitorId}]. Initializing new DO...`,
-        )
-        await this.env.MONITOR_TRIGGER_RPC.init({
-          monitorId: newEndpointMonitor.id,
-          monitorType: "endpoint",
-          checkInterval: newEndpointMonitor.checkInterval,
-        })
-
-        console.log(
-          `Successfully migrated [${endpointMonitorId}] to [${newEndpointMonitor.id}]`,
-        )
-      }
       return
     }
 

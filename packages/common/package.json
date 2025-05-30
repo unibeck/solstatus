@@ -4,8 +4,7 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./*": "./src/*/index.ts",
-    "./*/*": "./src/*/*"
+    "./*": "./src/*/index.ts"
   },
   "scripts": {
     "format": "biome check . --write",

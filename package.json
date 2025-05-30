@@ -42,7 +42,7 @@
       "@types/react": "^19",
       "@types/react-dom": "^19",
       "drizzle-kit": "^0.31.1",
-      "alchemy": "^0.20.0",
+      "alchemy": "^0.21.0",
       "dotenv": "^16.5.0"
     }
   }

@@ -13,6 +13,9 @@ An uptime monitoring service that is easy and cheap to run at scale. Create endp
 TODO: expectations for cost
 
 ## v2 TODO:
+- Release notes:
+    - Imperative to update to latest v1.x version before upgrading to v2
+    - Migration code for a breaking change from v1.5 to v1.6 has been removed 
 - [x] fix useform ssr
 - [] Fix fonts
 - [x] implement bun workspaces/catalog
@@ -24,6 +27,9 @@ TODO: expectations for cost
 - [] app version
 - [] rpc type inference https://x.com/samgoodwin89/status/1928040299030343994
 - [] update CI
+
+## v2.1 TODO:
+- [] Worker for Platforms to create a new worker per synthetic monitor (https://x.com/samgoodwin89/status/1926034269543035252)
 
 ## Quick Deploy
 

@@ -289,7 +289,6 @@ export class MonitorTrigger extends DurableObject<CloudflareEnv> {
   }
 }
 
-// --- RPC Methods --- Needs updates to signatures ---
 export default class MonitorTriggerRPC extends WorkerEntrypoint<CloudflareEnv> {
   async fetch(_request: Request) {
     //Use service or RPC binding to work with the Monitor Durable Object
