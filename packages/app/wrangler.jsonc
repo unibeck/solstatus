@@ -1,0 +1,23 @@
+// Initial temporary wrangler.json
+// Running `bun infra:up will update and overwrite this file. Remove this pending https://github.com/redwoodjs/sdk/issues/343
+{
+  "name": "fullstack-cf-example-site",
+  "main": "src/worker.tsx",
+  "compatibility_date": "2025-04-20",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": { "directory": "dist/client", "binding": "ASSETS" },
+  "kv_namespaces": [
+    {
+      "binding": "SESSIONS_KV",
+      "id": "__"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "migrations_dir": "src/db/migrations",
+      "database_name": "__",
+      "database_id": "__"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "name": "@solstatus/api",
+  "version": "1.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./monitor-exec": "./src/monitor-exec.ts",
+    "./monitor-trigger": "./src/monitor-trigger.ts"
+  },
+  "scripts": {
+    "format": "biome check . --write",
+    "types": "tsc"
+  },
+  "dependencies": {
+    "@solstatus/common": "workspace:*",
+    "@solstatus/infra": "workspace:*",
+    "drizzle-orm": "^0.43.1",
+    "drizzle-seed": "^0.3.1",
+    "drizzle-zod": "0.7.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@cloudflare/workers-types": "catalog:",
+    "@types/node": "catalog:",
+    "drizzle-kit": "catalog:",
+    "typescript": "catalog:"
+  }
+}
