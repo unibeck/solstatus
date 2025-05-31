@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./monitor-exec": "./src/monitor-exec.ts",
+    "./monitor-trigger": "./src/monitor-trigger.ts"
   },
   "scripts": {
     "format": "biome check . --write",

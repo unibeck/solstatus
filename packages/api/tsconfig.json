@@ -17,12 +17,10 @@
     "types": [
       "@types/node",
       "@cloudflare/workers-types",
-      "./types/env.d.ts",
     ],
     "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"],
-      "@types/*": ["./types/*"],
     },
     // Enable importing .json files
     "resolveJsonModule": true,

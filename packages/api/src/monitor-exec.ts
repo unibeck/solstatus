@@ -15,12 +15,10 @@ import type {
 } from "@solstatus/common/db"
 import { endpointSignature } from "@solstatus/common/utils"
 import { createEndpointMonitorDownAlert } from "@solstatus/common/utils"
-
-import type { monitorExecWorker } from "@solstatus/infra"
-type MonitorExecEnv = typeof monitorExecWorker.Env
+import type { MonitorExecEnv } from "types/env"
 
 export default class MonitorExec extends WorkerEntrypoint {
-    declare readonly env: MonitorExecEnv
+  declare readonly env: MonitorExecEnv
 
   // export default class MonitorExec extends WorkerEntrypoint {
   async fetch(_request: Request) {

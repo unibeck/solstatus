@@ -32,7 +32,7 @@ const db = await D1Database(`${RES_PREFIX}-db`, {
 
 export const monitorExecWorker = await Worker(`${RES_PREFIX}-monitor-exec`, {
   name: `${RES_PREFIX}-monitor-exec`,
-  entrypoint: "",
+  entrypoint: require.resolve("@solstatus/api/monitor-exec"),
   rpc: type<MonitorExec>,
   bindings:{
     DB: db,
@@ -43,8 +43,7 @@ export const monitorExecWorker = await Worker(`${RES_PREFIX}-monitor-exec`, {
 
 export const monitorTriggerWorker = await Worker(`${RES_PREFIX}-monitor-trigger`, {
   name: `${RES_PREFIX}-monitor-trigger`,
-  // entrypoint: "@solstatus/api/monitor-trigger",
-  entrypoint: "../api/monitor-trigger",
+  entrypoint: require.resolve("@solstatus/api/monitor-trigger"),
   rpc: type<MonitorTriggerRPC>,
   bindings: {
     DB: db,

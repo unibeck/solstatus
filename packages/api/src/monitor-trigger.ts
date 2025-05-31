@@ -7,9 +7,7 @@ import { takeUniqueOrThrow, useDrizzle } from "@solstatus/common/db"
 import { EndpointMonitorsTable } from "@solstatus/common/db/schema"
 import { MonitorTriggerNotInitializedError } from "@solstatus/common/utils"
 import { endpointSignature } from "@solstatus/common/utils"
-
-import type { monitorTriggerWorker } from "@solstatus/infra"
-type MonitorTriggerEnv = typeof monitorTriggerWorker.Env
+import type { MonitorTriggerEnv } from "types/env"
 
 // Define types for state and init payload
 type MonitorType = "endpoint" | "synthetic"
@@ -296,7 +294,7 @@ export class MonitorTrigger extends DurableObject {
 
 export default class MonitorTriggerRPC extends WorkerEntrypoint {
   declare readonly env: MonitorTriggerEnv
-  
+
   async fetch(_request: Request) {
     //Use service or RPC binding to work with the Monitor Durable Object
     return new Response(
