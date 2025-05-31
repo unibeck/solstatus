@@ -1,9 +1,11 @@
-import type { app } from "@solstatus/infra"
+import type { app, monitorExecWorker, monitorTriggerWorker } from "@solstatus/infra"
 
-export type WorkerEnv = typeof app.Env
+export type MonitorExecEnv = typeof monitorExecWorker.Env
+export type MonitorTriggerEnv = typeof monitorTriggerWorker.Env
+export type AppEnv = typeof app.Env
 
 declare module "cloudflare:workers" {
   namespace Cloudflare {
-    export interface Env extends WorkerEnv {}
+    export interface Env extends MonitorExecEnv, MonitorTriggerEnv, AppEnv {}
   }
 }

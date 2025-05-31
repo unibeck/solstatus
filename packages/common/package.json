@@ -8,9 +8,10 @@
   },
   "scripts": {
     "format": "biome check . --write",
-    "types": "tsc"
+    "types": "tsc --build --emitDeclarationOnly"
   },
   "dependencies": {
+    "@solstatus/infra": "workspace:*",
     "drizzle-orm": "^0.43.1",
     "drizzle-seed": "^0.3.1",
     "drizzle-zod": "0.7.1"
