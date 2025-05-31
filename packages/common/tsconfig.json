@@ -1,7 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "include": [
-    "./src/**/*"
+    "./src/**/*.ts",
+    "./src/**/*.tsx",
   ],
   "exclude": [
     "node_modules"
@@ -18,5 +19,8 @@
     "paths": {
       "@/*": ["./src/*"],
     },
+
+    "outDir": "../../dist/packages/common",
+    "tsBuildInfoFile": "../../dist/packages/common/tsconfig.tsbuildinfo"
   },
 }

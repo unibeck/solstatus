@@ -8,7 +8,7 @@
   },
   "scripts": {
     "format": "biome check . --write",
-    "types": "tsc --build --emitDeclarationOnly"
+    "types": "tsc"
   },
   "dependencies": {
     "@solstatus/infra": "workspace:*",

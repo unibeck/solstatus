@@ -21,6 +21,9 @@
     // Enable importing .json files
     "resolveJsonModule": true,
 
+    // Specify what JSX code is generated.
+    "jsx": "react-jsx",
+
     // Enable error reporting in type-checked JavaScript files.
     "checkJs": false,
 

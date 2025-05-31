@@ -25,7 +25,8 @@
     "deploy:api": "pnpm deploy:api-exec && pnpm deploy:api-trigger",
     "deploy:api-exec": "wrangler deploy --cwd api --env production -c wrangler-monitor-exec.jsonc",
     "deploy:api-trigger": "wrangler deploy --cwd api --env production -c wrangler-monitor-trigger.jsonc",
-    "format": "biome check . --write"
+    "format": "biome check . --write",
+    "clean": "rm -rf ./node_modules/ ./packages/*/node_modules"
   },
   "workspaces": {
     "packages": ["packages/*"],
