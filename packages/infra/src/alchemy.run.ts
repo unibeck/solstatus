@@ -1,6 +1,6 @@
-import alchemy from "alchemy"
+import alchemy, { type } from "alchemy"
 import { Worker, D1Database, DurableObjectNamespace, KVNamespace, Website } from "alchemy/cloudflare"
-import { MonitorExec, MonitorTrigger, MonitorTriggerRPC } from "@solstatus/api"
+import type { MonitorExec, MonitorTrigger, MonitorTriggerRPC } from "@solstatus/api"
 
 const APP_NAME = "solstatus"
 const stage = process.argv[3] || "dev"
@@ -33,7 +33,7 @@ const db = await D1Database(`${RES_PREFIX}-db`, {
 export const monitorExecWorker = await Worker(`${RES_PREFIX}-monitor-exec`, {
   name: `${RES_PREFIX}-monitor-exec`,
   entrypoint: "",
-  rpc: MonitorExec,
+  rpc: type<MonitorExec>,
   bindings:{
     DB: db,
     OPSGENIE_API_KEY: alchemy.secret(process.env.OPSGENIE_API_KEY),
@@ -43,8 +43,9 @@ export const monitorExecWorker = await Worker(`${RES_PREFIX}-monitor-exec`, {
 
 export const monitorTriggerWorker = await Worker(`${RES_PREFIX}-monitor-trigger`, {
   name: `${RES_PREFIX}-monitor-trigger`,
-  entrypoint: "",
-  rpc: MonitorTriggerRPC,
+  // entrypoint: "@solstatus/api/monitor-trigger",
+  entrypoint: "../api/monitor-trigger",
+  rpc: type<MonitorTriggerRPC>,
   bindings: {
     DB: db,
     MONITOR_EXEC: monitorExecWorker,

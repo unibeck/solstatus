@@ -34,7 +34,9 @@ export interface InitPayload {
 /**
  * Durable Object that triggers checks for both Endpoint Monitors and Synthetic Monitors.
  */
-export class MonitorTrigger extends DurableObject<MonitorTriggerEnv> {
+export class MonitorTrigger extends DurableObject {
+  declare readonly env: MonitorTriggerEnv
+
   @diffable
   #state: MonitorState = {
     monitorId: null,
@@ -292,7 +294,9 @@ export class MonitorTrigger extends DurableObject<MonitorTriggerEnv> {
   }
 }
 
-export default class MonitorTriggerRPC extends WorkerEntrypoint<MonitorTriggerEnv> {
+export default class MonitorTriggerRPC extends WorkerEntrypoint {
+  declare readonly env: MonitorTriggerEnv
+  
   async fetch(_request: Request) {
     //Use service or RPC binding to work with the Monitor Durable Object
     return new Response(
