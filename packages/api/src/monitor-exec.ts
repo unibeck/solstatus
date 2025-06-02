@@ -15,7 +15,7 @@ import type {
 } from "@solstatus/common/db"
 import { endpointSignature } from "@solstatus/common/utils"
 import { createEndpointMonitorDownAlert } from "@solstatus/common/utils"
-import type { MonitorExecEnv } from "types/env"
+import type { MonitorExecEnv } from "@/types/env"
 
 export default class MonitorExec extends WorkerEntrypoint {
   declare readonly env: MonitorExecEnv

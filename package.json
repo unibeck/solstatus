@@ -1,6 +1,6 @@
 {
   "name": "@solstatus/solstatus",
-  "version": "1.7.1",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
   "packageManager": "bun@1.2.15",
@@ -26,7 +26,8 @@
     "deploy:api-exec": "wrangler deploy --cwd api --env production -c wrangler-monitor-exec.jsonc",
     "deploy:api-trigger": "wrangler deploy --cwd api --env production -c wrangler-monitor-trigger.jsonc",
     "format": "biome check . --write",
-    "clean": "rm -rf ./node_modules/ ./packages/*/node_modules"
+    "clean": "rm -rf ./node_modules/ ./packages/*/node_modules ./dist/ ./packages/*/dist",
+    "types": "tsc --build --emitDeclarationOnly"
   },
   "workspaces": {
     "packages": ["packages/*"],
