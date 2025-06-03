@@ -27,6 +27,7 @@ TODO: expectations for cost
 - [] app version
 - [] rpc type inference https://x.com/samgoodwin89/status/1928040299030343994
 - [] update CI
+- [] circular dependency (api -> infra -> api) via tsconfig.json references. Is this an issue, running tsc seems fine?
 
 ## v2.1 TODO:
 - [] Worker for Platforms to create a new worker per synthetic monitor (https://x.com/samgoodwin89/status/1926034269543035252)

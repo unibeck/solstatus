@@ -16,10 +16,8 @@
     "paths": {
       "#/*": ["./src/*"]
     },
-    "outDir": "../../dist/packages/infra",
-    "tsBuildInfoFile": "../../dist/packages/infra/tsconfig.tsbuildinfo",
-
-    "noEmit": false
+    "outDir": "./dist",
+    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
   },
   "references": [
     { "path": "../api" }
