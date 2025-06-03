@@ -12,10 +12,10 @@
       "@types/node",
       "@cloudflare/workers-types",
     ],
-    "baseUrl": "./src",
+    "baseUrl": "./",
     "rootDir": "./src",
     "paths": {
-      "@/*": ["./*"]
+      "#/*": ["./src/*"]
     },
     "noEmit": false,
     "outDir": "../../dist/packages/api",

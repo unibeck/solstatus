@@ -7,7 +7,7 @@ import { takeUniqueOrThrow, useDrizzle } from "@solstatus/common/db"
 import { EndpointMonitorsTable } from "@solstatus/common/db/schema"
 import { MonitorTriggerNotInitializedError } from "@solstatus/common/utils"
 import { endpointSignature } from "@solstatus/common/utils"
-import type { MonitorTriggerEnv } from "@/types/env"
+import type { MonitorTriggerEnv } from "#/types/env"
 
 // Define types for state and init payload
 type MonitorType = "endpoint" | "synthetic"

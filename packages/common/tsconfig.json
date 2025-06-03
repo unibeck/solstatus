@@ -13,10 +13,10 @@
       "@cloudflare/workers-types",
       "./types/env.d.ts"
     ],
-    "baseUrl": "./src",
+    "baseUrl": "./",
     "rootDir": "./src",
     "paths": {
-      "@/*": ["./*"]
+      "#/*": ["./src/*"]
     },
     "noEmit": false,
     "outDir": "../../dist/packages/common",
