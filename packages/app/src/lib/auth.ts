@@ -1,10 +1,10 @@
 import { env } from "cloudflare:workers"
+import { db } from "@solstatus/common/db"
+import { schema } from "@solstatus/common/db/schema"
 import { betterAuth } from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle"
 import { emailOTP } from "better-auth/plugins"
-import { db } from "@/db/db"
-import { schema } from "@/db/schema"
-import { secondaryStorage } from "@/db/secondaryStorage"
+import { secondaryStorage } from "#/db/secondaryStorage"
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {

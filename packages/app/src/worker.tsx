@@ -1,15 +1,15 @@
 import { prefix, render, route } from "rwsdk/router"
 import { defineApp } from "rwsdk/worker"
 
-import { Document } from "@/app/document/Document"
-import { setCommonHeaders } from "@/app/document/headers"
+import { Document } from "#/app/document/Document"
+import { setCommonHeaders } from "#/app/document/headers"
 
-import { Home } from "@/app/pages/Home"
-import { DashboardPage } from "@/app/pages/dashboard/DashboardPage"
-import { userRoutes } from "@/app/pages/user/routes"
-import type { User } from "@/db/schema/auth-schema"
-import { auth } from "@/lib/auth"
-import { link } from "@/lib/links"
+import { Home } from "#/app/pages/Home"
+import DashboardPage from "#/app/pages/dashboard/DashboardPage"
+import { userRoutes } from "#/app/pages/user/routes"
+import type { User } from "@solstatus/common/db/schema"
+import { auth } from "#/lib/auth"
+import { link } from "#/lib/links"
 
 export type AppContext = {
   user: User | undefined

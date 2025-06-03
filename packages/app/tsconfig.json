@@ -3,35 +3,31 @@
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx",
-    "./types/**/*.d.ts" // Including custom type definition files
+    "./types/**/*.d.ts"
   ],
   "exclude": [
     "node_modules",
-    "dist", // Standard practice to exclude build output
-    "public" // If it contains static assets not part of TS compilation
+    "dist",
+    "public"
   ],
   "compilerOptions": {
-    // Inherited: composite, declaration, declarationMap, module, moduleResolution, target, lib, strict, etc.
-
-    // Overrides and additions for app package:
-    "noEmit": false, // Must not disable emit for referenced projects
     "types": [
+      "@types/node",
       "@cloudflare/workers-types",
       "./types/env.d.ts",
       "./types/rw.d.ts",
       "./types/vite.d.ts"
     ],
-    "baseUrl": "./src",
+    "baseUrl": "./",
     "rootDir": "./src",
     "paths": {
-      "@/*": ["./*"]
+      "#/*": ["./src/*"]
     },
-    "outDir": "../../dist/packages/app",
-    "tsBuildInfoFile": "../../dist/packages/app/tsconfig.tsbuildinfo",
-    "jsx": "react-jsx" // Keep if using React JSX
+    "outDir": "./dist",
+    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
+    "jsx": "react-jsx"
   },
   "references": [
-    { "path": "../api" },
     { "path": "../infra" },
     { "path": "../common" }
   ]

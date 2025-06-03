@@ -81,7 +81,7 @@
   "files": {
     "includes": [
       "**",
-      "!**/packages/app/src/registry",
+      "!packages/app/src/registry/**",
       "!**/dist",
       "!**/tsconfig.json",
       "!**/node_modules/**"

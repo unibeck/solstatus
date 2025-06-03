@@ -5,25 +5,25 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { PanelLeftIcon } from "lucide-react"
 import * as React from "react"
 
-import { useIsMobile } from "@/registry/new-york-v4/hooks/use-mobile"
-import { cn } from "@/registry/new-york-v4/lib/utils"
-import { Button } from "@/registry/new-york-v4/ui/button"
-import { Input } from "@/registry/new-york-v4/ui/input"
-import { Separator } from "@/registry/new-york-v4/ui/separator"
+import { useIsMobile } from "#/registry/new-york-v4/hooks/use-mobile"
+import { cn } from "#/registry/new-york-v4/lib/utils"
+import { Button } from "#/registry/new-york-v4/ui/button"
+import { Input } from "#/registry/new-york-v4/ui/input"
+import { Separator } from "#/registry/new-york-v4/ui/separator"
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@/registry/new-york-v4/ui/sheet"
-import { Skeleton } from "@/registry/new-york-v4/ui/skeleton"
+} from "#/registry/new-york-v4/ui/sheet"
+import { Skeleton } from "#/registry/new-york-v4/ui/skeleton"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/registry/new-york-v4/ui/tooltip"
+} from "#/registry/new-york-v4/ui/tooltip"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
