@@ -2,25 +2,27 @@
   "extends": "../../tsconfig.base.json",
   "include": [
     "./src/**/*.ts",
-    "./src/**/*.tsx",
+    "./src/**/*.tsx"
   ],
   "exclude": [
     "node_modules"
   ],
   "compilerOptions": {
-    // Specify type package names to be included without being referenced in a source file.
     "types": [
       "@types/node",
       "@cloudflare/workers-types",
-      "./types/env.d.ts",
+      "./types/env.d.ts"
     ],
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "rootDir": "./src",
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["./*"]
     },
-
+    "noEmit": false,
     "outDir": "../../dist/packages/common",
     "tsBuildInfoFile": "../../dist/packages/common/tsconfig.tsbuildinfo"
   },
+  "references": [
+    { "path": "../infra" }
+  ]
 }

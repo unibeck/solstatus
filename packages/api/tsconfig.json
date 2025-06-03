@@ -8,23 +8,21 @@
     "node_modules"
   ],
   "compilerOptions": {
-    // Specify type package names to be included without being referenced in a source file.
     "types": [
       "@types/node",
       "@cloudflare/workers-types",
     ],
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "rootDir": "./src",
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["./*"]
     },
-
+    "noEmit": false,
     "outDir": "../../dist/packages/api",
     "tsBuildInfoFile": "../../dist/packages/api/tsconfig.tsbuildinfo"
   },
   "references": [
     { "path": "../infra" },
-    { "path": "../api" },
-    { "path": "../app" },
+    { "path": "../common" }
   ]
 }
