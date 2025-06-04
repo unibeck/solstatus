@@ -24,11 +24,7 @@ export async function createMonitorExecWorker(resPrefix: string, db: DBResource)
 }
 export type MonitorExecWorkerResource = Awaited<ReturnType<typeof createMonitorExecWorker>>
 
-export async function createMonitorTriggerWorker(resPrefix: string, db: DBResource, monitorExecWorker: MonitorExecWorkerResource): Promise<Worker<{
-  DB: DBResource
-  MONITOR_EXEC: MonitorExecWorkerResource
-  MONITOR_TRIGGER: DurableObjectNamespace<MonitorTrigger>
-}>> {
+export async function createMonitorTriggerWorker(resPrefix: string, db: DBResource, monitorExecWorker: MonitorExecWorkerResource) {
   const workerName = `${resPrefix}-monitor-trigger`
   return await Worker(workerName, {
     name: workerName,

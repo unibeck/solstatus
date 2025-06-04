@@ -1,4 +1,5 @@
-import { db } from "@solstatus/common/db"
+import { env } from "cloudflare:workers"
+import { useDrizzle } from "@solstatus/common/db"
 import { UserTable } from "@solstatus/common/db/schema"
 import { LogoutButton } from "#/app/components/LogoutButton"
 import {
@@ -10,6 +11,7 @@ import {
 import type { AppContext } from "#/worker"
 
 const Home = async ({ ctx }: { ctx: AppContext }) => {
+  const db = useDrizzle(env.DB)
   const allUsers = await db.select().from(UserTable).all()
   const { authUrl } = ctx
 

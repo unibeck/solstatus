@@ -19,7 +19,7 @@
     "types": "tsc"
   },
   "dependencies": {
-    "@solstatus/infra": "workspace:*",
+    "@solstatus/api": "workspace:*",
     "@solstatus/common": "workspace:*",
     "@hookform/resolvers": "^5.0.1",
     "@radix-ui/react-accessible-icon": "^1.1.7",

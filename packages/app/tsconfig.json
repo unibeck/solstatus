@@ -3,7 +3,8 @@
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx",
-    "./types/**/*.d.ts"
+    "./types/**/*.d.ts",
+    "./infra/**/*.ts"
   ],
   "exclude": [
     "node_modules",
@@ -19,16 +20,17 @@
       "./types/vite.d.ts"
     ],
     "baseUrl": "./",
-    "rootDir": "./src",
+    "rootDir": "./",
     "paths": {
-      "#/*": ["./src/*"]
+      "#/*": ["./src/*"],
+      "#/infra": ["./infra/*"]
     },
     "outDir": "./dist",
     "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
     "jsx": "react-jsx"
   },
   "references": [
-    { "path": "../infra" },
-    { "path": "../common" }
+    { "path": "../common" },
+    { "path": "../api" }
   ]
 }

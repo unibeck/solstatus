@@ -28,7 +28,8 @@
     "format": "biome check . --write",
     "clean": "rm -rf ./node_modules/ ./packages/*/node_modules/ ./dist/ ./packages/*/dist/",
     "clean:builds": "rm -rf ./dist/ ./packages/*/dist/",
-    "types": "tsc --build --emitDeclarationOnly"
+    "types": "tsc --build --emitDeclarationOnly",
+    "build:types": "bun run --filter '@solstatus/common' types && bun run --filter '@solstatus/api' types"
   },
   "workspaces": {
     "packages": ["packages/*"],
