@@ -1,6 +1,7 @@
-import alchemy, { type } from "alchemy"
-import { Worker, D1Database, DurableObjectNamespace, KVNamespace, Website } from "alchemy/cloudflare"
-import type { MonitorExec, MonitorTrigger, MonitorTriggerRPC } from "@solstatus/api"
+import { monitorExecWorker, monitorTriggerWorker } from "@solstatus/api/infra"
+import { db, kv } from "@solstatus/common/infra"
+import alchemy from "alchemy"
+import { Website } from "alchemy/cloudflare"
 
 const APP_NAME = "solstatus"
 const stage = process.argv[3] || "dev"
@@ -15,45 +16,7 @@ const infra = await alchemy(APP_NAME, {
   password: process.env.SECRET_ALCHEMY_PASSPHRASE,
 })
 
-const kv = await KVNamespace(`${RES_PREFIX}-app-sessions-storage`, {
-  title: `${RES_PREFIX}-app-sessions-storage`,
-  adopt: true,
-})
-
-const db = await D1Database(`${RES_PREFIX}-db`, {
-  name: `${RES_PREFIX}-db`,
-  adopt: true,
-  migrationsDir: "src/db/migrations",
-  primaryLocationHint: "enam",
-  readReplication: {
-    mode: "auto",
-  },
-})
-
-export const monitorExecWorker = await Worker(`${RES_PREFIX}-monitor-exec`, {
-  name: `${RES_PREFIX}-monitor-exec`,
-  entrypoint: require.resolve("@solstatus/api/monitor-exec"),
-  rpc: type<MonitorExec>,
-  bindings:{
-    DB: db,
-    OPSGENIE_API_KEY: alchemy.secret(process.env.OPSGENIE_API_KEY),
-    APP_ENV: stage,
-  }
-})
-
-export const monitorTriggerWorker = await Worker(`${RES_PREFIX}-monitor-trigger`, {
-  name: `${RES_PREFIX}-monitor-trigger`,
-  entrypoint: require.resolve("@solstatus/api/monitor-trigger"),
-  rpc: type<MonitorTriggerRPC>,
-  bindings: {
-    DB: db,
-    MONITOR_EXEC: monitorExecWorker,
-    MONITOR_TRIGGER: new DurableObjectNamespace<MonitorTrigger>(`${RES_PREFIX}-monitor-trigger`, {
-      className: "MonitorTrigger",
-      sqlite: true
-    }),
-  }
-})
+//TODO: import db and kv, then run them
 
 export const app = await Website(`${RES_PREFIX}-app`, {
   name: `${RES_PREFIX}-app`,

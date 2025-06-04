@@ -3,6 +3,7 @@
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx",
+    "./infra/**/*.ts",
   ],
   "exclude": [
     "node_modules",
@@ -12,17 +13,18 @@
     "types": [
       "@types/node",
       "@cloudflare/workers-types",
+      "./infra/types/env.d.ts"
     ],
     "baseUrl": "./",
-    "rootDir": "./src",
+    "rootDir": "./",
     "paths": {
-      "#/*": ["./src/*"]
+      "#/*": ["./src/*"],
+      "#/infra/*": ["./infra/*"]
     },
     "outDir": "./dist",
     "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo"
   },
   "references": [
-    { "path": "../infra" },
     { "path": "../common" }
   ]
 }

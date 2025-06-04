@@ -17,6 +17,8 @@
   },
   "dependencies": {
     "@solstatus/api": "workspace:*",
+    "@solstatus/app": "workspace:*",
+    "@solstatus/common": "workspace:*",
     "alchemy": "catalog:"
   },
   "devDependencies": {

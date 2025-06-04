@@ -21,6 +21,8 @@
     "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
   },
   "references": [
-    { "path": "../api" }
+    { "path": "../api" },
+    { "path": "../app" },
+    { "path": "../common" }
   ]
 }
