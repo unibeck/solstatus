@@ -29,7 +29,7 @@ TODO: expectations for cost
 - [] app version
 - [] rpc type inference https://x.com/samgoodwin89/status/1928040299030343994
 - [] update CI
-- [] circular dependency (api -> infra -> api) via tsconfig.json references
+- [x] circular dependency (api -> infra -> api) via tsconfig.json references
     - accomplish this by moving api specific infra to the api package, common infra to the common package, and app specific infra to the app package. 
     - The infra package will then be a package that combines all of the infra code together(?)
 

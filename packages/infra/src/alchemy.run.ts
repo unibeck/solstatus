@@ -16,15 +16,15 @@ const infra = await alchemy(APP_NAME, {
   password: process.env.SECRET_ALCHEMY_PASSPHRASE,
 })
 
-// Create common resources
+// Shared resources
 const sessionsStorageKV = await createSessionsStorageKV(resPrefix)
 const db = await createDB(resPrefix)
 
-// Create API resources
+// API resources
 export const monitorExecWorker = await createMonitorExecWorker(resPrefix, db)
 export const monitorTriggerWorker = await createMonitorTriggerWorker(resPrefix, db, monitorExecWorker)
 
-// Create App resources
+// App resources
 export const app = await createApp(resPrefix, db, sessionsStorageKV, monitorExecWorker)
 
 await infra.finalize()
