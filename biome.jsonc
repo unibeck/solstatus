@@ -82,6 +82,7 @@
     "includes": [
       "**",
       "!packages/app/src/registry/**",
+      "!packages/infra/src/alchemy.run.ts",
       "!**/dist",
       "!**/tsconfig.json",
       "!**/node_modules/**"
