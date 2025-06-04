@@ -20,9 +20,9 @@ import {
   YAxis,
 } from "recharts"
 import type { z } from "zod"
-import type { uptimeChecksSelectSchema } from "@/db/zod-schema"
-import { msToHumanReadable } from "@/lib/formatters"
-import type { TimeRange } from "@/types/endpointMonitor"
+import type { uptimeChecksSelectSchema } from "@solstatus/common/db"
+import { msToHumanReadable } from "@solstatus/common/utils"
+import type { TimeRange } from "#/types/endpointMonitor"
 
 const getTimeBucketStart = (timestampMs: number, range: TimeRange): number => {
   const date = new Date(timestampMs)

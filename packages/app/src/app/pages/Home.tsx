@@ -1,13 +1,13 @@
-import { LogoutButton } from "@/app/components/LogoutButton"
-import { db } from "@/db/db"
-import { UserTable } from "@/db/schema"
+import { db } from "@solstatus/common/db"
+import { UserTable } from "@solstatus/common/db/schema"
+import { LogoutButton } from "#/app/components/LogoutButton"
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/registry/new-york-v4/ui/card"
-import type { AppContext } from "@/worker"
+} from "#/registry/new-york-v4/ui/card"
+import type { AppContext } from "#/worker"
 
 const Home = async ({ ctx }: { ctx: AppContext }) => {
   const allUsers = await db.select().from(UserTable).all()

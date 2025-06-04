@@ -2,14 +2,14 @@
 
 import { useEffect, useMemo, useState } from "react"
 import { Line, LineChart } from "recharts"
-import { Badge } from "@/registry/new-york-v4/ui/badge"
+import { Badge } from "#/registry/new-york-v4/ui/badge"
 import {
   type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/registry/new-york-v4/ui/chart"
-import { Skeleton } from "@/registry/new-york-v4/ui/skeleton"
+} from "#/registry/new-york-v4/ui/chart"
+import { Skeleton } from "#/registry/new-york-v4/ui/skeleton"
 
 interface LatencyLimitChartProps {
   endpointMonitorId: string

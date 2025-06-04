@@ -1,8 +1,8 @@
 "use client"
 
-import { useHeaderContext } from "@/context/header-context"
-import { Separator } from "@/registry/new-york-v4/ui/separator"
-import { SidebarTrigger } from "@/registry/new-york-v4/ui/sidebar"
+import { useHeaderContext } from "#/context/header-context"
+import { Separator } from "#/registry/new-york-v4/ui/separator"
+import { SidebarTrigger } from "#/registry/new-york-v4/ui/sidebar"
 
 export function SiteHeader() {
   const { headerLeftContent, headerRightContent } = useHeaderContext()

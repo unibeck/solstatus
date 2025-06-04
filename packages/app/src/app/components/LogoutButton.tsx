@@ -1,9 +1,9 @@
 "use client"
 
 import { useTransition } from "react"
-import { setupAuthClient } from "@/lib/auth-client"
-import { link } from "@/lib/links"
-import { Button } from "@/registry/new-york-v4/ui/button"
+import { setupAuthClient } from "#/lib/auth-client"
+import { link } from "#/lib/links"
+import { Button } from "#/registry/new-york-v4/ui/button"
 
 type LogoutButtonProps = {
   className?: string

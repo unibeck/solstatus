@@ -1,17 +1,17 @@
 "use client"
 
+import type { endpointMonitorsSelectSchema } from "@solstatus/common/db"
+import { secsToHumanReadable } from "@solstatus/common/utils"
 import {
   IconBellExclamation,
   IconLayoutSidebarRightExpand,
 } from "@tabler/icons-react"
 import type { ColumnDef } from "@tanstack/react-table"
 import type { z } from "zod"
-import { LatencyLimitChart } from "@/app/components/latency-limit-chart"
-import type { endpointMonitorsSelectSchema } from "@/db/zod-schema"
-import { secsToHumanReadable } from "@/lib/formatters"
-import { Badge } from "@/registry/new-york-v4/ui/badge"
-import { Button } from "@/registry/new-york-v4/ui/button"
-import { Checkbox } from "@/registry/new-york-v4/ui/checkbox"
+import { LatencyLimitChart } from "#/app/components/latency-limit-chart"
+import { Badge } from "#/registry/new-york-v4/ui/badge"
+import { Button } from "#/registry/new-york-v4/ui/button"
+import { Checkbox } from "#/registry/new-york-v4/ui/checkbox"
 import { DataTableColumnHeader } from "./column-header"
 import { EndpointMonitorDetailDrawer } from "./endpoint-monitor-detail-drawer"
 

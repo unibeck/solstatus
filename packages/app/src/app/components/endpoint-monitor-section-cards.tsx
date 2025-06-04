@@ -1,5 +1,7 @@
 "use client"
 
+import type { endpointMonitorsSelectSchema } from "@solstatus/common/db"
+import { msToHumanReadable } from "@solstatus/common/utils"
 import {
   IconAlertTriangle,
   IconBellCheck,
@@ -12,9 +14,7 @@ import {
   IconTrendingUp,
 } from "@tabler/icons-react"
 import type { z } from "zod"
-import type { endpointMonitorsSelectSchema } from "@/db/zod-schema"
-import { msToHumanReadable } from "@/lib/formatters"
-import { Badge } from "@/registry/new-york-v4/ui/badge"
+import { Badge } from "#/registry/new-york-v4/ui/badge"
 import {
   Card,
   CardAction,
@@ -22,7 +22,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/registry/new-york-v4/ui/card"
+} from "#/registry/new-york-v4/ui/card"
 
 interface WebsiteSectionCardsProps {
   endpointMonitor: z.infer<typeof endpointMonitorsSelectSchema>

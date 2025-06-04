@@ -1,19 +1,19 @@
-import { siteConfig } from "@/app/site"
-import { AppSidebar } from "@/app/components/app-sidebar"
-import { SiteHeader } from "@/app/components/site-header"
-import { ThemeProvider } from "@/app/components/theme-provider"
+import { AppSidebar } from "#/app/components/app-sidebar"
+import { SiteHeader } from "#/app/components/site-header"
+import { ThemeProvider } from "#/app/components/theme-provider"
+import { siteConfig } from "#/app/site"
 import {
   SidebarInset,
   SidebarProvider,
-} from "@/registry/new-york-v4/ui/sidebar"
-import { Toaster } from "@/registry/new-york-v4/ui/sonner"
+} from "#/registry/new-york-v4/ui/sidebar"
+import { Toaster } from "#/registry/new-york-v4/ui/sonner"
 
-// import "@/app/globals.css"
-// import "@/app/theme.css"
+// import "#/app/globals.css"
+// import "#/app/theme.css"
 
-import { ActiveThemeProvider } from "@/app/components/active-theme"
-import { HeaderProvider } from "@/context/header-context"
-import { cn } from "@/lib/utils"
+import { ActiveThemeProvider } from "#/app/components/active-theme"
+import { HeaderProvider } from "#/context/header-context"
+import { cn } from "#/lib/utils"
 
 const META_THEME_COLORS = {
   light: "#ffffff",

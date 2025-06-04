@@ -24,16 +24,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/registry/new-york-v4/ui/table"
-import { Tabs, TabsContent } from "@/registry/new-york-v4/ui/tabs"
-import { useDataTableStore } from "@/store/data-table-store"
-import { parseUrlParams, buildUrlWithParams, type UrlParams } from "./url-utils"
+} from "#/registry/new-york-v4/ui/table"
+import { Tabs, TabsContent } from "#/registry/new-york-v4/ui/tabs"
+import { useDataTableStore } from "#/store/data-table-store"
 import { columns } from "./columns"
 import { DataRow } from "./data-row"
 import { DataTableLoadingOverlay } from "./data-table-loading-overlay"
 import { DataTableSkeleton } from "./data-table-skeleton"
 import { Pagination } from "./pagination"
 import { Toolbar } from "./toolbar"
+import { buildUrlWithParams, parseUrlParams, type UrlParams } from "./url-utils"
 
 // Default pagination values
 const DEFAULT_PAGE_INDEX = 0

@@ -1,4 +1,4 @@
-import { PROD_FQDN } from "@/lib/constants"
+import { PROD_FQDN } from "@solstatus/common/utils"
 
 export const siteConfig = {
   name: "SolStatus",

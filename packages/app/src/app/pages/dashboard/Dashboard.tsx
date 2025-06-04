@@ -2,13 +2,13 @@
 
 import { IconCirclePlusFilled } from "@tabler/icons-react"
 import { useEffect } from "react"
-import { AddEndpointMonitorDialog } from "@/app/components/add-endpoint-monitor-dialog"
-import { DataTable } from "@/app/components/data-table"
-import { SectionCards } from "@/app/components/section-cards"
-import { useHeaderContext } from "@/context/header-context"
-import { Button } from "@/registry/new-york-v4/ui/button"
-import { useStatsStore } from "@/store/dashboard-stats-store"
-import { useDataTableStore } from "@/store/data-table-store"
+import { AddEndpointMonitorDialog } from "#/app/components/add-endpoint-monitor-dialog"
+import { DataTable } from "#/app/components/data-table"
+import { SectionCards } from "#/app/components/section-cards"
+import { useHeaderContext } from "#/context/header-context"
+import { Button } from "#/registry/new-york-v4/ui/button"
+import { useStatsStore } from "#/store/dashboard-stats-store"
+import { useDataTableStore } from "#/store/data-table-store"
 
 function Dashboard() {
   const { setHeaderLeftContent, setHeaderRightContent } = useHeaderContext()

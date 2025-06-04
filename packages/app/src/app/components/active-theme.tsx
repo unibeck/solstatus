@@ -8,7 +8,7 @@ import {
   useState,
 } from "react"
 
-import { siteConfig } from "@/app/site"
+import { siteConfig } from "#/app/site"
 
 const COOKIE_NAME = "active_theme"
 

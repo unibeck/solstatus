@@ -1,17 +1,17 @@
 "use client"
 
 import { type Icon, IconBrightness } from "@tabler/icons-react"
-import { useTheme } from "@/app/components/theme-provider"
 import React from "react"
+import { useTheme } from "#/app/components/theme-provider"
 import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/registry/new-york-v4/ui/sidebar"
-import { Skeleton } from "@/registry/new-york-v4/ui/skeleton"
-import { Switch } from "@/registry/new-york-v4/ui/switch"
+} from "#/registry/new-york-v4/ui/sidebar"
+import { Skeleton } from "#/registry/new-york-v4/ui/skeleton"
+import { Switch } from "#/registry/new-york-v4/ui/switch"
 
 export function NavSecondary({
   items,

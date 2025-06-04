@@ -1,7 +1,7 @@
 "use client"
 
-import { useThemeConfig } from "@/app/components/active-theme"
-import { Label } from "@/registry/new-york-v4/ui/label"
+import { useThemeConfig } from "#/app/components/active-theme"
+import { Label } from "#/registry/new-york-v4/ui/label"
 import {
   Select,
   SelectContent,
@@ -11,7 +11,7 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from "@/registry/new-york-v4/ui/select"
+} from "#/registry/new-york-v4/ui/select"
 
 const DEFAULT_THEMES = [
   {

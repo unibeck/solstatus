@@ -1,4 +1,5 @@
 "use client"
+import type { endpointMonitorsSelectSchema } from "@solstatus/common/db"
 import {
   IconActivity,
   IconLogs,
@@ -15,17 +16,16 @@ import {
 import { useCallback, useState } from "react"
 import { toast } from "sonner"
 import type { z } from "zod"
-import type { endpointMonitorsSelectSchema } from "@/db/zod-schema"
-import { DEFAULT_TOAST_OPTIONS } from "@/lib/toasts"
-import { Badge } from "@/registry/new-york-v4/ui/badge"
-import { Button } from "@/registry/new-york-v4/ui/button"
+import { DEFAULT_TOAST_OPTIONS } from "#/lib/toasts"
+import { Badge } from "#/registry/new-york-v4/ui/badge"
+import { Button } from "#/registry/new-york-v4/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/registry/new-york-v4/ui/dropdown-menu"
+} from "#/registry/new-york-v4/ui/dropdown-menu"
 import { AddEndpointMonitorDialog } from "./add-endpoint-monitor-dialog"
 
 interface WebsiteDetailHeaderProps {

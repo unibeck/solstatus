@@ -1,4 +1,4 @@
-import { PRE_FQDN, PROD_FQDN } from "@/lib/constants"
+import { PRE_FQDN, PROD_FQDN } from "@solstatus/common/utils"
 
 const DEV: AppEnvMetadata = {
   appUrl: "http://localhost:8787",

@@ -1,20 +1,20 @@
 "use client"
 
 import { useState, useTransition } from "react"
-import { setupAuthClient } from "@/lib/auth-client"
-import { link } from "@/lib/links"
-import { Button } from "@/registry/new-york-v4/ui/button"
-import { Card, CardContent } from "@/registry/new-york-v4/ui/card"
+import { useForm } from "react-hook-form"
+import { setupAuthClient } from "#/lib/auth-client"
+import { link } from "#/lib/links"
+import { Button } from "#/registry/new-york-v4/ui/button"
+import { Card, CardContent } from "#/registry/new-york-v4/ui/card"
 import {
   Form,
   FormControl,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/registry/new-york-v4/ui/form"
-import { Input } from "@/registry/new-york-v4/ui/input"
-import type { AppContext } from "@/worker"
-import { useForm } from "react-hook-form"
+} from "#/registry/new-york-v4/ui/form"
+import { Input } from "#/registry/new-york-v4/ui/input"
+import type { AppContext } from "#/worker"
 
 export function Login({ ctx }: { ctx: AppContext }) {
   const { authUrl } = ctx
