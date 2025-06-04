@@ -12,8 +12,7 @@
   "compilerOptions": {
     "types": [
       "@types/node",
-      "@cloudflare/workers-types",
-      "./infra/types/env.d.ts"
+      "@cloudflare/workers-types"
     ],
     "baseUrl": "./",
     "rootDir": "./",

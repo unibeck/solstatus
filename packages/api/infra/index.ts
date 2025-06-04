@@ -9,31 +9,39 @@ const phase = process.argv[2] === "destroy" ? "destroy" : "up"
 const RES_PREFIX = `${APP_NAME}-${stage}`
 console.log(`${RES_PREFIX}: ${phase}`)
 
-export const createMonitorExecWorker = (db: DBResource) => Worker(`${RES_PREFIX}-monitor-exec`, {
-  name: `${RES_PREFIX}-monitor-exec`,
-  entrypoint: require.resolve("@solstatus/api/monitor-exec"),
-  rpc: type<MonitorExec>,
-  bindings:{
-    DB: db,
-    OPSGENIE_API_KEY: alchemy.secret(process.env.OPSGENIE_API_KEY),
-    APP_ENV: stage,
-  }
-})
-
-export const createMonitorTriggerWorker = (db: DBResource, monitorExecWorker: Awaited<ReturnType<typeof createMonitorExecWorker>>) => Worker(`${RES_PREFIX}-monitor-trigger`, {
-  name: `${RES_PREFIX}-monitor-trigger`,
-  entrypoint: require.resolve("@solstatus/api/monitor-trigger"),
-  rpc: type<MonitorTriggerRPC>,
-  bindings: {
-    DB: db,
-    MONITOR_EXEC: monitorExecWorker,
-    MONITOR_TRIGGER: new DurableObjectNamespace<MonitorTrigger>(`${RES_PREFIX}-monitor-trigger`, {
-      className: "MonitorTrigger",
-      sqlite: true
-    }),
-  }
-})
-
-// Export types for other modules to use
+export async function createMonitorExecWorker(resPrefix: string, db: DBResource) {
+  const workerName = `${resPrefix}-monitor-exec`
+  return await Worker(workerName, {
+    name: workerName,
+    entrypoint: require.resolve("@solstatus/api/monitor-exec"),
+    rpc: type<MonitorExec>,
+    bindings: {
+      DB: db,
+      OPSGENIE_API_KEY: alchemy.secret(process.env.OPSGENIE_API_KEY),
+      APP_ENV: stage,
+    }
+  })
+}
 export type MonitorExecWorkerResource = Awaited<ReturnType<typeof createMonitorExecWorker>>
+
+export async function createMonitorTriggerWorker(resPrefix: string, db: DBResource, monitorExecWorker: MonitorExecWorkerResource): Promise<Worker<{
+  DB: DBResource
+  MONITOR_EXEC: MonitorExecWorkerResource
+  MONITOR_TRIGGER: DurableObjectNamespace<MonitorTrigger>
+}>> {
+  const workerName = `${resPrefix}-monitor-trigger`
+  return await Worker(workerName, {
+    name: workerName,
+    entrypoint: require.resolve("@solstatus/api/monitor-trigger"),
+    rpc: type<MonitorTriggerRPC>,
+    bindings: {
+      DB: db,
+      MONITOR_EXEC: monitorExecWorker,
+      MONITOR_TRIGGER: new DurableObjectNamespace<MonitorTrigger>(`${workerName}-do`, {
+        className: "MonitorTrigger",
+        sqlite: true
+      }),
+    }
+  })
+}
 export type MonitorTriggerWorkerResource = Awaited<ReturnType<typeof createMonitorTriggerWorker>>
