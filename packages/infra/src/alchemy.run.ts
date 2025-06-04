@@ -1,5 +1,5 @@
-import { monitorExecWorker, monitorTriggerWorker } from "@solstatus/api/infra"
-import { db, kv } from "@solstatus/common/infra"
+import { createMonitorExecWorker, createMonitorTriggerWorker } from "@solstatus/api/infra"
+import { createDB, createKV } from "@solstatus/common/infra"
 import alchemy from "alchemy"
 import { Website } from "alchemy/cloudflare"
 
@@ -16,7 +16,13 @@ const infra = await alchemy(APP_NAME, {
   password: process.env.SECRET_ALCHEMY_PASSPHRASE,
 })
 
-//TODO: import db and kv, then run them
+// Create common resources
+export const kv = await createKV()
+export const db = await createDB()
+
+// Create API resources
+export const monitorExecWorker = await createMonitorExecWorker(db)
+export const monitorTriggerWorker = await createMonitorTriggerWorker(db, monitorExecWorker)
 
 export const app = await Website(`${RES_PREFIX}-app`, {
   name: `${RES_PREFIX}-app`,

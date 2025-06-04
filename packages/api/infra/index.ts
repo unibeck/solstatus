@@ -1,4 +1,4 @@
-import { db } from "@solstatus/common/infra"
+import type { DBResource } from "@solstatus/common/infra"
 import alchemy, { type } from "alchemy"
 import { DurableObjectNamespace, Worker } from "alchemy/cloudflare"
 import type { MonitorExec, MonitorTrigger, MonitorTriggerRPC } from "#/index"
@@ -9,7 +9,7 @@ const phase = process.argv[2] === "destroy" ? "destroy" : "up"
 const RES_PREFIX = `${APP_NAME}-${stage}`
 console.log(`${RES_PREFIX}: ${phase}`)
 
-export const monitorExecWorker = await Worker(`${RES_PREFIX}-monitor-exec`, {
+export const createMonitorExecWorker = (db: DBResource) => Worker(`${RES_PREFIX}-monitor-exec`, {
   name: `${RES_PREFIX}-monitor-exec`,
   entrypoint: require.resolve("@solstatus/api/monitor-exec"),
   rpc: type<MonitorExec>,
@@ -20,7 +20,7 @@ export const monitorExecWorker = await Worker(`${RES_PREFIX}-monitor-exec`, {
   }
 })
 
-export const monitorTriggerWorker = await Worker(`${RES_PREFIX}-monitor-trigger`, {
+export const createMonitorTriggerWorker = (db: DBResource, monitorExecWorker: Awaited<ReturnType<typeof createMonitorExecWorker>>) => Worker(`${RES_PREFIX}-monitor-trigger`, {
   name: `${RES_PREFIX}-monitor-trigger`,
   entrypoint: require.resolve("@solstatus/api/monitor-trigger"),
   rpc: type<MonitorTriggerRPC>,
@@ -33,3 +33,7 @@ export const monitorTriggerWorker = await Worker(`${RES_PREFIX}-monitor-trigger`
     }),
   }
 })
+
+// Export types for other modules to use
+export type MonitorExecWorkerResource = Awaited<ReturnType<typeof createMonitorExecWorker>>
+export type MonitorTriggerWorkerResource = Awaited<ReturnType<typeof createMonitorTriggerWorker>>
