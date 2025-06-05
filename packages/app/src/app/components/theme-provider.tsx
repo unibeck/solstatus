@@ -28,6 +28,7 @@ export function ThemeProvider({
   storageKey = "solstatus-theme",
   ...props
 }: ThemeProviderProps) {
+
   const [theme, setTheme] = useState<Theme>(
     () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
   )

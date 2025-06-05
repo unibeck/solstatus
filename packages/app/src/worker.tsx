@@ -1,13 +1,12 @@
-import { prefix, render, route } from "rwsdk/router"
+import type { User } from "@solstatus/common/db/schema"
+import { layout, prefix, render, route } from "rwsdk/router"
 import { defineApp } from "rwsdk/worker"
-
 import { Document } from "#/app/document/Document"
 import { setCommonHeaders } from "#/app/document/headers"
-
+import DashboardLayout from "#/app/layouts/dashboard"
+import Dashboard from "#/app/pages/dashboard/Dashboard"
 import { Home } from "#/app/pages/Home"
-import DashboardPage from "#/app/pages/dashboard/DashboardPage"
 import { userRoutes } from "#/app/pages/user/routes"
-import type { User } from "@solstatus/common/db/schema"
 import { auth } from "#/lib/auth"
 import { link } from "#/lib/links"
 
@@ -52,7 +51,10 @@ export default defineApp([
   }),
 
   render(Document, [
-    route("/", DashboardPage),
+    layout(DashboardLayout, [
+      route("/", Dashboard),
+      // index(Dashboard)
+    ]),
     route("/home", [isAuthenticated, Home]),
     prefix("/user", userRoutes),
   ]),

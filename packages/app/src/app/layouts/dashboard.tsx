@@ -11,6 +11,7 @@ import { Toaster } from "#/registry/new-york-v4/ui/sonner"
 // import "#/app/globals.css"
 // import "#/app/theme.css"
 
+import type { LayoutProps } from "rwsdk/router"
 import { ActiveThemeProvider } from "#/app/components/active-theme"
 import { HeaderProvider } from "#/context/header-context"
 import { cn } from "#/lib/utils"
@@ -20,11 +21,9 @@ const META_THEME_COLORS = {
   dark: "#09090b",
 }
 
-export default async function DashboardLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function DashboardLayout({ children }: LayoutProps) {
+  "use client"
+  
   const activeThemeValue = siteConfig.defaultTheme
   const isScaled = activeThemeValue?.endsWith("-scaled")
   const defaultOpen = true
