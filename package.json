@@ -29,6 +29,12 @@
     "clean": "rm -rf ./node_modules/ ./packages/*/node_modules/ ./dist/ ./packages/*/dist/",
     "clean:builds": "rm -rf ./dist/ ./packages/*/dist/",
     "types": "tsc --build --emitDeclarationOnly",
-    "build:types": "bun run --filter '@solstatus/common' types && bun run --filter '@solstatus/api' types && bun run --filter '@solstatus/app' types && bun run --filter '@solstatus/infra' types"
+    "build:types": "pnpm run --filter '@solstatus/common' types && pnpm run --filter '@solstatus/api' types && pnpm run --filter '@solstatus/app' types && pnpm run --filter '@solstatus/infra' types"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@cloudflare/workers-types": "catalog:",
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
   }
 }

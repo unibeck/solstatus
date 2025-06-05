@@ -1,3 +1,5 @@
+#!/usr/bin/env tsx
+
 import { createMonitorExecWorker, createMonitorTriggerWorker } from "@solstatus/api/infra"
 import { createApp } from "@solstatus/app/infra"
 import { createDB, createSessionsStorageKV } from "@solstatus/common/infra"

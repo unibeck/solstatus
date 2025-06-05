@@ -1,5 +1,5 @@
 // Initial temporary wrangler.json
-// Running `bun infra:up will update and overwrite this file. Remove this pending https://github.com/redwoodjs/sdk/issues/343
+// Running `pnpm infra:up will update and overwrite this file. Remove this pending https://github.com/redwoodjs/sdk/issues/343
 {
   "name": "fullstack-cf-example-site",
   "main": "src/worker.tsx",

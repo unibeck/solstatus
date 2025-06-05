@@ -2,18 +2,22 @@
   "name": "@solstatus/app",
   "version": "2.0.0",
   "private": true,
-  "type": "module",
+  "imports": {
+    "#/infra/*": "./infra/*",
+    "#/*": "./src/*"
+  },
+  "exports": {
+    "./infra": "./infra/index.ts"
+  },
   "scripts": {
     "build": "vite build",
     "clean": "rm -rf ./node_modules/.vite",
     "dev": "NODE_ENV=${NODE_ENV:-development} vite dev",
-    "generate": "rw-scripts ensure-env && bun migrate:new --name=init",
-    "infra:destroy": "bun alchemy.run.ts destroy",
-    "infra:up": "bun alchemy.run.ts",
+    "generate": "rw-scripts ensure-env && pnpm migrate:new --name=init",
     "migrate:dev": "wrangler d1 migrations apply DB --local",
     "migrate:new": "drizzle-kit generate --config=drizzle.config.ts",
     "migrate:prod": "wrangler d1 migrations apply DB --remote",
-    "preview": "bun build && bun vite preview",
+    "preview": "pnpm build && pnpm vite preview",
     "format": "biome check . --write",
     "types": "tsc"
   },
@@ -61,7 +65,6 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
-    "diffable-objects": "^0.1.1",
     "drizzle-orm": "catalog:",
     "drizzle-seed": "catalog:",
     "drizzle-zod": "catalog:",
@@ -69,7 +72,6 @@
     "embla-carousel-react": "8.6.0",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.511.0",
-    "nanoid": "^5.1.5",
     "postcss": "^8.5.4",
     "react": "^19",
     "react-day-picker": "9.7.0",

@@ -10,8 +10,8 @@
     ".": "./src/alchemy.run.ts"
   },
   "scripts": {
-    "infra:up": "bun alchemy.run.ts",
-    "infra:destroy": "bun alchemy.run.ts destroy",
+    "infra:up": "pnpm exec ./src/alchemy.run.ts",
+    "infra:destroy": "pnpm exec ./src/alchemy.run.ts destroy",
     "format": "biome check . --write",
     "types": "tsc"
   },

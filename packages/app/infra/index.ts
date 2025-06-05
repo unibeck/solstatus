@@ -7,7 +7,7 @@ export async function createApp(resPrefix: string, db: DBResource, sessionsStora
   const appName = `${resPrefix}-app`
   const app = await Website(appName, {
     name: appName,
-    command: "bun clean && bun run build",
+    command: "pnpm clean && pnpm run build",
     main: "dist/worker/worker.js",
     assets: "dist/client",
     wrangler: {
@@ -27,3 +27,4 @@ export async function createApp(resPrefix: string, db: DBResource, sessionsStora
   console.log(`${appName}: ${app.url}`)
   return app  
 }
+export type AppResource = Awaited<ReturnType<typeof createApp>>

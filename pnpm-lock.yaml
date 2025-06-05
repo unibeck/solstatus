@@ -57,22 +57,7 @@ catalogs:
 
 importers:
 
-  .: {}
-
-  packages/api:
-    dependencies:
-      '@solstatus/common':
-        specifier: workspace:*
-        version: link:../common
-      drizzle-orm:
-        specifier: 'catalog:'
-        version: 0.43.1(@cloudflare/workers-types@4.20250605.0)(@opentelemetry/api@1.9.0)(kysely@0.28.2)
-      drizzle-seed:
-        specifier: 'catalog:'
-        version: 0.3.1(drizzle-orm@0.43.1(@cloudflare/workers-types@4.20250605.0)(@opentelemetry/api@1.9.0)(kysely@0.28.2))
-      drizzle-zod:
-        specifier: 'catalog:'
-        version: 0.7.1(drizzle-orm@0.43.1(@cloudflare/workers-types@4.20250605.0)(@opentelemetry/api@1.9.0)(kysely@0.28.2))(zod@3.25.51)
+  .:
     devDependencies:
       '@biomejs/biome':
         specifier: 'catalog:'
@@ -83,6 +68,46 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 22.15.29
+      typescript:
+        specifier: 'catalog:'
+        version: 5.8.3
+
+  packages/api:
+    dependencies:
+      '@solstatus/common':
+        specifier: workspace:*
+        version: link:../common
+      diffable-objects:
+        specifier: ^0.1.1
+        version: 0.1.1
+      drizzle-orm:
+        specifier: 'catalog:'
+        version: 0.43.1(@cloudflare/workers-types@4.20250605.0)(@opentelemetry/api@1.9.0)(kysely@0.28.2)
+      drizzle-seed:
+        specifier: 'catalog:'
+        version: 0.3.1(drizzle-orm@0.43.1(@cloudflare/workers-types@4.20250605.0)(@opentelemetry/api@1.9.0)(kysely@0.28.2))
+      drizzle-zod:
+        specifier: 'catalog:'
+        version: 0.7.1(drizzle-orm@0.43.1(@cloudflare/workers-types@4.20250605.0)(@opentelemetry/api@1.9.0)(kysely@0.28.2))(zod@3.25.51)
+      http-status-codes:
+        specifier: 'catalog:'
+        version: 2.3.0
+      zod:
+        specifier: 'catalog:'
+        version: 3.25.51
+    devDependencies:
+      '@biomejs/biome':
+        specifier: 'catalog:'
+        version: 2.0.0-beta.5
+      '@cloudflare/workers-types':
+        specifier: 'catalog:'
+        version: 4.20250605.0
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.15.29
+      alchemy:
+        specifier: 'catalog:'
+        version: 0.21.0(@ai-sdk/openai-compatible@0.2.14(zod@3.25.51))(@ai-sdk/openai@1.3.22(zod@3.25.51))(@aws-sdk/client-dynamodb@3.823.0)(@aws-sdk/client-iam@3.823.0)(@aws-sdk/client-lambda@3.823.0)(@aws-sdk/client-s3@3.824.0)(@aws-sdk/client-sagemaker@3.824.0)(@aws-sdk/client-ses@3.823.0)(@aws-sdk/client-sesv2@3.824.0)(@aws-sdk/client-sqs@3.823.0)(@aws-sdk/client-sts@3.823.0)(@aws-sdk/credential-providers@3.823.0)(@aws-sdk/node-config-provider@3.374.0)(@cloudflare/unenv-preset@2.3.2(unenv@2.0.0-rc.17)(workerd@1.20250525.0))(@cloudflare/workers-shared@0.17.5)(@iarna/toml@2.2.5)(@octokit/rest@21.1.1)(@swc/core@1.11.31)(ai@4.3.16(react@19.2.0-canary-39cad7af-20250411)(zod@3.25.51))(arktype@2.1.20)(aws4fetch@1.0.20)(cloudflare@4.3.0)(diff@7.0.0)(esbuild@0.25.5)(fast-json-patch@3.1.1)(glob@11.0.2)(hono@4.7.11)(jszip@3.10.1)(libsodium-wrappers@0.7.15)(prettier@3.5.3)(stripe@17.7.0)(turndown@7.2.0)(xdg-app-paths@8.3.0)(yaml@2.8.0)(zod@3.25.51)
       drizzle-kit:
         specifier: 'catalog:'
         version: 0.31.1
@@ -221,9 +246,6 @@ importers:
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
-      diffable-objects:
-        specifier: ^0.1.1
-        version: 0.1.1
       drizzle-orm:
         specifier: 'catalog:'
         version: 0.43.1(@cloudflare/workers-types@4.20250605.0)(@opentelemetry/api@1.9.0)(kysely@0.28.2)
@@ -248,9 +270,6 @@ importers:
       lucide-react:
         specifier: ^0.511.0
         version: 0.511.0(react@19.1.0)
-      nanoid:
-        specifier: ^5.1.5
-        version: 5.1.5
       postcss:
         specifier: ^8.5.4
         version: 8.5.4
@@ -354,6 +373,9 @@ importers:
 
   packages/common:
     dependencies:
+      alchemy:
+        specifier: 'catalog:'
+        version: 0.21.0(@ai-sdk/openai-compatible@0.2.14(zod@3.25.51))(@ai-sdk/openai@1.3.22(zod@3.25.51))(@aws-sdk/client-dynamodb@3.823.0)(@aws-sdk/client-iam@3.823.0)(@aws-sdk/client-lambda@3.823.0)(@aws-sdk/client-s3@3.824.0)(@aws-sdk/client-sagemaker@3.824.0)(@aws-sdk/client-ses@3.823.0)(@aws-sdk/client-sesv2@3.824.0)(@aws-sdk/client-sqs@3.823.0)(@aws-sdk/client-sts@3.823.0)(@aws-sdk/credential-providers@3.823.0)(@aws-sdk/node-config-provider@3.374.0)(@cloudflare/unenv-preset@2.3.2(unenv@2.0.0-rc.17)(workerd@1.20250525.0))(@cloudflare/workers-shared@0.17.5)(@iarna/toml@2.2.5)(@octokit/rest@21.1.1)(@swc/core@1.11.31)(ai@4.3.16(react@19.2.0-canary-39cad7af-20250411)(zod@3.25.51))(arktype@2.1.20)(aws4fetch@1.0.20)(cloudflare@4.3.0)(diff@7.0.0)(esbuild@0.25.5)(fast-json-patch@3.1.1)(glob@11.0.2)(hono@4.7.11)(jszip@3.10.1)(libsodium-wrappers@0.7.15)(prettier@3.5.3)(stripe@17.7.0)(turndown@7.2.0)(xdg-app-paths@8.3.0)(yaml@2.8.0)(zod@3.25.51)
       drizzle-orm:
         specifier: 'catalog:'
         version: 0.43.1(@cloudflare/workers-types@4.20250605.0)(@opentelemetry/api@1.9.0)(kysely@0.28.2)
@@ -363,6 +385,12 @@ importers:
       drizzle-zod:
         specifier: 'catalog:'
         version: 0.7.1(drizzle-orm@0.43.1(@cloudflare/workers-types@4.20250605.0)(@opentelemetry/api@1.9.0)(kysely@0.28.2))(zod@3.25.51)
+      nanoid:
+        specifier: ^5.1.5
+        version: 5.1.5
+      zod:
+        specifier: 'catalog:'
+        version: 3.25.51
     devDependencies:
       '@biomejs/biome':
         specifier: 'catalog:'

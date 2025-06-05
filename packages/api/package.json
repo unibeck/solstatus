@@ -1,10 +1,10 @@
 {
   "name": "@solstatus/api",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "imports": {
-    "#/*": "./src/*",
-    "#/infra/*": "./infra/*"
+    "#/infra/*": "./infra/*",
+    "#/*": "./src/*"
   },
   "exports": {
     ".": "./src/index.ts",
@@ -20,9 +20,13 @@
     "@solstatus/common": "workspace:*",
     "drizzle-orm": "catalog:",
     "drizzle-seed": "catalog:",
-    "drizzle-zod": "catalog:"
+    "drizzle-zod": "catalog:",
+    "diffable-objects": "^0.1.1",
+    "http-status-codes": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
+    "alchemy": "catalog:",
     "@biomejs/biome": "catalog:",
     "@cloudflare/workers-types": "catalog:",
     "@types/node": "catalog:",
