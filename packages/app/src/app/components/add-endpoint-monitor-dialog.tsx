@@ -7,7 +7,9 @@ import { IconPlus } from "@tabler/icons-react"
 import React from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { CONFLICT, CREATED, OK } from "stoker/http-status-codes"
+import {
+  StatusCodes,
+} from "http-status-codes"
 import type { z } from "zod"
 import { DEFAULT_TOAST_OPTIONS } from "#/lib/toasts"
 import { Button } from "#/registry/new-york-v4/ui/button"
@@ -137,7 +139,7 @@ export function AddEndpointMonitorDialog({
         body: JSON.stringify(data),
       })
 
-      const successStatus = isEditing ? OK : CREATED
+      const successStatus = isEditing ? StatusCodes.OK : StatusCodes.CREATED
       const successMessage = isEditing
         ? "Endpoint Monitor Updated"
         : "Endpoint Monitor Added"
@@ -152,7 +154,7 @@ export function AddEndpointMonitorDialog({
         })
         setOpen(false)
         onSuccess?.()
-      } else if (response.status === CONFLICT && !isEditing) {
+      } else if (response.status === StatusCodes.CONFLICT && !isEditing) {
         console.log("Endpoint Monitor already exists")
         const error: ConflictEndpointMonitorResponse = await response.json()
         toast.info("Similar endpoint monitor already exists", {

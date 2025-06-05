@@ -1,20 +1,19 @@
 import { WorkerEntrypoint } from "cloudflare:workers"
-import { eq } from "drizzle-orm"
-import type { DrizzleD1Database } from "drizzle-orm/d1"
-import { OK } from "stoker/http-status-codes"
-import { OK as OK_PHRASE } from "stoker/http-status-phrases"
-import type { z } from "zod"
-
-import { takeFirstOrNull, useDrizzle } from "@solstatus/common/db"
-
-import type { schema } from "@solstatus/common/db/schema"
-import { EndpointMonitorsTable, UptimeChecksTable } from "@solstatus/common/db/schema"
 import type {
   endpointMonitorsPatchSchema,
   endpointMonitorsSelectSchema,
 } from "@solstatus/common/db"
-import { endpointSignature } from "@solstatus/common/utils"
-import { createEndpointMonitorDownAlert } from "@solstatus/common/utils"
+import { takeFirstOrNull, useDrizzle } from "@solstatus/common/db"
+import type { schema } from "@solstatus/common/db/schema"
+import { EndpointMonitorsTable, UptimeChecksTable } from "@solstatus/common/db/schema"
+import { createEndpointMonitorDownAlert, endpointSignature } from "@solstatus/common/utils"
+import { eq } from "drizzle-orm"
+import type { DrizzleD1Database } from "drizzle-orm/d1"
+import {
+  ReasonPhrases,
+  StatusCodes,
+} from "http-status-codes"
+import type { z } from "zod"
 import type { MonitorExecEnv } from "#/infra/types/env"
 
 export default class MonitorExec extends WorkerEntrypoint {
@@ -24,8 +23,8 @@ export default class MonitorExec extends WorkerEntrypoint {
   async fetch(_request: Request) {
     //Use service or RPC binding to work with the Monitor Durable Object
     return new Response(
-      `${OK_PHRASE}\nMonitorExec: Use service or RPC binding to work with the Monitor Durable Object`,
-      { status: OK },
+      `${ReasonPhrases.OK}\nMonitorExec: Use service or RPC binding to work with the Monitor Durable Object`,
+      { status: StatusCodes.OK },
     )
   }
 

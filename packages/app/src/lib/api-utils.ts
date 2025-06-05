@@ -1,6 +1,3 @@
-import { INTERNAL_SERVER_ERROR } from "stoker/http-status-codes"
-import { logError, logErrorStack } from "@solstatus/common/utils"
-
 export const createRoute = () => {
   
 }

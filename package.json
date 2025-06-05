@@ -29,7 +29,7 @@
     "clean": "rm -rf ./node_modules/ ./packages/*/node_modules/ ./dist/ ./packages/*/dist/",
     "clean:builds": "rm -rf ./dist/ ./packages/*/dist/",
     "types": "tsc --build --emitDeclarationOnly",
-    "build:types": "bun run --filter '@solstatus/common' types && bun run --filter '@solstatus/api' types"
+    "build:types": "bun run --filter '@solstatus/common' types && bun run --filter '@solstatus/api' types && bun run --filter '@solstatus/app' types && bun run --filter '@solstatus/infra' types"
   },
   "workspaces": {
     "packages": ["packages/*"],
@@ -47,7 +47,11 @@
       "@types/react-dom": "^19",
       "drizzle-kit": "^0.31.1",
       "alchemy": "^0.21.0",
-      "dotenv": "^16.5.0"
+      "http-status-codes": "^2.3.0",
+      "dotenv": "^16.5.0",
+      "drizzle-orm": "^0.43.1",
+      "drizzle-seed": "^0.3.1",
+      "drizzle-zod": "0.7.1"
     }
   }
 }

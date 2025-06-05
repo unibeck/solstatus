@@ -4,8 +4,10 @@ import { EndpointMonitorsTable } from "@solstatus/common/db/schema"
 import { endpointSignature, MonitorTriggerNotInitializedError } from "@solstatus/common/utils"
 import { diffable } from "diffable-objects"
 import { eq } from "drizzle-orm"
-import { OK } from "stoker/http-status-codes"
-import { OK as OK_PHRASE } from "stoker/http-status-phrases"
+import {
+  ReasonPhrases,
+  StatusCodes,
+} from "http-status-codes"
 import type { MonitorTriggerEnv } from "#/infra/types/env"
 
 // Define types for state and init payload
@@ -297,8 +299,8 @@ export default class MonitorTriggerRPC extends WorkerEntrypoint {
   async fetch(_request: Request) {
     //Use service or RPC binding to work with the Monitor Durable Object
     return new Response(
-      `${OK_PHRASE}\nMonitorTriggerRPC: Use service or RPC binding to work with the Monitor Durable Object`,
-      { status: OK },
+      `${ReasonPhrases.OK}\nMonitorTriggerRPC: Use service or RPC binding to work with the Monitor Durable Object`,
+      { status: StatusCodes.OK },
     )
   }
 
