@@ -9,6 +9,7 @@
   },
   "exports": {
     "./infra": "./infra/index.ts",
+    "./drizzle": "./src/db/drizzle.config.ts",
     "./*": "./src/*/index.ts"
   },
   "scripts": {

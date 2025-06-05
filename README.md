@@ -32,6 +32,7 @@ TODO: expectations for cost
 - [x] circular dependency (api -> infra -> api) via tsconfig.json references
     - accomplish this by moving api specific infra to the api package, common infra to the common package, and app specific infra to the app package. 
     - The infra package will then be a package that combines all of the infra code together(?)
+- [] catalog all drizzle libs
 
 ## v2.1 TODO:
 - [] Worker for Platforms to create a new worker per synthetic monitor (https://x.com/samgoodwin89/status/1926034269543035252)

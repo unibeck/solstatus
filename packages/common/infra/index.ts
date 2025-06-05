@@ -9,7 +9,7 @@ export async function createSessionsStorageKV(resPrefix: string) {
 }
 export type SessionsStorageKVResource = Awaited<ReturnType<typeof createSessionsStorageKV>>
 
-export async function createDB(resPrefix: string) {
+export async function createDB(resPrefix: string): Promise<D1Database> {
   const dbName = `${resPrefix}-db`
   return await D1Database(dbName, {
     name: dbName,

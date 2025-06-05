@@ -8,8 +8,8 @@ import {
   IconX,
 } from "@tabler/icons-react"
 import type { Table } from "@tanstack/react-table"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import type * as React from "react"
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
 import { useDebouncedCallback } from "use-debounce"
 import type { z } from "zod"
 import type { AppColumnDef } from "#/app/components/data-table/columns"
@@ -31,9 +31,9 @@ interface ToolbarProps {
 export function Toolbar({ table }: ToolbarProps) {
   "use no memo"
 
-  const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const [searchParams] = useSearchParams()
 
   // Get state and actions from the store
   const searchValue = useDataTableStore((state) => state.searchValue)
@@ -73,10 +73,10 @@ export function Toolbar({ table }: ToolbarProps) {
 
     // Construct the URL, omitting '?' if no parameters
     const queryString = newParams.toString()
-    const newUrl = queryString ? `${pathname}?${queryString}` : pathname
+    const newUrl = queryString ? `${location.pathname}?${queryString}` : location.pathname
 
-    // @ts-ignore - Ignoring type error as pathname comes from usePathname and we know it's is a valid typed route
-    router.push(newUrl, { scroll: false })
+    // Navigate to the new URL without scrolling
+    navigate(newUrl, { replace: true })
   }
 
   // Update search value
