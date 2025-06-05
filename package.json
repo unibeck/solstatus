@@ -3,9 +3,9 @@
   "version": "2.0.0",
   "private": true,
   "type": "module",
-  "packageManager": "bun@1.2.15",
+  "packageManager": "pnpm@10.11.1",
   "scripts": {
-    "preinstall": "npx only-allow bun",
+    "preinstall": "npx only-allow pnpm",
     "dev": "concurrently --kill-others --names \"API,APP\" --prefix-colors \"bgWhite,bgWhiteBright\" \"pnpm dev:api\" \"wait-on http://localhost:8788 && pnpm dev:app\"",
     "dev:app": "next dev",
     "dev:api": "concurrently --kill-others --names \"EXEC,TRGR\" --prefix-colors \"blue,magenta\" \"pnpm dev:api-exec\" \"wait-on http://localhost:8787 && pnpm dev:api-trigger\"",
@@ -30,28 +30,5 @@
     "clean:builds": "rm -rf ./dist/ ./packages/*/dist/",
     "types": "tsc --build --emitDeclarationOnly",
     "build:types": "bun run --filter '@solstatus/common' types && bun run --filter '@solstatus/api' types && bun run --filter '@solstatus/app' types && bun run --filter '@solstatus/infra' types"
-  },
-  "workspaces": {
-    "packages": ["packages/*"],
-    "catalog": {
-      "@biomejs/biome": "2.0.0-beta.5",
-      "react": "^19.0.0",
-      "react-dom": "^19.0.0",
-      "zod": "^3.25.20",
-      "tsx": "^4.19.4",
-      "typescript": "^5.8.3",
-      "wrangler": "^4.16.1",
-      "@cloudflare/workers-types": "^4.20250529.0",
-      "@types/node": "^22",
-      "@types/react": "^19",
-      "@types/react-dom": "^19",
-      "drizzle-kit": "^0.31.1",
-      "alchemy": "^0.21.0",
-      "http-status-codes": "^2.3.0",
-      "dotenv": "^16.5.0",
-      "drizzle-orm": "^0.43.1",
-      "drizzle-seed": "^0.3.1",
-      "drizzle-zod": "0.7.1"
-    }
   }
 }

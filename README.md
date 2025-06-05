@@ -19,10 +19,10 @@ TODO: expectations for cost
 - [x] fix useform ssr
 - [] Fix fonts
 - [x] implement bun workspaces/catalog
-- [] Reconsider pnpm in favor of bun
+- [x] Reconsider pnpm in favor of bun
 - [x] fix monorepo deps and types
 - [x] use https://www.npmjs.com/package/http-status-codes instead of stoker
-- [] remove all next/nextjs references
+- [x] remove all next/nextjs references
 - [] move all app/api endpoints to server functions (https://x.com/nickbalestra/status/1928208187515359429)
 - [] react compiler
 - [] move src/app/components back to src/components (pending https://discord.com/channels/679514959968993311/1374981422925746236)
