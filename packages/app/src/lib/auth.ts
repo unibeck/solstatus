@@ -8,7 +8,7 @@ import { secondaryStorage } from "#/db/secondaryStorage"
 export const auth = betterAuth({
   database: drizzleAdapter(env.DB, {
     provider: "sqlite",
-    schema: { 
+    schema: {
       ...schema,
       account: schema.AccountTable,
       session: schema.SessionTable,

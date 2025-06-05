@@ -43,7 +43,9 @@ export function DataTable() {
   "use no memo"
 
   // Get current URL params on component mount
-  const [currentUrlParams, setCurrentUrlParams] = React.useState<UrlParams>(() => parseUrlParams())
+  const [currentUrlParams, setCurrentUrlParams] = React.useState<UrlParams>(
+    () => parseUrlParams(),
+  )
 
   // Get state and actions from the store
   const data = useDataTableStore((state) => state.data)
@@ -58,14 +60,17 @@ export function DataTable() {
   const pagination = useDataTableStore((state) => state.pagination)
 
   // Navigate to new URL with updated params
-  const navigateToUrl = React.useCallback((params: Partial<UrlParams>) => {
-    const newUrlParams = { ...currentUrlParams, ...params }
-    const newUrl = buildUrlWithParams(newUrlParams)
-    
-    // Update browser history without page reload
-    window.history.pushState(null, '', newUrl)
-    setCurrentUrlParams(newUrlParams)
-  }, [currentUrlParams])
+  const navigateToUrl = React.useCallback(
+    (params: Partial<UrlParams>) => {
+      const newUrlParams = { ...currentUrlParams, ...params }
+      const newUrl = buildUrlWithParams(newUrlParams)
+
+      // Update browser history without page reload
+      window.history.pushState(null, "", newUrl)
+      setCurrentUrlParams(newUrlParams)
+    },
+    [currentUrlParams],
+  )
 
   // Update URL with query params, omitting default values
   const updateUrlParams = React.useCallback(
@@ -77,16 +82,19 @@ export function DataTable() {
       order?: "asc" | "desc"
     }) => {
       // Handle page parameter - set to undefined to remove from URL if default
-      const pageParam = params.page === DEFAULT_PAGE_INDEX ? undefined : params.page
+      const pageParam =
+        params.page === DEFAULT_PAGE_INDEX ? undefined : params.page
 
-      // Handle pageSize parameter - set to undefined to remove from URL if default  
-      const pageSizeParam = params.pageSize === DEFAULT_PAGE_SIZE ? undefined : params.pageSize
+      // Handle pageSize parameter - set to undefined to remove from URL if default
+      const pageSizeParam =
+        params.pageSize === DEFAULT_PAGE_SIZE ? undefined : params.pageSize
 
       // Handle search parameter - set to undefined to remove from URL if empty
       const searchParam = params.search || undefined
 
       // Handle sorting parameters, omitting defaults
-      const isDefaultSort = params.orderBy === "consecutiveFailures" && params.order === "desc"
+      const isDefaultSort =
+        params.orderBy === "consecutiveFailures" && params.order === "desc"
       const orderByParam = isDefaultSort ? undefined : params.orderBy
       const orderParam = isDefaultSort ? undefined : params.order
 
@@ -182,7 +190,7 @@ export function DataTable() {
   // Initialize from URL params on first load
   React.useEffect(() => {
     const urlParams = parseUrlParams()
-    
+
     const store = useDataTableStore.getState()
     let needsUpdate = false
 
@@ -191,7 +199,7 @@ export function DataTable() {
     const currentPageSize = store.pagination.pageSize
     const targetPageIndex = urlParams.page ?? DEFAULT_PAGE_INDEX
     const targetPageSize = urlParams.pageSize ?? DEFAULT_PAGE_SIZE
-    
+
     if (
       targetPageIndex !== currentPageIndex ||
       targetPageSize !== currentPageSize

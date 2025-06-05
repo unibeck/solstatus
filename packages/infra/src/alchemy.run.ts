@@ -1,6 +1,9 @@
 #!/usr/bin/env tsx
 
-import { createMonitorExecWorker, createMonitorTriggerWorker } from "@solstatus/api/infra"
+import {
+  createMonitorExecWorker,
+  createMonitorTriggerWorker,
+} from "@solstatus/api/infra"
 import { createApp } from "@solstatus/app/infra"
 import { createDB, createSessionsStorageKV } from "@solstatus/common/infra"
 import alchemy from "alchemy"
@@ -24,9 +27,18 @@ const db = await createDB(resPrefix)
 
 // API resources
 export const monitorExecWorker = await createMonitorExecWorker(resPrefix, db)
-export const monitorTriggerWorker = await createMonitorTriggerWorker(resPrefix, db, monitorExecWorker)
+export const monitorTriggerWorker = await createMonitorTriggerWorker(
+  resPrefix,
+  db,
+  monitorExecWorker,
+)
 
 // App resources
-export const app = await createApp(resPrefix, db, sessionsStorageKV, monitorExecWorker)
+export const app = await createApp(
+  resPrefix,
+  db,
+  sessionsStorageKV,
+  monitorExecWorker,
+)
 
 await infra.finalize()

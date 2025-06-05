@@ -9,7 +9,10 @@ const phase = process.argv[2] === "destroy" ? "destroy" : "up"
 const RES_PREFIX = `${APP_NAME}-${stage}`
 console.log(`${RES_PREFIX}: ${phase}`)
 
-export async function createMonitorExecWorker(resPrefix: string, db: DBResource) {
+export async function createMonitorExecWorker(
+  resPrefix: string,
+  db: DBResource,
+) {
   const workerName = `${resPrefix}-monitor-exec`
   return await Worker(workerName, {
     name: workerName,
@@ -19,12 +22,18 @@ export async function createMonitorExecWorker(resPrefix: string, db: DBResource)
       DB: db,
       OPSGENIE_API_KEY: alchemy.secret(process.env.OPSGENIE_API_KEY),
       APP_ENV: stage,
-    }
+    },
   })
 }
-export type MonitorExecWorkerResource = Awaited<ReturnType<typeof createMonitorExecWorker>>
+export type MonitorExecWorkerResource = Awaited<
+  ReturnType<typeof createMonitorExecWorker>
+>
 
-export async function createMonitorTriggerWorker(resPrefix: string, db: DBResource, monitorExecWorker: MonitorExecWorkerResource) {
+export async function createMonitorTriggerWorker(
+  resPrefix: string,
+  db: DBResource,
+  monitorExecWorker: MonitorExecWorkerResource,
+) {
   const workerName = `${resPrefix}-monitor-trigger`
   return await Worker(workerName, {
     name: workerName,
@@ -33,11 +42,16 @@ export async function createMonitorTriggerWorker(resPrefix: string, db: DBResour
     bindings: {
       DB: db,
       MONITOR_EXEC: monitorExecWorker,
-      MONITOR_TRIGGER: new DurableObjectNamespace<MonitorTrigger>(`${workerName}-do`, {
-        className: "MonitorTrigger",
-        sqlite: true
-      }),
-    }
+      MONITOR_TRIGGER: new DurableObjectNamespace<MonitorTrigger>(
+        `${workerName}-do`,
+        {
+          className: "MonitorTrigger",
+          sqlite: true,
+        },
+      ),
+    },
   })
 }
-export type MonitorTriggerWorkerResource = Awaited<ReturnType<typeof createMonitorTriggerWorker>>
+export type MonitorTriggerWorkerResource = Awaited<
+  ReturnType<typeof createMonitorTriggerWorker>
+>

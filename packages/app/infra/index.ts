@@ -1,9 +1,17 @@
 import type { MonitorExecWorkerResource } from "@solstatus/api/infra"
-import type { DBResource, SessionsStorageKVResource } from "@solstatus/common/infra"
+import type {
+  DBResource,
+  SessionsStorageKVResource,
+} from "@solstatus/common/infra"
 import alchemy from "alchemy"
 import { Website } from "alchemy/cloudflare"
 
-export async function createApp(resPrefix: string, db: DBResource, sessionsStorageKV: SessionsStorageKVResource, monitorExecWorker: MonitorExecWorkerResource) {
+export async function createApp(
+  resPrefix: string,
+  db: DBResource,
+  sessionsStorageKV: SessionsStorageKVResource,
+  monitorExecWorker: MonitorExecWorkerResource,
+) {
   const appName = `${resPrefix}-app`
   const app = await Website(appName, {
     name: appName,
@@ -25,6 +33,6 @@ export async function createApp(resPrefix: string, db: DBResource, sessionsStora
     },
   })
   console.log(`${appName}: ${app.url}`)
-  return app  
+  return app
 }
 export type AppResource = Awaited<ReturnType<typeof createApp>>

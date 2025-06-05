@@ -4,12 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import type { endpointMonitorsSelectSchema } from "@solstatus/common/db"
 import { endpointMonitorsInsertDTOSchema } from "@solstatus/common/db"
 import { IconPlus } from "@tabler/icons-react"
+import { StatusCodes } from "http-status-codes"
 import React from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import {
-  StatusCodes,
-} from "http-status-codes"
 import type { z } from "zod"
 import { DEFAULT_TOAST_OPTIONS } from "#/lib/toasts"
 import { Button } from "#/registry/new-york-v4/ui/button"

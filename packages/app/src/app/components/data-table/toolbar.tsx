@@ -73,7 +73,9 @@ export function Toolbar({ table }: ToolbarProps) {
 
     // Construct the URL, omitting '?' if no parameters
     const queryString = newParams.toString()
-    const newUrl = queryString ? `${location.pathname}?${queryString}` : location.pathname
+    const newUrl = queryString
+      ? `${location.pathname}?${queryString}`
+      : location.pathname
 
     // Navigate to the new URL without scrolling
     navigate(newUrl, { replace: true })

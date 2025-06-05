@@ -114,19 +114,19 @@ export function Login({ ctx }: { ctx: AppContext }) {
   }
 
   const emailFormId = "email-form"
-  const emailForm = useForm<{ email: string}>({
+  const emailForm = useForm<{ email: string }>({
     // resolver: zodResolver(endpointMonitorsInsertDTOSchema),
     defaultValues: {
       email: "",
-    }
+    },
   })
 
   const otpFormId = "otp-form"
-  const otpForm = useForm<{ otp: string}>({
+  const otpForm = useForm<{ otp: string }>({
     // resolver: zodResolver(endpointMonitorsInsertDTOSchema),
     defaultValues: {
       otp: "",
-    }
+    },
   })
 
   return (
@@ -177,12 +177,7 @@ export function Login({ ctx }: { ctx: AppContext }) {
                   <FormMessage>{emailError}</FormMessage>
                 </FormItem>
 
-                {result && (
-                  <FormMessage
-                  >
-                    {result}
-                  </FormMessage>
-                )}
+                {result && <FormMessage>{result}</FormMessage>}
 
                 <Button type="submit" disabled={isPending} className="w-full">
                   {isPending ? "Sending Code..." : "Continue with Email"}
@@ -191,10 +186,7 @@ export function Login({ ctx }: { ctx: AppContext }) {
             </Form>
           ) : (
             <Form {...otpForm}>
-              <form
-                id={otpFormId}
-                onSubmit={handleVerifyOtp}
-              >
+              <form id={otpFormId} onSubmit={handleVerifyOtp}>
                 <FormItem>
                   <FormLabel htmlFor="otp">Verification Code</FormLabel>
                   <FormControl>
@@ -211,11 +203,7 @@ export function Login({ ctx }: { ctx: AppContext }) {
                   <FormMessage>{otpError}</FormMessage>
                 </FormItem>
 
-                {result && (
-                  <FormMessage>
-                    {result}
-                  </FormMessage>
-                )}
+                {result && <FormMessage>{result}</FormMessage>}
 
                 <div className="flex gap-3">
                   <Button

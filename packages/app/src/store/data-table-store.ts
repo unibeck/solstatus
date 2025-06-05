@@ -1,3 +1,4 @@
+import type { endpointMonitorsSelectSchema } from "@solstatus/common/db"
 import type {
   ColumnFiltersState,
   PaginationState,
@@ -7,7 +8,6 @@ import type {
 import { toast } from "sonner"
 import type { z } from "zod"
 import { create } from "zustand"
-import type { endpointMonitorsSelectSchema } from "@solstatus/common/db"
 import { DEFAULT_TOAST_OPTIONS } from "#/lib/toasts"
 
 interface DataTableState {

@@ -23,7 +23,7 @@ const META_THEME_COLORS = {
 
 export default function DashboardLayout({ children }: LayoutProps) {
   "use client"
-  
+
   const activeThemeValue = siteConfig.defaultTheme
   const isScaled = activeThemeValue?.endsWith("-scaled")
   const defaultOpen = true

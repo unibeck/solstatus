@@ -5,14 +5,17 @@ import type {
 } from "@solstatus/common/db"
 import { takeFirstOrNull, useDrizzle } from "@solstatus/common/db"
 import type { schema } from "@solstatus/common/db/schema"
-import { EndpointMonitorsTable, UptimeChecksTable } from "@solstatus/common/db/schema"
-import { createEndpointMonitorDownAlert, endpointSignature } from "@solstatus/common/utils"
+import {
+  EndpointMonitorsTable,
+  UptimeChecksTable,
+} from "@solstatus/common/db/schema"
+import {
+  createEndpointMonitorDownAlert,
+  endpointSignature,
+} from "@solstatus/common/utils"
 import { eq } from "drizzle-orm"
 import type { DrizzleD1Database } from "drizzle-orm/d1"
-import {
-  ReasonPhrases,
-  StatusCodes,
-} from "http-status-codes"
+import { ReasonPhrases, StatusCodes } from "http-status-codes"
 import type { z } from "zod"
 import type { MonitorExecEnv } from "#/infra/types/env"
 

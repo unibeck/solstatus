@@ -1,6 +1,4 @@
-export const createRoute = () => {
-  
-}
+export const createRoute = () => {}
 
 // export const createRoute = createZodRoute({
 //   handleServerError: (error: Error) => {

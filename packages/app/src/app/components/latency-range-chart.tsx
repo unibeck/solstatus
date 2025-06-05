@@ -1,3 +1,5 @@
+import type { uptimeChecksSelectSchema } from "@solstatus/common/db"
+import { msToHumanReadable } from "@solstatus/common/utils"
 import {
   format,
   getUnixTime,
@@ -20,8 +22,6 @@ import {
   YAxis,
 } from "recharts"
 import type { z } from "zod"
-import type { uptimeChecksSelectSchema } from "@solstatus/common/db"
-import { msToHumanReadable } from "@solstatus/common/utils"
 import type { TimeRange } from "#/types/endpointMonitor"
 
 const getTimeBucketStart = (timestampMs: number, range: TimeRange): number => {

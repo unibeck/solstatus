@@ -16,11 +16,15 @@ import { type Config, defineConfig } from "drizzle-kit"
 //   },
 // })
 
-export const createDatabaseConfig = (databaseId: string, accountId: string, token: string): Config => {
+export const createDatabaseConfig = (
+  databaseId: string,
+  accountId: string,
+  token: string,
+): Config => {
   console.log("databaseId", databaseId)
   return defineConfig({
-    out: resolve(__dirname, './migrations'),
-    schema: resolve(__dirname, './schema'),
+    out: resolve(__dirname, "./migrations"),
+    schema: resolve(__dirname, "./schema"),
     // out: "./migrations",
     // schema: "./schema",
     dialect: "sqlite",
@@ -30,5 +34,5 @@ export const createDatabaseConfig = (databaseId: string, accountId: string, toke
       accountId,
       token,
     },
-  });
-};
+  })
+}

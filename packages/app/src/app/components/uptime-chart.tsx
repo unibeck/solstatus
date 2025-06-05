@@ -1,5 +1,6 @@
 "use client"
 
+import type { uptimeChecksSelectSchema } from "@solstatus/common/db"
 import {
   format,
   getUnixTime,
@@ -24,7 +25,6 @@ import {
 } from "recharts"
 import type { z } from "zod"
 import { PolkaDots } from "#/app/components/bg-patterns/polka-dots"
-import type { uptimeChecksSelectSchema } from "@solstatus/common/db"
 import type { TimeRange } from "#/types/endpointMonitor"
 
 const getTimeBucketStart = (timestampMs: number, range: TimeRange): number => {
