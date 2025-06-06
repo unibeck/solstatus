@@ -1,5 +1,6 @@
 "use client"
 
+import { useId } from "react"
 import { useThemeConfig } from "#/app/components/active-theme"
 import { Label } from "#/registry/new-york-v4/ui/label"
 import {
@@ -52,6 +53,7 @@ const MONO_THEMES = [
 
 export function ThemeSelector() {
   const { activeTheme, setActiveTheme } = useThemeConfig()
+  const themeSelectorId = useId()
 
   return (
     <div className="flex items-center gap-2">
@@ -60,7 +62,7 @@ export function ThemeSelector() {
       </Label>
       <Select value={activeTheme} onValueChange={setActiveTheme}>
         <SelectTrigger
-          id="theme-selector"
+          id={themeSelectorId}
           size="sm"
           className="justify-start *:data-[slot=select-value]:w-12"
         >

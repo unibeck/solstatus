@@ -8,7 +8,7 @@ import {
   IconChevronsRight,
 } from "@tabler/icons-react"
 import type { Table } from "@tanstack/react-table"
-import React from "react"
+import React, { useId } from "react"
 import type { z } from "zod"
 import { Button } from "#/registry/new-york-v4/ui/button"
 import { Label } from "#/registry/new-york-v4/ui/label"
@@ -27,7 +27,7 @@ interface PaginationProps {
 
 export function Pagination({ table }: PaginationProps) {
   "use no memo"
-
+  const rowsPerPageId = useId()
   const pagination = useDataTableStore((state) => state.pagination)
   const totalEndpointMonitors = useDataTableStore(
     (state) => state.totalEndpointMonitors,
@@ -75,7 +75,7 @@ export function Pagination({ table }: PaginationProps) {
               table.setPageSize(size)
             }}
           >
-            <SelectTrigger size="sm" className="w-20" id="rows-per-page">
+            <SelectTrigger size="sm" className="w-20" id={rowsPerPageId}>
               <SelectValue placeholder={pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">

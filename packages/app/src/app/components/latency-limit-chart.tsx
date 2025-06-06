@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useId, useMemo, useState } from "react"
 import { Line, LineChart } from "recharts"
 import { Badge } from "#/registry/new-york-v4/ui/badge"
 import {
@@ -50,6 +50,7 @@ export function LatencyLimitChart({
 }: LatencyLimitChartProps) {
   const [data, setData] = useState<LatencyDataPoint[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const colorResponseTimeId = useId()
 
   useEffect(() => {
     const fetchLatencyData = async () => {
@@ -212,7 +213,7 @@ export function LatencyLimitChart({
             {/* Vertical gradient for stroke color (Inverted) */}
             {/* y1=100% (bottom), y2=0% (top) */}
             <linearGradient
-              id="colorResponseTime"
+              id={colorResponseTimeId}
               x1="0%"
               y1="100%"
               x2="0%"

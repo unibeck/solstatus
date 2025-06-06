@@ -1,7 +1,7 @@
 "use client"
 
 import { type Icon, IconBrightness } from "@tabler/icons-react"
-import React from "react"
+import React, { useId } from "react"
 import { useTheme } from "#/app/components/theme-provider"
 import {
   SidebarGroup,
@@ -26,6 +26,7 @@ export function NavSecondary({
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
+  const darkModeSwitchId = useId()
 
   React.useEffect(() => {
     setMounted(true)
@@ -66,7 +67,7 @@ export function NavSecondary({
                 <span>Dark Mode</span>
                 {mounted ? (
                   <Switch
-                    id="dark-mode-switch"
+                    id={darkModeSwitchId}
                     className="ml-auto"
                     checked={theme !== "light"}
                     onCheckedChange={() =>

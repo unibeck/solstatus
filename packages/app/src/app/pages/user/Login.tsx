@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useTransition } from "react"
+import { useId, useState, useTransition } from "react"
 import { useForm } from "react-hook-form"
 import { setupAuthClient } from "#/lib/auth-client"
 import { link } from "#/lib/links"
@@ -26,6 +26,10 @@ export function Login({ ctx }: { ctx: AppContext }) {
   const [emailError, setEmailError] = useState("")
   const [otpError, setOtpError] = useState("")
   const authClient = setupAuthClient(authUrl)
+
+  // Generate unique IDs for form inputs
+  const emailId = useId()
+  const otpId = useId()
 
   const validateEmail = (email: string) => {
     if (!email) {
@@ -163,10 +167,10 @@ export function Login({ ctx }: { ctx: AppContext }) {
                 /> */}
 
                 <FormItem>
-                  <FormLabel htmlFor="email">Email</FormLabel>
+                  <FormLabel htmlFor={emailId}>Email</FormLabel>
                   <FormControl>
                     <Input
-                      id="email"
+                      id={emailId}
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -188,10 +192,10 @@ export function Login({ ctx }: { ctx: AppContext }) {
             <Form {...otpForm}>
               <form id={otpFormId} onSubmit={handleVerifyOtp}>
                 <FormItem>
-                  <FormLabel htmlFor="otp">Verification Code</FormLabel>
+                  <FormLabel htmlFor={otpId}>Verification Code</FormLabel>
                   <FormControl>
                     <Input
-                      id="otp"
+                      id={otpId}
                       type="text"
                       value={otp}
                       onChange={(e) => setOtp(e.target.value)}

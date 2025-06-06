@@ -14,6 +14,7 @@ export const Document: React.FC<{ children: React.ReactNode }> = ({
       <link rel="stylesheet" href={theme} />
     </head>
     <body>
+      {/** biome-ignore lint/nursery/useUniqueElementIds: This is a root document and will not be reused */}
       <div id="root">{children}</div>
       <script>import("/src/client.tsx")</script>
     </body>
