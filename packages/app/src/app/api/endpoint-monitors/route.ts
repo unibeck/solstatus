@@ -1,18 +1,16 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare"
-import type { InitPayload } from "@solstatus/api"
+import type { InitPayload } from "@solstatus/api/monitor-trigger"
+import { 
+  endpointMonitorsInsertDTOSchema,
+  type endpointMonitorsSelectSchema,takeUniqueOrThrow, useDrizzle, } from "@solstatus/common/db"
+import { EndpointMonitorsTable } from "@solstatus/common/db/schema"
+import { createId, PRE_ID } from "@solstatus/common/utils"
 import { and, asc, count, desc, eq, like, sql } from "drizzle-orm"
 import type { SQLiteColumn } from "drizzle-orm/sqlite-core"
+import { StatusCodes } from "http-status-codes"
 import { NextResponse } from "next/server"
-import { CONFLICT } from "stoker/http-status-codes"
 import { z } from "zod"
-import { takeUniqueOrThrow, useDrizzle } from "@/db"
-import { EndpointMonitorsTable } from "@/db/schema"
-import {
-  endpointMonitorsInsertDTOSchema,
-  type endpointMonitorsSelectSchema,
-} from "@/db/zod-schema"
 import { createRoute } from "@/lib/api-utils"
-import { createId, PRE_ID } from "@/lib/ids"
 import { paginationQuerySchema } from "@/lib/route-schemas"
 import type { ConflictEndpointMonitorResponse } from "@/types/endpointMonitor"
 
@@ -162,7 +160,7 @@ export const POST = createRoute
           matchingEndpointMonitor: matchingWebsite,
         } as const satisfies ConflictEndpointMonitorResponse,
         {
-          status: CONFLICT,
+          status: StatusCodes.CONFLICT,
         },
       )
     }

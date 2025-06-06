@@ -1,9 +1,9 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare"
 import { and, count, desc, eq, gt, isNotNull } from "drizzle-orm"
 import { NextResponse } from "next/server"
-import { INTERNAL_SERVER_ERROR, OK } from "stoker/http-status-codes"
-import { takeFirstOrNull, takeUniqueOrThrow, useDrizzle } from "@/db"
-import { EndpointMonitorsTable, UptimeChecksTable } from "@/db/schema"
+import { StatusCodes } from "http-status-codes"
+import { takeFirstOrNull, takeUniqueOrThrow, useDrizzle } from "@solstatus/common/db"
+import { EndpointMonitorsTable, UptimeChecksTable } from "@solstatus/common/db/schema"
 import { createRoute } from "@/lib/api-utils"
 
 // TODO: re-enable this, but since we use createZodRoute this endpoint can't be rendered statically
@@ -87,14 +87,14 @@ export const GET = createRoute.handler(async (_request, _context) => {
         uptimePercentage: Math.round(uptimePercentage * 100) / 100,
       },
       {
-        status: OK,
+        status: StatusCodes.OK,
       },
     )
   } catch (error) {
     console.error("Error fetching dashboard statistics: ", error)
     return NextResponse.json(
       { error: "Failed to fetch dashboard statistics" },
-      { status: INTERNAL_SERVER_ERROR },
+      { status: StatusCodes.INTERNAL_SERVER_ERROR },
     )
   }
 })

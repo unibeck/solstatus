@@ -1,10 +1,10 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare"
-import type { InitPayload } from "@solstatus/api/src"
+import type { InitPayload } from "@solstatus/api/monitor-trigger"
+import { takeUniqueOrThrow, useDrizzle } from "@solstatus/common/db"
+import { EndpointMonitorsTable } from "@solstatus/common/db/schema"
 import { eq } from "drizzle-orm"
+import { StatusCodes } from "http-status-codes"
 import { NextResponse } from "next/server"
-import { OK } from "stoker/http-status-codes"
-import { takeUniqueOrThrow, useDrizzle } from "@/db"
-import { EndpointMonitorsTable } from "@/db/schema"
 import { createRoute } from "@/lib/api-utils"
 import { idStringParamsSchema } from "@/lib/route-schemas"
 
@@ -35,6 +35,6 @@ export const POST = createRoute
 
     return NextResponse.json(
       { message: "Initialized Monitor DO" },
-      { status: OK },
+      { status: StatusCodes.OK },
     )
   })

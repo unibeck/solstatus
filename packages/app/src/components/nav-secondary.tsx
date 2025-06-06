@@ -2,7 +2,7 @@
 
 import { type Icon, IconBrightness } from "@tabler/icons-react"
 import React, { useId } from "react"
-import { useTheme } from "@/components/theme-provider"
+import { useTheme } from "next-themes"
 import {
   SidebarGroup,
   SidebarGroupContent,

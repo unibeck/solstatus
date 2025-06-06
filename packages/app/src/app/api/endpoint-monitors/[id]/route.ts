@@ -1,15 +1,12 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare"
-import { eq } from "drizzle-orm"
-import { NextResponse } from "next/server"
-import { INTERNAL_SERVER_ERROR, NOT_FOUND, OK } from "stoker/http-status-codes"
-import { NOT_FOUND as NOT_FOUND_PHRASE } from "stoker/http-status-phrases"
-import type { z } from "zod"
-import { takeUniqueOrThrow, useDrizzle } from "@/db"
-import { EndpointMonitorsTable } from "@/db/schema"
-import {
+import { 
   endpointMonitorsPatchSchema,
-  type endpointMonitorsSelectSchema,
-} from "@/db/zod-schema"
+  type endpointMonitorsSelectSchema,takeUniqueOrThrow, useDrizzle, } from "@solstatus/common/db"
+import { EndpointMonitorsTable } from "@solstatus/common/db/schema"
+import { eq } from "drizzle-orm"
+import { ReasonPhrases, StatusCodes } from "http-status-codes"
+import { NextResponse } from "next/server"
+import type { z } from "zod"
 import { createRoute } from "@/lib/api-utils"
 import { idStringParamsSchema } from "@/lib/route-schemas"
 
@@ -41,14 +38,14 @@ export const GET = createRoute
       // TODO: Use HttpStatusCodes.INTERNAL_SERVER_ERROR
       return NextResponse.json(
         { error: "Failed to fetch endpointMonitor" },
-        { status: INTERNAL_SERVER_ERROR },
+        { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }
 
     if (!endpointMonitor) {
       return NextResponse.json(
-        { message: NOT_FOUND_PHRASE },
-        { status: NOT_FOUND },
+        { message: ReasonPhrases.NOT_FOUND },
+        { status: StatusCodes.NOT_FOUND },
       )
     }
 
@@ -90,16 +87,16 @@ export const PATCH = createRoute
       console.error("Error updating endpointMonitor: ", error)
       return NextResponse.json(
         { error: "Failed to update endpointMonitor" },
-        { status: INTERNAL_SERVER_ERROR },
+        { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }
 
     if (!updatedWebsite) {
       return NextResponse.json(
         {
-          message: NOT_FOUND_PHRASE,
+          message: ReasonPhrases.NOT_FOUND,
         },
-        { status: NOT_FOUND },
+        { status: StatusCodes.NOT_FOUND },
       )
     }
 
@@ -111,7 +108,7 @@ export const PATCH = createRoute
       updatedWebsite.checkInterval,
     )
 
-    return NextResponse.json(updatedWebsite, { status: OK })
+    return NextResponse.json(updatedWebsite, { status: StatusCodes.OK })
   })
 
 /**
@@ -139,7 +136,7 @@ export const DELETE = createRoute
       console.error("Error deleting endpointMonitor: ", error)
       return NextResponse.json(
         { error: "Failed to delete endpointMonitor" },
-        { status: INTERNAL_SERVER_ERROR },
+        { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }
 

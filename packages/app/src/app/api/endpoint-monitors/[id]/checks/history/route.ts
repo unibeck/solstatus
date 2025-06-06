@@ -1,9 +1,9 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare"
+import { useDrizzle } from "@solstatus/common/db"
+import { UptimeChecksTable } from "@solstatus/common/db/schema"
 import { and, desc, eq, sql } from "drizzle-orm"
+import { StatusCodes } from "http-status-codes"
 import { NextResponse } from "next/server"
-import { INTERNAL_SERVER_ERROR, OK } from "stoker/http-status-codes"
-import { useDrizzle } from "@/db"
-import { UptimeChecksTable } from "@/db/schema"
 import { createRoute } from "@/lib/api-utils"
 import { daysQuerySchema, idStringParamsSchema } from "@/lib/route-schemas"
 
@@ -41,12 +41,12 @@ export const GET = createRoute
         )
         .orderBy(desc(UptimeChecksTable.timestamp))
 
-      return NextResponse.json(results, { status: OK })
+      return NextResponse.json(results, { status: StatusCodes.OK })
     } catch (error) {
       console.error("Error fetching uptime checks history: ", error)
       return NextResponse.json(
         { error: "Failed to fetch uptime checks history" },
-        { status: INTERNAL_SERVER_ERROR },
+        { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }
   })

@@ -1,4 +1,4 @@
-import type { MonitorExecWorkerResource } from "@solstatus/api/infra"
+import type { MonitorExecWorkerResource, MonitorTriggerWorkerResource } from "@solstatus/api/infra"
 import type {
   DBResource,
   SessionsStorageKVResource,
@@ -11,6 +11,7 @@ export async function createApp(
   db: DBResource,
   sessionsStorageKV: SessionsStorageKVResource,
   monitorExecWorker: MonitorExecWorkerResource,
+  monitorTriggerWorker: MonitorTriggerWorkerResource,
 ) {
   const appName = `${resPrefix}-app`
   const app = await Website(appName, {
@@ -30,6 +31,7 @@ export async function createApp(
       SESSIONS_KV: sessionsStorageKV,
       BETTER_AUTH_SECRET: alchemy.secret(process.env.BETTER_AUTH_SECRET),
       MONITOR_EXEC: monitorExecWorker,
+      MONITOR_TRIGGER_RPC: monitorTriggerWorker,
     },
   })
   console.log(`${appName}: ${app.url}`)

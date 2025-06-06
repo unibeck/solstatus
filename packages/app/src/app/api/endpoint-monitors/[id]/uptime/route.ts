@@ -1,11 +1,11 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare"
+import type { uptimeChecksSelectSchema } from "@solstatus/common/db"
+import { takeUniqueOrThrow, useDrizzle } from "@solstatus/common/db"
+import { UptimeChecksTable } from "@solstatus/common/db/schema"
 import { desc, eq } from "drizzle-orm"
+import { StatusCodes } from "http-status-codes"
 import { NextResponse } from "next/server"
-import { INTERNAL_SERVER_ERROR, OK } from "stoker/http-status-codes"
 import type { z } from "zod"
-import { takeUniqueOrThrow, useDrizzle } from "@/db"
-import { UptimeChecksTable } from "@/db/schema"
-import type { uptimeChecksSelectSchema } from "@/db/zod-schema"
 import { createRoute } from "@/lib/api-utils"
 import { idStringParamsSchema } from "@/lib/route-schemas"
 
@@ -35,14 +35,14 @@ export const GET = createRoute
         .limit(1)
         .then(takeUniqueOrThrow)
 
-      return NextResponse.json(result, { status: OK })
+      return NextResponse.json(result, { status: StatusCodes.OK })
     } catch (error) {
       console.error(
         `Error getting latest uptime check for endpointMonitor [${endpointMonitorId}]: ${error}`,
       )
       return NextResponse.json(
         { error: "Failed to get latest uptime check" },
-        { status: INTERNAL_SERVER_ERROR },
+        { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }
   })

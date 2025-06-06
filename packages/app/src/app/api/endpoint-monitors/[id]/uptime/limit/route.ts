@@ -1,11 +1,11 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare"
 import { and, desc, eq, isNotNull } from "drizzle-orm"
 import { NextResponse } from "next/server"
-import { INTERNAL_SERVER_ERROR, OK } from "stoker/http-status-codes"
+import { StatusCodes } from "http-status-codes"
 import { z } from "zod"
-import { useDrizzle } from "@/db"
-import { UptimeChecksTable } from "@/db/schema"
-import type { uptimeChecksSelectSchema } from "@/db/zod-schema"
+import { useDrizzle } from "@solstatus/common/db"
+import { UptimeChecksTable } from "@solstatus/common/db/schema"
+import type { uptimeChecksSelectSchema } from "@solstatus/common/db"
 import { createRoute } from "@/lib/api-utils"
 import { idStringParamsSchema } from "@/lib/route-schemas"
 
@@ -48,12 +48,12 @@ export const GET = createRoute
         // reverse the results put it back in chronological order
         .then((results) => results.reverse())
 
-      return NextResponse.json(results, { status: OK })
+      return NextResponse.json(results, { status: StatusCodes.OK })
     } catch (error) {
       console.error("Error fetching latency data: ", error)
       return NextResponse.json(
         { error: "Failed to fetch latency data" },
-        { status: INTERNAL_SERVER_ERROR },
+        { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }
   })

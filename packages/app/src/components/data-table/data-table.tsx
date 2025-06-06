@@ -1,5 +1,4 @@
 "use client"
-
 import {
   type ColumnFiltersState,
   flexRender,
@@ -16,6 +15,7 @@ import {
   useReactTable,
   type VisibilityState,
 } from "@tanstack/react-table"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import React from "react"
 import {
   Table,
@@ -33,7 +33,6 @@ import { DataTableLoadingOverlay } from "./data-table-loading-overlay"
 import { DataTableSkeleton } from "./data-table-skeleton"
 import { Pagination } from "./pagination"
 import { Toolbar } from "./toolbar"
-import { buildUrlWithParams, parseUrlParams, type UrlParams } from "./url-utils"
 
 // Default pagination values
 const DEFAULT_PAGE_INDEX = 0
@@ -42,10 +41,9 @@ const DEFAULT_PAGE_SIZE = 10
 export function DataTable() {
   "use no memo"
 
-  // Get current URL params on component mount
-  const [currentUrlParams, setCurrentUrlParams] = React.useState<UrlParams>(
-    () => parseUrlParams(),
-  )
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   // Get state and actions from the store
   const data = useDataTableStore((state) => state.data)
@@ -59,19 +57,6 @@ export function DataTable() {
   const sorting = useDataTableStore((state) => state.sorting)
   const pagination = useDataTableStore((state) => state.pagination)
 
-  // Navigate to new URL with updated params
-  const navigateToUrl = React.useCallback(
-    (params: Partial<UrlParams>) => {
-      const newUrlParams = { ...currentUrlParams, ...params }
-      const newUrl = buildUrlWithParams(newUrlParams)
-
-      // Update browser history without page reload
-      window.history.pushState(null, "", newUrl)
-      setCurrentUrlParams(newUrlParams)
-    },
-    [currentUrlParams],
-  )
-
   // Update URL with query params, omitting default values
   const updateUrlParams = React.useCallback(
     (params: {
@@ -81,32 +66,72 @@ export function DataTable() {
       orderBy?: string
       order?: "asc" | "desc"
     }) => {
-      // Handle page parameter - set to undefined to remove from URL if default
-      const pageParam =
-        params.page === DEFAULT_PAGE_INDEX ? undefined : params.page
+      const newParams = new URLSearchParams(searchParams.toString())
 
-      // Handle pageSize parameter - set to undefined to remove from URL if default
-      const pageSizeParam =
-        params.pageSize === DEFAULT_PAGE_SIZE ? undefined : params.pageSize
+      // Handle page parameter - only include if not default (0)
+      if (params.page !== undefined) {
+        if (params.page === DEFAULT_PAGE_INDEX) {
+          newParams.delete("page")
+        } else {
+          newParams.set("page", params.page.toString())
+        }
+      }
 
-      // Handle search parameter - set to undefined to remove from URL if empty
-      const searchParam = params.search || undefined
+      // Handle pageSize parameter - only include if not default (10)
+      if (params.pageSize !== undefined) {
+        if (params.pageSize === DEFAULT_PAGE_SIZE) {
+          newParams.delete("pageSize")
+        } else {
+          newParams.set("pageSize", params.pageSize.toString())
+        }
+      }
+
+      // Handle search parameter - only include if not empty
+      if (params.search !== undefined) {
+        if (params.search) {
+          newParams.set("search", params.search)
+        } else {
+          newParams.delete("search")
+        }
+      }
 
       // Handle sorting parameters, omitting defaults
       const isDefaultSort =
         params.orderBy === "consecutiveFailures" && params.order === "desc"
-      const orderByParam = isDefaultSort ? undefined : params.orderBy
-      const orderParam = isDefaultSort ? undefined : params.order
 
-      navigateToUrl({
-        page: pageParam,
-        pageSize: pageSizeParam,
-        search: searchParam,
-        orderBy: orderByParam,
-        order: orderParam,
-      })
+      if (params.orderBy === undefined && params.order === undefined) {
+        // No sorting params passed in this update, existing ones remain or are absent
+      } else if (isDefaultSort) {
+        // If the intended sort IS the default, ensure the params are removed from URL
+        newParams.delete("orderBy")
+        newParams.delete("order")
+      } else {
+        // If the intended sort is NOT the default, set the params
+        if (params.orderBy) {
+          newParams.set("orderBy", params.orderBy)
+          // Set order; if order is missing, it defaults to 'asc' implicitly by API,
+          // but we can be explicit or remove it. Removing is cleaner.
+          if (params.order) {
+            newParams.set("order", params.order)
+          } else {
+            newParams.delete("order") // Remove order if not specified for non-default orderBy
+          }
+        } else {
+          // Clearing sort explicitly (orderBy is '', null, or undefined)
+          // Revert to default by removing params.
+          newParams.delete("orderBy")
+          newParams.delete("order")
+        }
+      }
+
+      // Construct the new URL, omitting '?' if no parameters
+      const queryString = newParams.toString()
+      const newUrl = queryString ? `${pathname}?${queryString}` : pathname
+
+      // @ts-ignore - Ignoring type error as pathname comes from usePathname and we know it's is a valid typed route
+      router.push(newUrl, { scroll: false })
     },
-    [navigateToUrl],
+    [pathname, searchParams, router],
   )
 
   // Handle state changes with proper typing
@@ -171,7 +196,7 @@ export function DataTable() {
       newPagination = updater
     }
 
-    // Remove manual scroll - let browser handle it
+    // Remove manual scroll - let router.push handle it
     // scrollContainerRef.current?.scrollTo({ top: 0, behavior: 'auto' });
 
     // Always set the new pagination in the store
@@ -189,7 +214,11 @@ export function DataTable() {
 
   // Initialize from URL params on first load
   React.useEffect(() => {
-    const urlParams = parseUrlParams()
+    const pageParam = searchParams.get("page")
+    const pageSizeParam = searchParams.get("pageSize")
+    const searchParam = searchParams.get("search")
+    const orderByParam = searchParams.get("orderBy")
+    const orderParam = searchParams.get("order")
 
     const store = useDataTableStore.getState()
     let needsUpdate = false
@@ -197,9 +226,12 @@ export function DataTable() {
     // Update pagination from URL if present and different from store
     const currentPageIndex = store.pagination.pageIndex
     const currentPageSize = store.pagination.pageSize
-    const targetPageIndex = urlParams.page ?? DEFAULT_PAGE_INDEX
-    const targetPageSize = urlParams.pageSize ?? DEFAULT_PAGE_SIZE
-
+    const targetPageIndex = pageParam
+      ? Number.parseInt(pageParam, 10)
+      : DEFAULT_PAGE_INDEX
+    const targetPageSize = pageSizeParam
+      ? Number.parseInt(pageSizeParam, 10)
+      : DEFAULT_PAGE_SIZE
     if (
       targetPageIndex !== currentPageIndex ||
       targetPageSize !== currentPageSize
@@ -213,7 +245,7 @@ export function DataTable() {
 
     // Update search from URL if present and different from store
     const currentSearchValue = store.searchValue
-    const targetSearchValue = urlParams.search ?? ""
+    const targetSearchValue = searchParam ?? ""
     if (targetSearchValue !== currentSearchValue) {
       store.setSearchValue(targetSearchValue)
       needsUpdate = true
@@ -221,11 +253,11 @@ export function DataTable() {
 
     // Update sorting from URL if present and different from store
     const currentSorting = store.sorting
-    if (urlParams.orderBy) {
+    if (orderByParam) {
       const targetSorting: SortingState = [
         {
-          id: urlParams.orderBy,
-          desc: urlParams.order === "desc",
+          id: orderByParam,
+          desc: orderParam === "desc",
         },
       ]
       // Check if targetSorting is different from currentSorting
@@ -251,7 +283,7 @@ export function DataTable() {
       // Fetch if state changed or data is empty
       store.fetchEndpointMonitors()
     }
-  }, []) // Empty dependency array for mount-only effect
+  }, [searchParams]) // Only depend on searchParams
 
   const table = useReactTable({
     data,

@@ -1,9 +1,9 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare"
+import { takeUniqueOrThrow, useDrizzle } from "@solstatus/common/db"
+import { EndpointMonitorsTable } from "@solstatus/common/db/schema"
 import { and, count, eq, like, sql } from "drizzle-orm"
 import { NextResponse } from "next/server"
 import { z } from "zod"
-import { takeUniqueOrThrow, useDrizzle } from "@/db"
-import { EndpointMonitorsTable } from "@/db/schema"
 import { createRoute } from "@/lib/api-utils"
 
 /**
