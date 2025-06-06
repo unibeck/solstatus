@@ -1,9 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
   "include": [
+    "./infra/**/*.ts",
     "./src/**/*.ts",
     "./src/**/*.tsx",
-    "./infra/**/*.ts"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
@@ -20,15 +21,32 @@
     "baseUrl": "./",
     "rootDir": "./",
     "paths": {
-      "#/infra/*": ["./infra/*"],
-      "#/*": ["./src/*"]
+      "#/infra/*": [
+        "./infra/*"
+      ],
+      "#/*": [
+        "./src/*"
+      ]
     },
     "outDir": "./dist",
     "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
-    "jsx": "react-jsx"
+    "jsx": "preserve",
+    "allowJs": true,
+    "incremental": true,
+    "module": "esnext",
+    "esModuleInterop": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "references": [
-    { "path": "../common" },
-    { "path": "../api" }
+    {
+      "path": "../common"
+    },
+    {
+      "path": "../api"
+    }
   ]
 }

@@ -23,7 +23,7 @@ node_modules
 dist
 .output
 .out
-.vite
+.next
 
 # Misc
 .DS_Store

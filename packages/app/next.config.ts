@@ -28,6 +28,7 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/*": ["./registry/**/*"],
   },
+  // transpilePackages: ["@solstatus/common"],
   experimental: {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
