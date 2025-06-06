@@ -4,6 +4,7 @@ import { defineApp } from "rwsdk/worker"
 import { Document } from "#/app/document/Document"
 import { setCommonHeaders } from "#/app/document/headers"
 import DashboardLayout from "#/app/layouts/DashboardLayout"
+import DashboardLayout2 from "#/app/layouts/DashboardLayout2"
 import Dashboard from "#/app/pages/dashboard/Dashboard"
 import { Home } from "#/app/pages/Home"
 import { userRoutes } from "#/app/pages/user/routes"
@@ -51,8 +52,12 @@ export default defineApp([
   }),
 
   render(Document, [
-    layout(DashboardLayout, [
+    layout(DashboardLayout2, [
       route("/", Dashboard),
+      // index(Dashboard)
+    ]),
+    layout(DashboardLayout, [
+      route("/alt", Dashboard),
       // index(Dashboard)
     ]),
     route("/home", [isAuthenticated, Home]),
