@@ -8,7 +8,7 @@ import {
 import { diffable } from "diffable-objects"
 import { eq } from "drizzle-orm"
 import { ReasonPhrases, StatusCodes } from "http-status-codes"
-import type { MonitorTriggerEnv } from "#/infra/types/env"
+import type { MonitorTriggerEnv } from "@/infra/types/env"
 
 // Define types for state and init payload
 type MonitorType = "endpoint" | "synthetic"

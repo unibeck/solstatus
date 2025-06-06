@@ -13,7 +13,7 @@ import {
   IconTrendingUp,
 } from "@tabler/icons-react"
 import { useEffect } from "react"
-import { Badge } from "#/registry/new-york-v4/ui/badge"
+import { Badge } from "@/registry/new-york-v4/ui/badge"
 import {
   Card,
   CardAction,
@@ -21,8 +21,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "#/registry/new-york-v4/ui/card"
-import { useStatsStore } from "#/store/dashboard-stats-store" // Corrected import path if necessary
+} from "@/registry/new-york-v4/ui/card"
+import { useStatsStore } from "@/store/dashboard-stats-store" // Corrected import path if necessary
 
 export function SectionCards() {
   // Select the state directly

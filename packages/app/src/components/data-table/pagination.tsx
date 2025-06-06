@@ -10,16 +10,16 @@ import {
 import type { Table } from "@tanstack/react-table"
 import React, { useId } from "react"
 import type { z } from "zod"
-import { Button } from "#/registry/new-york-v4/ui/button"
-import { Label } from "#/registry/new-york-v4/ui/label"
+import { Button } from "@/registry/new-york-v4/ui/button"
+import { Label } from "@/registry/new-york-v4/ui/label"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "#/registry/new-york-v4/ui/select"
-import { useDataTableStore } from "#/store/data-table-store"
+} from "@/registry/new-york-v4/ui/select"
+import { useDataTableStore } from "@/store/data-table-store"
 
 interface PaginationProps {
   table: Table<z.infer<typeof endpointMonitorsSelectSchema>>

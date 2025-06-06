@@ -17,9 +17,9 @@ import { formatDistance } from "date-fns"
 import type * as React from "react"
 import { useEffect, useState } from "react"
 import type { z } from "zod"
-import { useIsMobile } from "#/registry/new-york-v4/hooks/use-mobile"
-import { Badge } from "#/registry/new-york-v4/ui/badge"
-import { Button } from "#/registry/new-york-v4/ui/button"
+import { useIsMobile } from "@/registry/new-york-v4/hooks/use-mobile"
+import { Badge } from "@/registry/new-york-v4/ui/badge"
+import { Button } from "@/registry/new-york-v4/ui/button"
 import {
   Drawer,
   DrawerClose,
@@ -29,14 +29,14 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "#/registry/new-york-v4/ui/drawer"
-import { Separator } from "#/registry/new-york-v4/ui/separator"
+} from "@/registry/new-york-v4/ui/drawer"
+import { Separator } from "@/registry/new-york-v4/ui/separator"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "#/registry/new-york-v4/ui/tooltip"
+} from "@/registry/new-york-v4/ui/tooltip"
 import {
   handleDeleteWebsite,
   handlePauseMonitoring,

@@ -24,8 +24,8 @@ import {
   YAxis,
 } from "recharts"
 import type { z } from "zod"
-import { PolkaDots } from "#/components/bg-patterns/polka-dots"
-import type { TimeRange } from "#/types/endpointMonitor"
+import { PolkaDots } from "@/components/bg-patterns/polka-dots"
+import type { TimeRange } from "@/types/endpointMonitor"
 
 const getTimeBucketStart = (timestampMs: number, range: TimeRange): number => {
   const date = new Date(timestampMs)

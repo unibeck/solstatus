@@ -17,10 +17,10 @@ import {
   IconTargetArrow,
 } from "@tabler/icons-react"
 import type * as React from "react"
-import SolStatusLogo from "#/components/icons/solstatus-logo"
+import SolStatusLogo from "@/components/icons/solstatus-logo"
 
-import { NavMain } from "#/components/nav-main"
-import { NavSecondary } from "#/components/nav-secondary"
+import { NavMain } from "@/components/nav-main"
+import { NavSecondary } from "@/components/nav-secondary"
 import {
   Sidebar,
   SidebarContent,
@@ -29,7 +29,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "#/registry/new-york-v4/ui/sidebar"
+} from "@/registry/new-york-v4/ui/sidebar"
 
 const data = {
   navMain: [

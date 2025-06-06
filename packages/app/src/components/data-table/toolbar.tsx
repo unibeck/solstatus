@@ -8,20 +8,20 @@ import {
   IconX,
 } from "@tabler/icons-react"
 import type { Table } from "@tanstack/react-table"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import type * as React from "react"
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
 import { useDebouncedCallback } from "use-debounce"
 import type { z } from "zod"
-import type { AppColumnDef } from "#/components/data-table/columns"
-import { Button } from "#/registry/new-york-v4/ui/button"
+import type { AppColumnDef } from "@/components/data-table/columns"
+import { Button } from "@/registry/new-york-v4/ui/button"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "#/registry/new-york-v4/ui/dropdown-menu"
-import { Input } from "#/registry/new-york-v4/ui/input"
-import { useDataTableStore } from "#/store/data-table-store"
+} from "@/registry/new-york-v4/ui/dropdown-menu"
+import { Input } from "@/registry/new-york-v4/ui/input"
+import { useDataTableStore } from "@/store/data-table-store"
 
 interface ToolbarProps {
   table: Table<z.infer<typeof endpointMonitorsSelectSchema>>
@@ -31,9 +31,9 @@ interface ToolbarProps {
 export function Toolbar({ table }: ToolbarProps) {
   "use no memo"
 
-  const navigate = useNavigate()
-  const location = useLocation()
-  const [searchParams] = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   // Get state and actions from the store
   const searchValue = useDataTableStore((state) => state.searchValue)
@@ -73,12 +73,10 @@ export function Toolbar({ table }: ToolbarProps) {
 
     // Construct the URL, omitting '?' if no parameters
     const queryString = newParams.toString()
-    const newUrl = queryString
-      ? `${location.pathname}?${queryString}`
-      : location.pathname
+    const newUrl = queryString ? `${pathname}?${queryString}` : pathname
 
-    // Navigate to the new URL without scrolling
-    navigate(newUrl, { replace: true })
+    // @ts-ignore - Ignoring type error as pathname comes from usePathname and we know it's is a valid typed route
+    router.push(newUrl, { scroll: false })
   }
 
   // Update search value

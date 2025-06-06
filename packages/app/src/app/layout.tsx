@@ -1,22 +1,22 @@
 import type { Metadata, Viewport } from "next"
 import { cookies } from "next/headers"
-import { siteConfig } from "#/app/site"
-import { AppSidebar } from "#/components/app-sidebar"
-import { SiteHeader } from "#/components/site-header"
-import { ThemeProvider } from "#/components/theme-provider"
+import { siteConfig } from "@/app/site"
+import { AppSidebar } from "@/components/app-sidebar"
+import { SiteHeader } from "@/components/site-header"
+import { ThemeProvider } from "@/components/theme-provider"
 import {
   SidebarInset,
   SidebarProvider,
-} from "#/registry/new-york-v4/ui/sidebar"
-import { Toaster } from "#/registry/new-york-v4/ui/sonner"
+} from "@/registry/new-york-v4/ui/sidebar"
+import { Toaster } from "@/registry/new-york-v4/ui/sonner"
 
 import "@/app/globals.css"
 import "@/app/theme.css"
 
 import { PROD_FQDN } from "@solstatus/common/utils"
-import { ActiveThemeProvider } from "#/components/active-theme"
-import { HeaderProvider } from "#/context/header-context"
-import { cn } from "#/lib/utils"
+import { ActiveThemeProvider } from "@/components/active-theme"
+import { HeaderProvider } from "@/context/header-context"
+import { cn } from "@/lib/utils"
 
 const META_THEME_COLORS = {
   light: "#ffffff",

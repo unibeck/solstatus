@@ -2,9 +2,9 @@
 
 import { IconBrightness } from "@tabler/icons-react"
 import React from "react"
-import { useTheme } from "#/components/theme-provider"
+import { useTheme } from "@/components/theme-provider"
 
-import { Button } from "#/registry/new-york-v4/ui/button"
+import { Button } from "@/registry/new-york-v4/ui/button"
 
 export function ModeToggle() {
   const { theme, setTheme } = useTheme()

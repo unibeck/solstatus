@@ -11,7 +11,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "#/registry/new-york-v4/ui/sidebar"
+} from "@/registry/new-york-v4/ui/sidebar"
 
 export function NavMain({
   items,

@@ -1,6 +1,6 @@
 "use client"
 
-import { Skeleton } from "#/registry/new-york-v4/ui/skeleton"
+import { Skeleton } from "@/registry/new-york-v4/ui/skeleton"
 import {
   Table,
   TableBody,
@@ -8,7 +8,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "#/registry/new-york-v4/ui/table"
+} from "@/registry/new-york-v4/ui/table"
 
 interface DataTableSkeletonProps {
   columnCount?: number

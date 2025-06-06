@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "imports": {
-    "#/*": "./src/*",
-    "#/infra/*": "./infra/*"
+    "@/*": "./src/*",
+    "@/infra/*": "./infra/*"
   },
   "exports": {
     "./infra": "./infra/index.ts",

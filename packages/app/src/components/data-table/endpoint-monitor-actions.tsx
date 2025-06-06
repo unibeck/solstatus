@@ -1,7 +1,7 @@
 "use client"
 
 import { toast } from "sonner"
-import { DEFAULT_TOAST_OPTIONS } from "#/lib/toasts"
+import { DEFAULT_TOAST_OPTIONS } from "@/lib/toasts"
 
 export async function handleResumeMonitoring(endpointMonitorId: string) {
   return handleToggleStatus(endpointMonitorId, true)

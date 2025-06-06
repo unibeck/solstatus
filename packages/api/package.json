@@ -3,8 +3,8 @@
   "version": "2.0.0",
   "private": true,
   "imports": {
-    "#/infra/*": "./infra/*",
-    "#/*": "./src/*"
+    "@/infra/*": "./infra/*",
+    "@/*": "./src/*"
   },
   "exports": {
     ".": "./src/index.ts",

@@ -14,7 +14,7 @@ import {
   IconTrendingUp,
 } from "@tabler/icons-react"
 import type { z } from "zod"
-import { Badge } from "#/registry/new-york-v4/ui/badge"
+import { Badge } from "@/registry/new-york-v4/ui/badge"
 import {
   Card,
   CardAction,
@@ -22,7 +22,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "#/registry/new-york-v4/ui/card"
+} from "@/registry/new-york-v4/ui/card"
 
 interface WebsiteSectionCardsProps {
   endpointMonitor: z.infer<typeof endpointMonitorsSelectSchema>

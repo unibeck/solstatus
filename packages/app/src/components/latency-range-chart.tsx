@@ -22,7 +22,7 @@ import {
   YAxis,
 } from "recharts"
 import type { z } from "zod"
-import type { TimeRange } from "#/types/endpointMonitor"
+import type { TimeRange } from "@/types/endpointMonitor"
 
 const getTimeBucketStart = (timestampMs: number, range: TimeRange): number => {
   const date = new Date(timestampMs)

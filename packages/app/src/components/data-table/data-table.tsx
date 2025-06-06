@@ -24,9 +24,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "#/registry/new-york-v4/ui/table"
-import { Tabs, TabsContent } from "#/registry/new-york-v4/ui/tabs"
-import { useDataTableStore } from "#/store/data-table-store"
+} from "@/registry/new-york-v4/ui/table"
+import { Tabs, TabsContent } from "@/registry/new-york-v4/ui/tabs"
+import { useDataTableStore } from "@/store/data-table-store"
 import { columns } from "./columns"
 import { DataRow } from "./data-row"
 import { DataTableLoadingOverlay } from "./data-table-loading-overlay"

@@ -8,7 +8,7 @@ import type {
 import { toast } from "sonner"
 import type { z } from "zod"
 import { create } from "zustand"
-import { DEFAULT_TOAST_OPTIONS } from "#/lib/toasts"
+import { DEFAULT_TOAST_OPTIONS } from "@/lib/toasts"
 
 interface DataTableState {
   // Data

@@ -9,8 +9,8 @@ import React from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import type { z } from "zod"
-import { DEFAULT_TOAST_OPTIONS } from "#/lib/toasts"
-import { Button } from "#/registry/new-york-v4/ui/button"
+import { DEFAULT_TOAST_OPTIONS } from "@/lib/toasts"
+import { Button } from "@/registry/new-york-v4/ui/button"
 import {
   Dialog,
   DialogClose,
@@ -20,7 +20,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "#/registry/new-york-v4/ui/dialog"
+} from "@/registry/new-york-v4/ui/dialog"
 import {
   Form,
   FormControl,
@@ -29,16 +29,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "#/registry/new-york-v4/ui/form"
-import { Input } from "#/registry/new-york-v4/ui/input"
+} from "@/registry/new-york-v4/ui/form"
+import { Input } from "@/registry/new-york-v4/ui/input"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "#/registry/new-york-v4/ui/select"
-import type { ConflictEndpointMonitorResponse } from "#/types/endpointMonitor"
+} from "@/registry/new-york-v4/ui/select"
+import type { ConflictEndpointMonitorResponse } from "@/types/endpointMonitor"
 
 type WebsiteFormData = z.infer<typeof endpointMonitorsInsertDTOSchema>
 type WebsiteData = z.infer<typeof endpointMonitorsSelectSchema>

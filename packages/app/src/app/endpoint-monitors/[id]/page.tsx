@@ -12,25 +12,25 @@ import Link from "next/link"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
 import type { z } from "zod"
-import { EndpointMonitorDetailHeader } from "#/components/endpoint-monitor-detail-header"
-import { EndpointMonitorSectionCards } from "#/components/endpoint-monitor-section-cards"
-import LatencyRangeChart from "#/components/latency-range-chart"
-import { UptimeChart } from "#/components/uptime-chart"
+import { EndpointMonitorDetailHeader } from "@/components/endpoint-monitor-detail-header"
+import { EndpointMonitorSectionCards } from "@/components/endpoint-monitor-section-cards"
+import LatencyRangeChart from "@/components/latency-range-chart"
+import { UptimeChart } from "@/components/uptime-chart"
 import {
   defaultHeaderContent,
   useHeaderContext,
-} from "#/context/header-context"
-import { Badge } from "#/registry/new-york-v4/ui/badge"
-import { Button } from "#/registry/new-york-v4/ui/button"
-import { Card, CardContent } from "#/registry/new-york-v4/ui/card"
-import { Tabs, TabsList, TabsTrigger } from "#/registry/new-york-v4/ui/tabs"
+} from "@/context/header-context"
+import { Badge } from "@/registry/new-york-v4/ui/badge"
+import { Button } from "@/registry/new-york-v4/ui/button"
+import { Card, CardContent } from "@/registry/new-york-v4/ui/card"
+import { Tabs, TabsList, TabsTrigger } from "@/registry/new-york-v4/ui/tabs"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "#/registry/new-york-v4/ui/tooltip"
-import type { TimeRange } from "#/types/endpointMonitor"
+} from "@/registry/new-york-v4/ui/tooltip"
+import type { TimeRange } from "@/types/endpointMonitor"
 
 // Define the type for a single uptime check
 type LatestUptimeCheck = z.infer<typeof uptimeChecksSelectSchema>
