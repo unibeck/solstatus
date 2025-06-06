@@ -15,8 +15,7 @@
       "@types/node",
       "@cloudflare/workers-types",
       "./types/env.d.ts",
-      "./types/rw.d.ts",
-      "./types/vite.d.ts"
+      "./types/next-env.d.ts"
     ],
     "baseUrl": "./",
     "rootDir": "./",
