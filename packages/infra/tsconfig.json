@@ -1,0 +1,28 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
+  "compilerOptions": {
+    "types": [
+      "@types/node",
+      "@cloudflare/workers-types"
+    ],
+    "baseUrl": "./",
+    "rootDir": "./src",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "outDir": "./dist",
+    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
+  },
+  "references": [
+    { "path": "../api" },
+    { "path": "../app" },
+    { "path": "../common" }
+  ]
+}

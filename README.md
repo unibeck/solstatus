@@ -12,6 +12,36 @@ An uptime monitoring service that is easy and cheap to run at scale. Create endp
 
 TODO: expectations for cost
 
+## v2 TODO:
+- Release notes:
+    - Imperative to update to latest v1.x version before upgrading to v2
+    - Migration code for a breaking change from v1.5 to v1.6 has been removed 
+- [x] fix useform ssr
+- [] Fix fonts
+- [x] implement bun workspaces/catalog
+- [x] Reconsider pnpm in favor of bun
+- [x] fix monorepo deps and types
+- [x] use https://www.npmjs.com/package/http-status-codes instead of stoker
+- [x] remove all next/nextjs references
+- [] move all app/api endpoints to server functions (https://x.com/nickbalestra/status/1928208187515359429)
+- [] react compiler
+- [] move src/app/components back to src/components (pending https://discord.com/channels/679514959968993311/1374981422925746236)
+- [] app version
+- [x] rpc type inference https://x.com/samgoodwin89/status/1928040299030343994
+- [] update CI
+- [x] circular dependency (api -> infra -> api) via tsconfig.json references
+    - accomplish this by moving api specific infra to the api package, common infra to the common package, and app specific infra to the app package. 
+    - The infra package will then be a package that combines all of the infra code together(?)
+- [x] catalog all drizzle libs
+- [] update readmes
+- [] parameterize init script
+  - PRE_FQDN/PROD_FQDN
+  - CLOUDFLARE_ACCOUNT_ID
+  - CLOUDFLARE_DATABASE_ID
+
+## v2.1 TODO:
+- [] Worker for Platforms to create a new worker per synthetic monitor (https://x.com/samgoodwin89/status/1926034269543035252)
+
 ## Quick Deploy
 
 0) Fork the repo

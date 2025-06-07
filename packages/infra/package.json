@@ -1,0 +1,32 @@
+{
+  "name": "@solstatus/infra",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "@/*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/alchemy.run.ts"
+  },
+  "scripts": {
+    "infra:up": "pnpm exec ./src/alchemy.run.ts",
+    "infra:destroy": "pnpm exec ./src/alchemy.run.ts destroy",
+    "format": "biome check . --write",
+    "types": "tsc"
+  },
+  "dependencies": {
+    "@solstatus/api": "workspace:*",
+    "@solstatus/app": "workspace:*",
+    "@solstatus/common": "workspace:*",
+    "alchemy": "catalog:"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@cloudflare/workers-types": "catalog:",
+    "typescript": "catalog:",
+    "@types/node": "catalog:",
+    "wrangler": "catalog:",
+    "dotenv": "catalog:"
+  }
+}
