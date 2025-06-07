@@ -2,7 +2,6 @@
   "name": "@solstatus/common",
   "version": "2.0.0",
   "private": true,
-  "type": "module",
   "imports": {
     "@/*": "./src/*",
     "@/infra/*": "./infra/*"
@@ -10,7 +9,8 @@
   "exports": {
     "./infra": "./infra/index.ts",
     "./drizzle": "./src/db/drizzle.config.ts",
-    "./*": "./src/*/index.ts"
+    "./db": "./src/db/index.ts",
+    "./db/*": "./src/db/*.ts"
   },
   "scripts": {
     "format": "biome check . --write",

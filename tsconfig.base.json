@@ -41,6 +41,14 @@
     "strict": true,
 
     // Skip type checking all .d.ts files.
-    "skipLibCheck": true
+    "skipLibCheck": true,
+
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "downlevelIteration": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "skipDefaultLibCheck": true,
+    "incremental": true,
   }
 }

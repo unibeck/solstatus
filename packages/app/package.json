@@ -2,11 +2,6 @@
   "name": "@solstatus/app",
   "version": "2.0.0",
   "private": true,
-  "type": "module",
-  "imports": {
-    "@/infra/*": "./infra/*",
-    "@/*": "./src/*"
-  },
   "exports": {
     "./infra": "./infra/index.ts"
   },

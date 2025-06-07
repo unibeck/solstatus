@@ -1,8 +1,10 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import type { endpointMonitorsSelectSchema } from "@solstatus/common/db"
-import { endpointMonitorsInsertDTOSchema } from "@solstatus/common/db"
+import {
+  endpointMonitorsInsertDTOSchema,
+  type endpointMonitorsSelectSchema,
+} from "@solstatus/common/db/zod-schema"
 import { IconPlus } from "@tabler/icons-react"
 import { StatusCodes } from "http-status-codes"
 import React from "react"
