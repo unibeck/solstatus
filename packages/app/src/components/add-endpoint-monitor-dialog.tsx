@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import {
   endpointMonitorsInsertDTOSchema,
   type endpointMonitorsSelectSchema,
-} from "@solstatus/common/db/zod-schema"
+} from "@solstatus/common/db"
 import { IconPlus } from "@tabler/icons-react"
 import { StatusCodes } from "http-status-codes"
 import React from "react"

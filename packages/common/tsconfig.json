@@ -16,10 +16,11 @@
     ],
     "baseUrl": "./",
     "rootDir": "./",
-    "paths": {
-      "@/*": ["./src/*"],
-      "@/infra/*": ["./infra/*"]
-    },
+    // Paths removed to enforce relative imports
+    // "paths": {
+    //   "@/*": ["./src/*"],
+    //   "@/infra/*": ["./infra/*"]
+    // },
     "outDir": "./dist",
     "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo"
   }

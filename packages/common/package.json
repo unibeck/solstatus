@@ -2,15 +2,15 @@
   "name": "@solstatus/common",
   "version": "2.0.0",
   "private": true,
-  "imports": {
-    "@/*": "./src/*",
-    "@/infra/*": "./infra/*"
-  },
   "exports": {
+    ".": "./src/index.ts",
     "./infra": "./infra/index.ts",
     "./drizzle": "./src/db/drizzle.config.ts",
     "./db": "./src/db/index.ts",
-    "./db/*": "./src/db/*.ts"
+    "./db/schema": "./src/db/schema/index.ts",
+    "./db/zod-schema": "./src/db/zod-schema.ts",
+    "./utils": "./src/utils/index.ts",
+    "./utils/*": "./src/utils/*.ts"
   },
   "scripts": {
     "format": "biome check . --write",
