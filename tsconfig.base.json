@@ -49,6 +49,6 @@
     "allowJs": true,
     "esModuleInterop": true,
     "skipDefaultLibCheck": true,
-    "incremental": true,
+    "incremental": true
   }
 }

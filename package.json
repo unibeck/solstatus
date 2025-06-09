@@ -7,21 +7,17 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "concurrently --kill-others --names \"API,APP\" --prefix-colors \"bgWhite,bgWhiteBright\" \"pnpm dev:api\" \"wait-on http://localhost:8788 && pnpm dev:app\"",
-    "dev:app": "next dev",
-    "dev:api": "concurrently --kill-others --names \"EXEC,TRGR\" --prefix-colors \"blue,magenta\" \"pnpm dev:api-exec\" \"wait-on http://localhost:8787 && pnpm dev:api-trigger\"",
-    "dev:api-exec": "wrangler dev --persist-to=../.wrangler/state --cwd api -c wrangler-monitor-exec.jsonc --port 8787",
-    "dev:api-trigger": "wrangler dev --persist-to=../.wrangler/state --cwd api -c wrangler-monitor-trigger.jsonc --port 8788",
+    "dev:app": "pnpm run --filter '@solstatus/app' dev",
+    "dev:api": "pnpm run --filter '@solstatus/api' dev",
     "db:setup": "pnpm run --filter '@solstatus/infra' db:setup",
-    "deploy": "pnpm deploy:api && pnpm deploy:app",
-    "deploy:app": "pnpm build:opennextjs && wrangler deploy --env production",
-    "deploy:api": "pnpm deploy:api-exec && pnpm deploy:api-trigger",
-    "deploy:api-exec": "wrangler deploy --cwd api --env production -c wrangler-monitor-exec.jsonc",
-    "deploy:api-trigger": "wrangler deploy --cwd api --env production -c wrangler-monitor-trigger.jsonc",
+    "deploy:prod": "pnpm deploy:prod:api && pnpm deploy:prod:app",
+    "deploy:prod:app": "pnpm run --filter '@solstatus/app' deploy:prod",
+    "deploy:prod:api": "pnpm run --filter '@solstatus/api' deploy:prod",
     "format": "biome check . --write",
     "clean": "rm -rf ./node_modules/ ./packages/*/node_modules/ ./dist/ ./packages/*/dist/",
     "clean:builds": "rm -rf ./dist/ ./packages/*/dist/",
-    "types": "tsc --build --emitDeclarationOnly",
-    "build:types": "pnpm run --filter '@solstatus/common' types && pnpm run --filter '@solstatus/api' types && pnpm run --filter '@solstatus/app' types && pnpm run --filter '@solstatus/infra' types"
+    "types": "tsc --build",
+    "types:each": "pnpm run --filter '@solstatus/common' types && pnpm run --filter '@solstatus/api' types && pnpm run --filter '@solstatus/app' types && pnpm run --filter '@solstatus/infra' types"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",

@@ -1,8 +1,8 @@
 "use client"
 
 import { IconBrightness } from "@tabler/icons-react"
-import React from "react"
 import { useTheme } from "next-themes"
+import React from "react"
 
 import { Button } from "@/registry/new-york-v4/ui/button"
 

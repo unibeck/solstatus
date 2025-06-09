@@ -1,2 +1,2 @@
 export * from "./db"
-export * from "./utils/formatters" 
+export * from "./utils/formatters"

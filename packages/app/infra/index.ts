@@ -1,4 +1,7 @@
-import type { MonitorExecWorkerResource, MonitorTriggerWorkerResource } from "@solstatus/api/infra"
+import type {
+  MonitorExecWorkerResource,
+  MonitorTriggerWorkerResource,
+} from "@solstatus/api/infra"
 import type {
   DBResource,
   SessionsStorageKVResource,

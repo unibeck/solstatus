@@ -1,9 +1,16 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare"
+import {
+  takeFirstOrNull,
+  takeUniqueOrThrow,
+  useDrizzle,
+} from "@solstatus/common/db"
+import {
+  EndpointMonitorsTable,
+  UptimeChecksTable,
+} from "@solstatus/common/db/schema"
 import { and, count, desc, eq, gt, isNotNull } from "drizzle-orm"
-import { NextResponse } from "next/server"
 import { StatusCodes } from "http-status-codes"
-import { takeFirstOrNull, takeUniqueOrThrow, useDrizzle } from "@solstatus/common/db"
-import { EndpointMonitorsTable, UptimeChecksTable } from "@solstatus/common/db/schema"
+import { NextResponse } from "next/server"
 import { createRoute } from "@/lib/api-utils"
 
 // TODO: re-enable this, but since we use createZodRoute this endpoint can't be rendered statically

@@ -1,8 +1,8 @@
 "use client"
 
 import { type Icon, IconBrightness } from "@tabler/icons-react"
-import React, { useId } from "react"
 import { useTheme } from "next-themes"
+import React, { useId } from "react"
 import {
   SidebarGroup,
   SidebarGroupContent,

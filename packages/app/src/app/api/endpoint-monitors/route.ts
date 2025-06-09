@@ -1,8 +1,11 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare"
 import type { InitPayload } from "@solstatus/api/monitor-trigger"
-import { 
+import {
   endpointMonitorsInsertDTOSchema,
-  type endpointMonitorsSelectSchema,takeUniqueOrThrow, useDrizzle, } from "@solstatus/common/db"
+  type endpointMonitorsSelectSchema,
+  takeUniqueOrThrow,
+  useDrizzle,
+} from "@solstatus/common/db"
 import { EndpointMonitorsTable } from "@solstatus/common/db/schema"
 import { createId, PRE_ID } from "@solstatus/common/utils"
 import { and, asc, count, desc, eq, like, sql } from "drizzle-orm"

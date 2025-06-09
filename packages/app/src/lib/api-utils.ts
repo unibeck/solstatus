@@ -1,6 +1,6 @@
 import { logError, logErrorStack } from "@solstatus/common/utils"
 
-import { StatusCodes, ReasonPhrases } from "http-status-codes"
+import { ReasonPhrases, StatusCodes } from "http-status-codes"
 import { createZodRoute } from "next-zod-route"
 
 export const createRoute = createZodRoute({

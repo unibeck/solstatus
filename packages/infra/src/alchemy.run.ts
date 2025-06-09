@@ -39,6 +39,7 @@ export const app = await createApp(
   db,
   sessionsStorageKV,
   monitorExecWorker,
+  monitorTriggerWorker,
 )
 
 await infra.finalize()

@@ -1,7 +1,10 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare"
-import { 
+import {
   endpointMonitorsPatchSchema,
-  type endpointMonitorsSelectSchema,takeUniqueOrThrow, useDrizzle, } from "@solstatus/common/db"
+  type endpointMonitorsSelectSchema,
+  takeUniqueOrThrow,
+  useDrizzle,
+} from "@solstatus/common/db"
 import { EndpointMonitorsTable } from "@solstatus/common/db/schema"
 import { eq } from "drizzle-orm"
 import { ReasonPhrases, StatusCodes } from "http-status-codes"
