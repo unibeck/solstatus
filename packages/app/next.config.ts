@@ -1,5 +1,4 @@
 import { execSync } from "node:child_process"
-import path from "node:path"
 import type { NextConfig } from "next"
 
 // x-release-please-start-version
@@ -20,7 +19,6 @@ if (process.env.APP_ENV !== "development") {
 }
 const fqAppVersion = `v${APP_VERSION}-${gitCommitSHA}`
 console.log(`NEXT_PUBLIC_APP_VERSION: ${fqAppVersion}`)
-console.log(`root: ${path.join(__dirname, "../..")}`)
 
 const nextConfig: NextConfig = {
   env: {
@@ -30,18 +28,14 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/*": ["./registry/**/*"],
   },
-  transpilePackages: ["@solstatus/common"],
   experimental: {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
     serverSourceMaps: true,
-    // typedRoutes: true,
+    typedRoutes: true,
     reactCompiler: true,
   },
-  // turbopack: {
-  //   root: path.join(__dirname, "../.."),
-  // },
 }
 
 const withBundleAnalyzer = require("@next/bundle-analyzer")({

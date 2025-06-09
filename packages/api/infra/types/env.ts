@@ -1,7 +1,7 @@
 import type {
   MonitorExecWorkerResource,
   MonitorTriggerWorkerResource,
-} from "@/infra/index"
+} from "../index"
 
 export type MonitorExecEnv = MonitorExecWorkerResource["Env"]
 export type MonitorTriggerEnv = MonitorTriggerWorkerResource["Env"]

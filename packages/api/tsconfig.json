@@ -16,10 +16,6 @@
     ],
     "baseUrl": "./",
     "rootDir": "./",
-    "paths": {
-      "@/infra/*": ["./infra/*"],
-      "@/*": ["./src/*"]
-    },
     "outDir": "./dist",
     "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo"
   },

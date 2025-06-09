@@ -1,7 +1,11 @@
 import type { DBResource } from "@solstatus/common/infra"
 import alchemy, { type } from "alchemy"
 import { DurableObjectNamespace, Worker } from "alchemy/cloudflare"
-import type { MonitorExec, MonitorTrigger, MonitorTriggerRPC } from "@/index"
+import type {
+  MonitorExec,
+  MonitorTrigger,
+  MonitorTriggerRPC,
+} from "../src/index"
 
 const APP_NAME = "solstatus"
 const stage = process.argv[3] || "dev"
