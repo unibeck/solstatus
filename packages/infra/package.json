@@ -12,6 +12,15 @@
   "scripts": {
     "infra:up": "pnpm exec ./src/alchemy.run.ts",
     "infra:destroy": "pnpm exec ./src/alchemy.run.ts destroy",
+    "db:create": "wrangler d1 execute solstatus-local --local --command='SELECT 1' --cwd ../../ --config ./wrangler.jsonc",
+    "db:create:prod": "wrangler d1 create solstatus-prod",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "wrangler d1 migrations apply DB --local --cwd ../../ --config ./wrangler.jsonc",
+    "db:migrate:prod": "wrangler d1 migrations apply DB --env production --remote",
+    "db:seed": "tsx test/seed.ts",
+    "db:setup": "pnpm run db:create && pnpm run db:generate && pnpm run db:migrate && pnpm run db:seed",
+    "db:studio": "drizzle-kit studio",
+    "db:studio:prod": "APP_ENV=production drizzle-kit studio",
     "format": "biome check . --write",
     "types": "tsc"
   },
@@ -25,8 +34,14 @@
     "@biomejs/biome": "catalog:",
     "@cloudflare/workers-types": "catalog:",
     "typescript": "catalog:",
+    "drizzle-kit": "catalog:",
     "@types/node": "catalog:",
     "wrangler": "catalog:",
+    "drizzle-orm": "catalog:",
+    "drizzle-seed": "catalog:",
+    "drizzle-zod": "catalog:",
+    "@libsql/client": "^0.15.6",
+    "zod": "catalog:",
     "dotenv": "catalog:"
   }
 }

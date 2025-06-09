@@ -2,6 +2,7 @@
   "name": "@solstatus/common",
   "version": "2.0.0",
   "private": true,
+  "type": "module",
   "exports": {
     ".": "./src/index.ts",
     "./infra": "./infra/index.ts",

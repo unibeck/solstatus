@@ -43,7 +43,7 @@
     // Skip type checking all .d.ts files.
     "skipLibCheck": true,
 
-    "verbatimModuleSyntax": true,
+    // "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "downlevelIteration": true,
     "allowJs": true,

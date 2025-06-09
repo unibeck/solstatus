@@ -1,22 +1,22 @@
 packages:
-  - "packages/*"
+  - packages/*
 
 catalog:
-  "@biomejs/biome": 2.0.0-beta.6
-  "react": ^19.0.0
-  "react-dom": ^19.0.0
-  "zod": ^3.25.20
-  "tsx": ^4.19.4
-  "typescript": ^5.8.3
-  "wrangler": ^4.16.1
-  "@cloudflare/workers-types": ^4.20250529.0
-  "@types/node": ^22
-  "@types/react": ^19
-  "@types/react-dom": ^19
-  "drizzle-kit": ^0.31.1
-  "alchemy": ^0.21.0
-  "http-status-codes": ^2.3.0
-  "dotenv": ^16.5.0
-  "drizzle-orm": ^0.43.1
-  "drizzle-seed": ^0.3.1
-  "drizzle-zod": 0.7.1
+  '@biomejs/biome': 2.0.0-beta.6
+  react: ^19.0.0
+  react-dom: ^19.0.0
+  zod: ^3.25.20
+  tsx: ^4.19.4
+  typescript: ^5.8.3
+  wrangler: ^4.19.1
+  '@cloudflare/workers-types': ^4.20250607.0
+  '@types/node': ^22.15.30
+  '@types/react': ^19
+  '@types/react-dom': ^19
+  drizzle-kit: ^0.31.1
+  alchemy: ^0.21.0
+  http-status-codes: ^2.3.0
+  dotenv: ^16.5.0
+  drizzle-orm: ^0.44.2
+  drizzle-seed: ^0.3.1
+  drizzle-zod: 0.7.1

@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@10.11.1",
+  "packageManager": "pnpm@10.12.1",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "concurrently --kill-others --names \"API,APP\" --prefix-colors \"bgWhite,bgWhiteBright\" \"pnpm dev:api\" \"wait-on http://localhost:8788 && pnpm dev:app\"",
@@ -11,15 +11,7 @@
     "dev:api": "concurrently --kill-others --names \"EXEC,TRGR\" --prefix-colors \"blue,magenta\" \"pnpm dev:api-exec\" \"wait-on http://localhost:8787 && pnpm dev:api-trigger\"",
     "dev:api-exec": "wrangler dev --persist-to=../.wrangler/state --cwd api -c wrangler-monitor-exec.jsonc --port 8787",
     "dev:api-trigger": "wrangler dev --persist-to=../.wrangler/state --cwd api -c wrangler-monitor-trigger.jsonc --port 8788",
-    "db:create": "wrangler d1 execute solstatus-local --local --command='SELECT 1'",
-    "db:create:prod": "wrangler d1 create solstatus-prod",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "wrangler d1 migrations apply DB --local",
-    "db:migrate:prod": "wrangler d1 migrations apply DB --env production --remote",
-    "db:seed": "tsx test/seed.ts",
-    "db:setup": "pnpm run db:create && pnpm run db:generate && pnpm run db:migrate && pnpm run db:seed",
-    "db:studio": "drizzle-kit studio",
-    "db:studio:prod": "APP_ENV=production drizzle-kit studio",
+    "db:setup": "pnpm run --filter '@solstatus/infra' db:setup",
     "deploy": "pnpm deploy:api && pnpm deploy:app",
     "deploy:app": "pnpm build:opennextjs && wrangler deploy --env production",
     "deploy:api": "pnpm deploy:api-exec && pnpm deploy:api-trigger",
@@ -35,6 +27,7 @@
     "@biomejs/biome": "catalog:",
     "@cloudflare/workers-types": "catalog:",
     "@types/node": "catalog:",
+    "wrangler": "catalog:",
     "typescript": "catalog:"
   }
 }

@@ -1,12 +1,12 @@
 import fs from "node:fs"
 import path from "node:path"
 import { createClient } from "@libsql/client"
+import { schema } from "@solstatus/common/db/schema"
+import type { uptimeChecksInsertSchema } from "@solstatus/common/db/zod-schema"
+import { createId, PRE_ID } from "@solstatus/common/utils/ids"
 import { drizzle } from "drizzle-orm/libsql"
 import { reset } from "drizzle-seed"
 import type { z } from "zod"
-import { createId, PRE_ID } from "@/lib/ids"
-import { schema } from "../src/db/schema"
-import type { uptimeChecksInsertSchema } from "../src/db/zod-schema"
 
 // List of 23 predefined URLs for endpointMonitors
 const endpointMonitorUrls = [
