@@ -74,14 +74,14 @@ export const columns: AppColumnDef<
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
+      <DataTableColumnHeader column={column} title="Name" className="pl-3" />
     ),
     headerLabel: "Name",
     cell: ({ row }) => {
       return (
         <a
           href={`/endpoint-monitors/${row.original.id}`}
-          className="hover:underline"
+          className="hover:underline pl-3"
         >
           {displayName(row.original.name, row.original.url)}
         </a>

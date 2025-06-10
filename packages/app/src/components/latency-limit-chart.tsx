@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useId, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Line, LineChart } from "recharts"
 import { Badge } from "@/registry/new-york-v4/ui/badge"
 import {
@@ -50,7 +50,6 @@ export function LatencyLimitChart({
 }: LatencyLimitChartProps) {
   const [data, setData] = useState<LatencyDataPoint[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const colorResponseTimeId = useId()
 
   useEffect(() => {
     const fetchLatencyData = async () => {
@@ -212,21 +211,24 @@ export function LatencyLimitChart({
           <defs>
             {/* Vertical gradient for stroke color (Inverted) */}
             {/* y1=100% (bottom), y2=0% (top) */}
+            {/** biome-ignore lint/nursery/useUniqueElementIds: We're using a hacky workaround to get the gradient to work */}
             <linearGradient
-              id={colorResponseTimeId}
+              id="colorResponseTime"
               x1="0%"
               y1="100%"
               x2="0%"
               y2="0%"
             >
-              {gradientStops.map((stop, i) => (
+              {gradientStops.map((stop, i) => {
+                console.log("stop", stop)
+                return (
                 <stop
                   key={`stroke-${i}-${stop.offset}`}
                   offset={stop.offset}
                   stopColor={stop.color}
                   stopOpacity={1}
                 />
-              ))}
+              )})}
             </linearGradient>
           </defs>
 
