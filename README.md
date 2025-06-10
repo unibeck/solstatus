@@ -22,8 +22,7 @@ TODO: expectations for cost
 - [x] fix monorepo deps and types
 - [x] use https://www.npmjs.com/package/http-status-codes instead of stoker
 - [x] remove all next/nextjs references
-- [] react compiler
-- [] app version
+- [x] app version
 - [x] rpc type inference https://x.com/samgoodwin89/status/1928040299030343994
 - [] update CI
     - [] add a step to check types
