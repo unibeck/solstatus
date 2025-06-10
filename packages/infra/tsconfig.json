@@ -1,7 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "include": [
-    "./src/**/*.ts"
+    "./src/**/*.ts",
+    "./scripts/**/*.ts"
   ],
   "exclude": [
     "node_modules",
@@ -10,10 +11,11 @@
   "compilerOptions": {
     "types": [
       "@types/node",
-      "@cloudflare/workers-types"
+      "@cloudflare/workers-types",
+      "./src/types/env.d.ts"
     ],
     "baseUrl": "./",
-    "rootDir": "./src",
+    "rootDir": "./",
     "paths": {
       "@/*": ["./src/*"]
     },

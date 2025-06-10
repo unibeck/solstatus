@@ -2,6 +2,7 @@
   "name": "@solstatus/api",
   "version": "2.0.0",
   "private": true,
+  "type": "module",
   "imports": {
     "@/infra/*": "./infra/*",
     "@/*": "./src/*"
@@ -14,11 +15,11 @@
   },
   "scripts": {
     "dev": "concurrently --kill-others --names \"EXEC,TRGR\" --prefix-colors \"blue,magenta\" \"pnpm dev:api-exec\" \"wait-on http://localhost:8787 && pnpm dev:api-trigger\"",
-    "dev:api-exec": "wrangler dev --persist-to=../.wrangler/state --cwd api -c wrangler-monitor-exec.jsonc --port 8787",
-    "dev:api-trigger": "wrangler dev --persist-to=../.wrangler/state --cwd api -c wrangler-monitor-trigger.jsonc --port 8788",
+    "dev:api-exec": "wrangler dev --persist-to=../infra/.wrangler/state -c ../infra/wrangler-monitor-exec.jsonc --port 8787",
+    "dev:api-trigger": "wrangler dev --persist-to=../infra/.wrangler/state -c ../infra/wrangler-monitor-trigger.jsonc --port 8788",
     "deploy:prod": "pnpm deploy:prod:api-exec && pnpm deploy:prod:api-trigger",
-    "deploy:prod:api-exec": "wrangler deploy --cwd api --env production -c wrangler-monitor-exec.jsonc",
-    "deploy:prod:api-trigger": "wrangler deploy --cwd api --env production -c wrangler-monitor-trigger.jsonc",
+    "deploy:prod:api-exec": "wrangler deploy --env production -c ../infra/wrangler-monitor-exec.jsonc",
+    "deploy:prod:api-trigger": "wrangler deploy --env production -c ../infra/wrangler-monitor-trigger.jsonc",
     "format": "biome check . --write",
     "types": "tsc"
   },
@@ -37,6 +38,8 @@
     "@cloudflare/workers-types": "catalog:",
     "@types/node": "catalog:",
     "drizzle-kit": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "concurrently": "catalog:",
+    "wait-on": "catalog:"
   }
 }

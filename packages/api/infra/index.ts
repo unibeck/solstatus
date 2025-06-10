@@ -7,14 +7,9 @@ import type {
   MonitorTriggerRPC,
 } from "../src/index"
 
-const APP_NAME = "solstatus"
-const stage = process.argv[3] || "dev"
-const phase = process.argv[2] === "destroy" ? "destroy" : "up"
-const RES_PREFIX = `${APP_NAME}-${stage}`
-console.log(`${RES_PREFIX}: ${phase}`)
-
 export async function createMonitorExecWorker(
   resPrefix: string,
+  stage: string,
   db: DBResource,
 ) {
   const workerName = `${resPrefix}-monitor-exec`

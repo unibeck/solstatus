@@ -24,6 +24,8 @@
     "@cloudflare/workers-types": "catalog:",
     "@types/node": "catalog:",
     "wrangler": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "concurrently": "catalog:",
+    "wait-on": "catalog:"
   }
 }

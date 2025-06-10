@@ -33,13 +33,13 @@
     "jsx": "preserve",
     "allowJs": true,
     "incremental": true,
-    "module": "esnext",
     "esModuleInterop": true,
     "plugins": [
       {
         "name": "next"
       }
-    ]
+    ],
+    "module": "esnext"
   },
   "references": [
     {

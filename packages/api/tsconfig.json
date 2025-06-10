@@ -4,6 +4,7 @@
     "./src/**/*.ts",
     "./src/**/*.tsx",
     "./infra/**/*.ts",
+    "./scripts/**/*.ts",
   ],
   "exclude": [
     "node_modules",

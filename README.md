@@ -31,6 +31,10 @@ TODO: expectations for cost
     - accomplish this by moving api specific infra to the api package, common infra to the common package, and app specific infra to the app package. 
     - The infra package will then be a package that combines all of the infra code together(?)
 - [x] catalog all drizzle libs
+- [] fix infra entrypoint for monitor-exec and monitor-trigger(?)
+- [] test
+    - [] test fresh install
+    - [] test upgrade from v1.x to v2.x
 - [] update readmes
 - [] parameterize init script
   - PRE_FQDN/PROD_FQDN

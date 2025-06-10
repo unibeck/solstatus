@@ -20,3 +20,5 @@ catalog:
   drizzle-orm: ^0.44.2
   drizzle-seed: ^0.3.1
   drizzle-zod: 0.7.1
+  concurrently: ^9.1.2
+  wait-on: ^8.0.3
