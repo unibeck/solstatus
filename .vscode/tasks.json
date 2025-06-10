@@ -5,9 +5,7 @@
       "label": "dev (app)",
       "type": "shell",
       "command": "pnpm",
-      "args": [
-        "dev"
-      ],
+      "args": ["dev"],
       "options": {
         "cwd": "${workspaceFolder}/packages/app"
       },
@@ -24,9 +22,7 @@
       "label": "dev (api)",
       "type": "shell",
       "command": "pnpm",
-      "args": [
-        "dev"
-      ],
+      "args": ["dev"],
       "options": {
         "cwd": "${workspaceFolder}/packages/api"
       },
@@ -43,9 +39,7 @@
       "label": "dev",
       "type": "shell",
       "command": "pnpm",
-      "args": [
-        "dev"
-      ],
+      "args": ["dev"],
       "options": {
         "cwd": "${workspaceFolder}"
       },
@@ -62,9 +56,7 @@
       "label": "term (common)",
       "type": "process",
       "command": "${env:SHELL}",
-      "args": [
-        "-l"
-      ],
+      "args": ["-l"],
       "options": {
         "cwd": "${workspaceFolder}/packages/common"
       },
@@ -84,9 +76,7 @@
       "label": "term (infra)",
       "type": "process",
       "command": "${env:SHELL}",
-      "args": [
-        "-l"
-      ],
+      "args": ["-l"],
       "options": {
         "cwd": "${workspaceFolder}/packages/infra"
       },
@@ -106,9 +96,7 @@
       "label": "term (api)",
       "type": "process",
       "command": "${env:SHELL}",
-      "args": [
-        "-l"
-      ],
+      "args": ["-l"],
       "options": {
         "cwd": "${workspaceFolder}/packages/api"
       },
@@ -128,9 +116,7 @@
       "label": "term (app)",
       "type": "process",
       "command": "${env:SHELL}",
-      "args": [
-        "-l"
-      ],
+      "args": ["-l"],
       "options": {
         "cwd": "${workspaceFolder}/packages/app"
       },

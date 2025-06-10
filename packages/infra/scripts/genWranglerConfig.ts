@@ -19,18 +19,21 @@ const genWranglerConfig = async () => {
     password: process.env.SECRET_ALCHEMY_PASSPHRASE,
   })
 
-  const { monitorExecWorker, monitorTriggerWorker } = await run(resPrefix, stage)
+  const { monitorExecWorker, monitorTriggerWorker } = await run(
+    resPrefix,
+    stage,
+  )
 
   await WranglerJson("wrangler-monitor-exec", {
     worker: monitorExecWorker,
-    path: "./wrangler-monitor-exec.jsonc"
-  });
-  
+    path: "./wrangler-monitor-exec.jsonc",
+  })
+
   await WranglerJson("wrangler-monitor-trigger", {
     worker: monitorTriggerWorker,
-    path: "./wrangler-monitor-trigger.jsonc"
-  });
-  
+    path: "./wrangler-monitor-trigger.jsonc",
+  })
+
   await infra.finalize()
 }
 

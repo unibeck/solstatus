@@ -25,7 +25,7 @@ const infra = await alchemy(APP_NAME, {
   password: process.env.SECRET_ALCHEMY_PASSPHRASE,
 })
 
-run(resPrefix, stage).catch(err => {
+run(resPrefix, stage).catch((err) => {
   console.error(err.message)
   process.exit(1)
 })
