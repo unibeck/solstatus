@@ -37,7 +37,7 @@ export async function createApp(
       {
         pattern: `${fqdn}/*`,
         customDomain: true,
-      }
+      },
     ],
     bindings: {
       DB: db,

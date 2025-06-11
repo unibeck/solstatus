@@ -1,14 +1,13 @@
 #!/usr/bin/env tsx
 
-import { Args, Command, Options } from "@effect/cli"
+import { execSync } from "node:child_process"
+import fs from "node:fs"
+import path, { dirname } from "node:path"
+import { fileURLToPath } from "node:url"
+import { Command, Options } from "@effect/cli"
 import { NodeContext, NodeRuntime } from "@effect/platform-node"
+import dotenv from "dotenv"
 import { Console, Effect, Option, pipe } from "effect"
-import { execSync } from "child_process"
-import * as fs from "fs"
-import * as path from "path"
-import * as dotenv from "dotenv"
-import { fileURLToPath } from "url"
-import { dirname } from "path"
 import packageJson from "../package.json" with { type: "json" }
 
 const __filename = fileURLToPath(import.meta.url)
@@ -23,36 +22,36 @@ if (fs.existsSync(envPath)) {
 // Define options
 const cloudflareAccountId = Options.text("cloudflare-account-id").pipe(
   Options.withDescription("Cloudflare Account ID"),
-  Options.optional
+  Options.optional,
 )
 
 const cloudflareApiToken = Options.text("cloudflare-api-token").pipe(
   Options.withDescription("Cloudflare API Token"),
-  Options.optional
+  Options.optional,
 )
 
 const stage = Options.text("stage").pipe(
   Options.withDescription("Deployment stage (default: dev)"),
-  Options.withDefault("dev")
+  Options.withDefault("dev"),
 )
 
 const phase = Options.choice("phase", ["destroy", "up", "read"]).pipe(
   Options.withDescription("Phase to execute"),
-  Options.withDefault("up" as const)
+  Options.withDefault("up" as const),
 )
 
 const quiet = Options.boolean("quiet").pipe(
   Options.withDescription("Run in quiet mode"),
-  Options.withDefault(false)
+  Options.withDefault(false),
 )
 
 const appName = Options.text("app-name").pipe(
   Options.withDescription("Application name (default: solstatus)"),
-  Options.withDefault("solstatus")
+  Options.withDefault("solstatus"),
 )
 
 const fqdn = Options.text("fqdn").pipe(
-  Options.withDescription("Fully qualified domain name (required)")
+  Options.withDescription("Fully qualified domain name (required)"),
 )
 
 // Create the main command
@@ -65,25 +64,25 @@ const main = Command.make(
     phase,
     quiet,
     appName,
-    fqdn
+    fqdn,
   },
   (config) => {
     return Effect.gen(function* () {
       // Get Cloudflare credentials
       const accountId = Option.getOrElse(
         config.cloudflareAccountId,
-        () => process.env.CLOUDFLARE_ACCOUNT_ID || ""
+        () => process.env.CLOUDFLARE_ACCOUNT_ID || "",
       )
-      
+
       const apiToken = Option.getOrElse(
         config.cloudflareApiToken,
-        () => process.env.CLOUDFLARE_API_TOKEN || ""
+        () => process.env.CLOUDFLARE_API_TOKEN || "",
       )
 
       // Validate Cloudflare credentials
       if (!accountId || !apiToken) {
         yield* Console.error(
-          "Error: CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN must be provided via CLI flags, .env file, or environment variables"
+          "Error: CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN must be provided via CLI flags, .env file, or environment variables",
         )
         return yield* Effect.fail(1)
       }
@@ -95,7 +94,7 @@ const main = Command.make(
         CLOUDFLARE_API_TOKEN: apiToken,
         SECRET_ALCHEMY_PASSPHRASE: process.env.SECRET_ALCHEMY_PASSPHRASE || "",
         APP_NAME: config.appName,
-        FQDN: config.fqdn
+        FQDN: config.fqdn,
       }
 
       // Build command arguments
@@ -105,7 +104,10 @@ const main = Command.make(
       }
 
       // Construct the command
-      const alchemyRunPath = path.join(__dirname, "../packages/infra/src/alchemy.run.ts")
+      const alchemyRunPath = path.join(
+        __dirname,
+        "../packages/infra/src/alchemy.run.ts",
+      )
       const command = `tsx ${alchemyRunPath} ${args.join(" ")}`
 
       yield* Console.log(`Executing: ${command}`)
@@ -119,28 +121,26 @@ const main = Command.make(
         execSync(command, {
           env,
           stdio: "inherit",
-          cwd: __dirname
+          cwd: __dirname,
         })
-        
+
         yield* Console.log("\n✅ Command executed successfully")
       } catch (error) {
         yield* Console.error(`\n❌ Command failed: ${error}`)
         return yield* Effect.fail(1)
       }
     })
-  }
+  },
 ).pipe(
-  Command.withDescription("CLI wrapper for SolStatus infrastructure management")
+  Command.withDescription(
+    "CLI wrapper for SolStatus infrastructure management",
+  ),
 )
 
 // Run the CLI
 const cli = Command.run(main, {
   name: "SolStatus",
-  version: packageJson.version
+  version: packageJson.version,
 })
 
-pipe(
-  cli(process.argv),
-  Effect.provide(NodeContext.layer),
-  NodeRuntime.runMain
-) 
+pipe(cli(process.argv), Effect.provide(NodeContext.layer), NodeRuntime.runMain)

@@ -15,7 +15,7 @@ export async function createMonitorExecWorker(
   const workerName = `${resPrefix}-monitor-exec`
   return await Worker(workerName, {
     name: workerName,
-    entrypoint: '../src/monitor-exec.ts',
+    entrypoint: "../src/monitor-exec.ts",
     rpc: type<MonitorExec>,
     bindings: {
       DB: db,
@@ -36,7 +36,7 @@ export async function createMonitorTriggerWorker(
   const workerName = `${resPrefix}-monitor-trigger`
   return await Worker(workerName, {
     name: workerName,
-    entrypoint: '../src/monitor-trigger.ts',
+    entrypoint: "../src/monitor-trigger.ts",
     rpc: type<MonitorTriggerRPC>,
     bindings: {
       DB: db,

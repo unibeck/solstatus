@@ -12,7 +12,7 @@ export interface SolStatusConfig {
 
 export async function SolStatus(name: string, config: SolStatusConfig) {
   const { stage, fqdn } = config
-  
+
   // Shared resources
   const sessionsStorageKV = await createSessionsStorageKV(name)
   const db = await createDB(name)

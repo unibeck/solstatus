@@ -2,7 +2,12 @@
   "name": "solstatus",
   "version": "2.0.0",
   "description": "Self host a low-cost, globally-distributed uptime monitoring service on Cloudflare",
-  "keywords": ["solstatus", "uptime", "monitoring", "cloudflare"],
+  "keywords": [
+    "solstatus",
+    "uptime",
+    "monitoring",
+    "cloudflare"
+  ],
   "homepage": "https://github.com/unibeck/solstatus#readme",
   "bugs": {
     "url": "https://github.com/unibeck/solstatus/issues"

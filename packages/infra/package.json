@@ -2,7 +2,13 @@
   "name": "@solstatus/infra",
   "version": "2.0.0",
   "description": "Infrastructure configuration and deployment tools for SolStatus",
-  "keywords": ["solstatus", "infrastructure", "cloudflare", "deployment", "iac"],
+  "keywords": [
+    "solstatus",
+    "infrastructure",
+    "cloudflare",
+    "deployment",
+    "iac"
+  ],
   "homepage": "https://github.com/unibeck/solstatus/tree/main/packages/infra#readme",
   "bugs": {
     "url": "https://github.com/unibeck/solstatus/issues"

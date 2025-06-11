@@ -222,13 +222,14 @@ export function LatencyLimitChart({
               {gradientStops.map((stop, i) => {
                 console.log("stop", stop)
                 return (
-                <stop
-                  key={`stroke-${i}-${stop.offset}`}
-                  offset={stop.offset}
-                  stopColor={stop.color}
-                  stopOpacity={1}
-                />
-              )})}
+                  <stop
+                    key={`stroke-${i}-${stop.offset}`}
+                    offset={stop.offset}
+                    stopColor={stop.color}
+                    stopOpacity={1}
+                  />
+                )
+              })}
             </linearGradient>
           </defs>
 

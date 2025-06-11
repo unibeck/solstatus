@@ -17,10 +17,13 @@ const genWranglerConfig = async () => {
     password: process.env.SECRET_ALCHEMY_PASSPHRASE,
   })
 
-  const { monitorExecWorker, monitorTriggerWorker } = await SolStatus(`${APP_NAME}-${stage}`, {
-    stage,
-    fqdn: "uptime.solstatus.com",
-  })
+  const { monitorExecWorker, monitorTriggerWorker } = await SolStatus(
+    `${APP_NAME}-${stage}`,
+    {
+      stage,
+      fqdn: "uptime.solstatus.com",
+    },
+  )
 
   await WranglerJson("wrangler-monitor-exec", {
     worker: monitorExecWorker,

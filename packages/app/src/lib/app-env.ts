@@ -1,5 +1,4 @@
-const DEV: AppEnvMetadata = {
-}
+const DEV: AppEnvMetadata = {}
 
 const PRE: AppEnvMetadata = {
   ...DEV,
