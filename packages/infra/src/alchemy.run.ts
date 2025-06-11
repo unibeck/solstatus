@@ -1,6 +1,7 @@
 #!/usr/bin/env tsx
 
 import alchemy from "alchemy"
+import { DOStateStore } from "alchemy/cloudflare"
 import { SolStatus } from "./solstatus"
 
 const APP_NAME = "solstatus"
@@ -22,6 +23,13 @@ const infra = await alchemy(APP_NAME, {
   phase: phase,
   quiet,
   password: process.env.SECRET_ALCHEMY_PASSPHRASE,
+  stateStore: (scope) => new DOStateStore(scope, {
+    // apiKey: alchemy.secret(process.env.CLOUDFLARE_API_KEY),
+    // email: process.env.CLOUDFLARE_EMAIL,
+    worker: {
+      name: `${APP_NAME}-${stage}-alchemy-state`
+    }
+  }),
 })
 
 await SolStatus(`${APP_NAME}-${stage}`, {

@@ -16,6 +16,7 @@ export async function createApp(
   sessionsStorageKV: SessionsStorageKVResource,
   monitorExecWorker: MonitorExecWorkerResource,
   monitorTriggerWorker: MonitorTriggerWorkerResource,
+  fqdn: string,
 ) {
   const appName = `${resPrefix}-app`
 
@@ -33,12 +34,12 @@ export async function createApp(
     observability: {
       enabled: true,
     },
-    // routes: [
-    //   {
-    //     pattern: `${PROD_FQDN}/*`,
-    //     custom_domain: true,
-    //   }
-    // ],
+    routes: [
+      {
+        pattern: `${fqdn}/*`,
+        customDomain: true,
+      }
+    ],
     bindings: {
       DB: db,
       SESSIONS_KV: sessionsStorageKV,

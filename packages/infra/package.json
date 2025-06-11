@@ -34,15 +34,15 @@
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "@cloudflare/workers-types": "catalog:",
-    "typescript": "catalog:",
-    "drizzle-kit": "catalog:",
+    "@libsql/client": "^0.15.6",
     "@types/node": "catalog:",
-    "wrangler": "catalog:",
+    "dotenv": "catalog:",
+    "drizzle-kit": "catalog:",
     "drizzle-orm": "catalog:",
     "drizzle-seed": "catalog:",
     "drizzle-zod": "catalog:",
-    "@libsql/client": "^0.15.6",
-    "zod": "catalog:",
-    "dotenv": "catalog:"
+    "typescript": "catalog:",
+    "wrangler": "catalog:",
+    "zod": "catalog:"
   }
 }

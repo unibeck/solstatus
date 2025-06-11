@@ -7,11 +7,11 @@ import { createDB, createSessionsStorageKV } from "@solstatus/common/infra"
 
 export interface SolStatusConfig {
   stage: string
-  fqdn?: string
+  fqdn: string
 }
 
 export async function SolStatus(name: string, config: SolStatusConfig) {
-  const { stage } = config
+  const { stage, fqdn } = config
   
   // Shared resources
   const sessionsStorageKV = await createSessionsStorageKV(name)
@@ -32,6 +32,7 @@ export async function SolStatus(name: string, config: SolStatusConfig) {
     sessionsStorageKV,
     monitorExecWorker,
     monitorTriggerWorker,
+    fqdn,
   )
 
   return {
