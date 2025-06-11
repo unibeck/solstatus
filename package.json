@@ -1,6 +1,17 @@
 {
   "name": "solstatus",
   "version": "2.0.0",
+  "description": "Self host a low-cost, globally-distributed uptime monitoring service on Cloudflare",
+  "keywords": ["solstatus", "uptime", "monitoring", "cloudflare"],
+  "homepage": "https://github.com/unibeck/solstatus#readme",
+  "bugs": {
+    "url": "https://github.com/unibeck/solstatus/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unibeck/solstatus.git"
+  },
+  "license": "MIT",
   "type": "module",
   "packageManager": "pnpm@10.12.1",
   "bin": {
@@ -12,6 +23,11 @@
   "exports": {
     ".": "./src/index.ts"
   },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "cli": "tsx ./src/index.ts",

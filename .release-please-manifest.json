@@ -1,5 +1,5 @@
 {
-  "@solstatus/solstatus": "2.0.0",
+  "solstatus": "2.0.0",
   "@solstatus/app": "2.0.0",
   "@solstatus/api": "2.0.0",
   "@solstatus/infra": "2.0.0",

@@ -10,7 +10,7 @@
   "release-type": "node",
   "packages": {
     ".": {
-      "component": "@solstatus/solstatus"
+      "component": "solstatus"
     },
     "./packages/app": {
       "component": "@solstatus/app"

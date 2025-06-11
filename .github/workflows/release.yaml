@@ -16,7 +16,7 @@ jobs:
     outputs:
       releases_created: ${{ steps.release.outputs.releases_created }}
       # Package-specific outputs
-      solstatus_release_created: ${{ steps.release.outputs['@solstatus/solstatus--release_created'] }}
+      solstatus_release_created: ${{ steps.release.outputs['solstatus--release_created'] }}
       app_release_created: ${{ steps.release.outputs['@solstatus/app--release_created'] }}
       api_release_created: ${{ steps.release.outputs['@solstatus/api--release_created'] }}
       infra_release_created: ${{ steps.release.outputs['@solstatus/infra--release_created'] }}
