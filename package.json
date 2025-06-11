@@ -16,7 +16,8 @@
     "clean": "rm -rf ./node_modules/ ./packages/*/node_modules/ ./dist/ ./packages/*/dist/",
     "clean:builds": "rm -rf ./dist/ ./packages/*/dist/",
     "types": "tsc --build",
-    "types:each": "pnpm run --filter '@solstatus/common' types && pnpm run --filter '@solstatus/api' types && pnpm run --filter '@solstatus/app' types && pnpm run --filter '@solstatus/infra' types"
+    "types:each": "pnpm run --filter '@solstatus/common' types && pnpm run --filter '@solstatus/api' types && pnpm run --filter '@solstatus/app' types && pnpm run --filter '@solstatus/infra' types",
+    "cli": "pnpm --filter @solstatus/cli run cli"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",

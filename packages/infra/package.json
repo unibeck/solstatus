@@ -10,7 +10,6 @@
     ".": "./src/alchemy.run.ts"
   },
   "scripts": {
-    "cli": "tsx ./src/cli.ts",
     "infra:up": "pnpm exec ./src/alchemy.run.ts",
     "infra:destroy": "pnpm exec ./src/alchemy.run.ts destroy",
     "db:create": "wrangler d1 execute solstatus-local --local --command='SELECT 1' --cwd ../../ --config ./wrangler.jsonc",
@@ -27,13 +26,10 @@
     "types": "tsc"
   },
   "dependencies": {
-    "@effect/cli": "^0.63.9",
-    "@effect/platform-node": "^0.85.14",
     "@solstatus/api": "workspace:*",
     "@solstatus/app": "workspace:*",
     "@solstatus/common": "workspace:*",
-    "alchemy": "catalog:",
-    "effect": "^3.16.5"
+    "alchemy": "catalog:"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",

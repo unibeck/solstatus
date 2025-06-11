@@ -15,18 +15,9 @@ catalogs:
     '@types/node':
       specifier: ^22.15.31
       version: 22.15.29
-    '@types/react':
-      specifier: ^19.1.7
-      version: 19.1.7
-    '@types/react-dom':
-      specifier: ^19.1.6
-      version: 19.1.6
     alchemy:
       specifier: ^0.27.0
       version: 0.27.0
-    concurrently:
-      specifier: ^9.1.2
-      version: 9.1.2
     dotenv:
       specifier: 16.5.0
       version: 16.5.0
@@ -42,18 +33,9 @@ catalogs:
     drizzle-zod:
       specifier: 0.7.1
       version: 0.7.1
-    http-status-codes:
-      specifier: ^2.3.0
-      version: 2.3.0
-    tsx:
-      specifier: ^4.19.4
-      version: 4.19.4
     typescript:
       specifier: ^5.8.3
       version: 5.8.3
-    wait-on:
-      specifier: ^8.0.3
-      version: 8.0.3
     wrangler:
       specifier: ^4.19.1
       version: 4.19.1
@@ -389,6 +371,37 @@ importers:
         specifier: 'catalog:'
         version: 4.19.1(@cloudflare/workers-types@4.20250605.0)
 
+  packages/cli:
+    dependencies:
+      '@effect/cli':
+        specifier: ^0.63.9
+        version: 0.63.9(@effect/platform@0.84.9(effect@3.16.5))(@effect/printer-ansi@0.44.5(@effect/typeclass@0.35.5(effect@3.16.5))(effect@3.16.5))(@effect/printer@0.44.5(@effect/typeclass@0.35.5(effect@3.16.5))(effect@3.16.5))(effect@3.16.5)
+      '@effect/platform-node':
+        specifier: ^0.85.14
+        version: 0.85.14(@effect/cluster@0.38.14(@effect/platform@0.84.9(effect@3.16.5))(@effect/rpc@0.61.13(@effect/platform@0.84.9(effect@3.16.5))(effect@3.16.5))(@effect/sql@0.37.10(@effect/experimental@0.48.10(@effect/platform@0.84.9(effect@3.16.5))(effect@3.16.5))(@effect/platform@0.84.9(effect@3.16.5))(effect@3.16.5))(@effect/workflow@0.1.12(@effect/platform@0.84.9(effect@3.16.5))(@effect/rpc@0.61.13(@effect/platform@0.84.9(effect@3.16.5))(effect@3.16.5))(effect@3.16.5))(effect@3.16.5))(@effect/platform@0.84.9(effect@3.16.5))(@effect/rpc@0.61.13(@effect/platform@0.84.9(effect@3.16.5))(effect@3.16.5))(@effect/sql@0.37.10(@effect/experimental@0.48.10(@effect/platform@0.84.9(effect@3.16.5))(effect@3.16.5))(@effect/platform@0.84.9(effect@3.16.5))(effect@3.16.5))(effect@3.16.5)
+      '@solstatus/infra':
+        specifier: workspace:*
+        version: link:../infra
+      dotenv:
+        specifier: 'catalog:'
+        version: 16.5.0
+      effect:
+        specifier: ^3.16.5
+        version: 3.16.5
+    devDependencies:
+      '@biomejs/biome':
+        specifier: 'catalog:'
+        version: 2.0.0-beta.6
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.15.29
+      tsx:
+        specifier: 'catalog:'
+        version: 4.19.4
+      typescript:
+        specifier: 'catalog:'
+        version: 5.8.3
+
   packages/common:
     dependencies:
       alchemy:
@@ -428,12 +441,6 @@ importers:
 
   packages/infra:
     dependencies:
-      '@effect/cli':
-        specifier: ^0.63.9
-        version: 0.63.9(@effect/platform@0.84.9(effect@3.16.5))(@effect/printer-ansi@0.44.5(@effect/typeclass@0.35.5(effect@3.16.5))(effect@3.16.5))(@effect/printer@0.44.5(@effect/typeclass@0.35.5(effect@3.16.5))(effect@3.16.5))(effect@3.16.5)
-      '@effect/platform-node':
-        specifier: ^0.85.14
-        version: 0.85.14(@effect/cluster@0.38.14(@effect/platform@0.84.9(effect@3.16.5))(@effect/rpc@0.61.13(@effect/platform@0.84.9(effect@3.16.5))(effect@3.16.5))(@effect/sql@0.37.10(@effect/experimental@0.48.10(@effect/platform@0.84.9(effect@3.16.5))(effect@3.16.5))(@effect/platform@0.84.9(effect@3.16.5))(effect@3.16.5))(@effect/workflow@0.1.12(@effect/platform@0.84.9(effect@3.16.5))(@effect/rpc@0.61.13(@effect/platform@0.84.9(effect@3.16.5))(effect@3.16.5))(effect@3.16.5))(effect@3.16.5))(@effect/platform@0.84.9(effect@3.16.5))(@effect/rpc@0.61.13(@effect/platform@0.84.9(effect@3.16.5))(effect@3.16.5))(@effect/sql@0.37.10(@effect/experimental@0.48.10(@effect/platform@0.84.9(effect@3.16.5))(effect@3.16.5))(@effect/platform@0.84.9(effect@3.16.5))(effect@3.16.5))(effect@3.16.5)
       '@solstatus/api':
         specifier: workspace:*
         version: link:../api
@@ -446,9 +453,6 @@ importers:
       alchemy:
         specifier: 'catalog:'
         version: 0.27.0(@ai-sdk/openai-compatible@0.2.14(zod@3.25.51))(@ai-sdk/openai@1.3.22(zod@3.25.51))(@aws-sdk/client-dynamodb@3.826.0)(@aws-sdk/client-iam@3.823.0)(@aws-sdk/client-lambda@3.826.0)(@aws-sdk/client-s3@3.826.0)(@aws-sdk/client-sagemaker@3.824.0)(@aws-sdk/client-ses@3.823.0)(@aws-sdk/client-sesv2@3.824.0)(@aws-sdk/client-sqs@3.826.0)(@aws-sdk/client-ssm@3.826.0)(@aws-sdk/client-sts@3.823.0)(@aws-sdk/credential-providers@3.823.0)(@cloudflare/unenv-preset@2.3.2(unenv@2.0.0-rc.17)(workerd@1.20250525.0))(@cloudflare/workers-shared@0.17.5)(@iarna/toml@2.2.5)(@octokit/rest@21.1.1)(@smithy/node-config-provider@4.1.3)(@swc/core@1.11.31)(ai@4.3.16(react@19.2.0-canary-39cad7af-20250411)(zod@3.25.51))(arktype@2.1.20)(aws4fetch@1.0.20)(cloudflare@4.3.0)(diff@7.0.0)(dofs@0.0.1(hono@4.7.11))(esbuild@0.25.5)(fast-json-patch@3.1.1)(glob@11.0.2)(hono@4.7.11)(jszip@3.10.1)(libsodium-wrappers@0.7.15)(prettier@3.5.3)(stripe@17.7.0)(turndown@7.2.0)(yaml@2.8.0)(zod@3.25.51)
-      effect:
-        specifier: ^3.16.5
-        version: 3.16.5
     devDependencies:
       '@biomejs/biome':
         specifier: 'catalog:'

@@ -15,14 +15,17 @@ pnpm install
 The CLI can be run using either of these methods:
 
 ```bash
-# Using the npm script
+# From the cli package directory
 pnpm run cli [options]
 
 # Or directly
-tsx ./src/cli.ts [options]
+tsx ./src/index.ts [options]
 
 # Or if made executable
-./src/cli.ts [options]
+./src/index.ts [options]
+
+# From the monorepo root
+pnpm --filter @solstatus/cli run cli [options]
 ```
 
 ## Options
