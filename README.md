@@ -31,7 +31,7 @@ TODO: expectations for cost
     - The infra package will then be a package that combines all of the infra code together(?)
 - [x] catalog all drizzle libs
 - [] update bootstrap script
-- [] fix infra entrypoint for monitor-exec and monitor-trigger(?)
+- [x] fix infra entrypoint for monitor-exec and monitor-trigger(?)
 - [] implement adopt logic for alchemy
 - [] test
     - [] test fresh install

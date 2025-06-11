@@ -15,7 +15,7 @@ export async function createMonitorExecWorker(
   const workerName = `${resPrefix}-monitor-exec`
   return await Worker(workerName, {
     name: workerName,
-    entrypoint: require.resolve("@solstatus/api/monitor-exec"),
+    entrypoint: '../src/monitor-exec.ts',
     rpc: type<MonitorExec>,
     bindings: {
       DB: db,
@@ -36,7 +36,7 @@ export async function createMonitorTriggerWorker(
   const workerName = `${resPrefix}-monitor-trigger`
   return await Worker(workerName, {
     name: workerName,
-    entrypoint: require.resolve("@solstatus/api/monitor-trigger"),
+    entrypoint: '../src/monitor-trigger.ts',
     rpc: type<MonitorTriggerRPC>,
     bindings: {
       DB: db,
