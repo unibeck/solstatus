@@ -24,6 +24,7 @@ dist
 .output
 .out
 .next
+.open-next
 
 # Misc
 .DS_Store

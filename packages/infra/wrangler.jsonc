@@ -18,6 +18,12 @@
     "binding": "ASSETS",
     "directory": ".open-next/assets"
   },
+  "kv_namespaces": [
+    {
+      "binding": "NEXT_INC_CACHE_KV",
+      "id": "solstatus-local"
+    }
+  ],
   "d1_databases": [
     {
       "binding": "DB",
@@ -49,7 +55,7 @@
     "production": {
       "routes": [
         {
-          "pattern": "UPDATE_ME_PROD_FQDN",
+          "pattern": "sub.example.com/*",
           "custom_domain": true
         }
       ],

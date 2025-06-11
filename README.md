@@ -24,17 +24,20 @@ TODO: expectations for cost
 - [x] remove all next/nextjs references
 - [x] app version
 - [x] rpc type inference https://x.com/samgoodwin89/status/1928040299030343994
-- [] update CI
-    - [] add a step to check types
+- [x] update CI
+    - [x] add a step to check types
 - [x] circular dependency (api -> infra -> api) via tsconfig.json references
     - accomplish this by moving api specific infra to the api package, common infra to the common package, and app specific infra to the app package. 
     - The infra package will then be a package that combines all of the infra code together(?)
 - [x] catalog all drizzle libs
+- [] update bootstrap script
 - [] fix infra entrypoint for monitor-exec and monitor-trigger(?)
+- [] implement adopt logic for alchemy
 - [] test
     - [] test fresh install
     - [] test upgrade from v1.x to v2.x
 - [] update readmes
+- [] update dependabot to use pnpm catalogs as well
 - [] parameterize init script
   - PRE_FQDN/PROD_FQDN
   - CLOUDFLARE_ACCOUNT_ID

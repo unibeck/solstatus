@@ -6,8 +6,9 @@ import type {
   DBResource,
   SessionsStorageKVResource,
 } from "@solstatus/common/infra"
+// import { PROD_FQDN } from "@solstatus/common/utils"
 import alchemy from "alchemy"
-import { Website } from "alchemy/cloudflare"
+import { KVNamespace, Website } from "alchemy/cloudflare"
 
 export async function createApp(
   resPrefix: string,
@@ -17,24 +18,34 @@ export async function createApp(
   monitorTriggerWorker: MonitorTriggerWorkerResource,
 ) {
   const appName = `${resPrefix}-app`
+
+  const kvIncrementalCache = await KVNamespace(`${appName}-inc-cache`, {
+    title: `${appName}-inc-cache`,
+  })
+
   const app = await Website(appName, {
     name: appName,
-    command: "pnpm clean && pnpm run build",
-    main: "dist/worker/worker.js",
-    assets: "dist/client",
-    wrangler: {
-      main: "src/worker.tsx",
-    },
+    command: "pnpm clean && pnpm run build:opennextjs",
+    main: ".open-next/worker.js",
+    assets: ".open-next/assets",
+    url: true,
     compatibilityFlags: ["nodejs_compat"],
     observability: {
       enabled: true,
     },
+    // routes: [
+    //   {
+    //     pattern: `${PROD_FQDN}/*`,
+    //     custom_domain: true,
+    //   }
+    // ],
     bindings: {
       DB: db,
       SESSIONS_KV: sessionsStorageKV,
       BETTER_AUTH_SECRET: alchemy.secret(process.env.BETTER_AUTH_SECRET),
       MONITOR_EXEC: monitorExecWorker,
       MONITOR_TRIGGER_RPC: monitorTriggerWorker,
+      NEXT_INC_CACHE_KV: kvIncrementalCache,
     },
   })
   console.log(`${appName}: ${app.url}`)
