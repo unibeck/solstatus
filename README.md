@@ -12,21 +12,23 @@ An uptime monitoring service that is easy and cheap to run at scale. Create endp
 
 TODO: expectations for cost
 
-## CLI Usage
+## Usage
 
-SolStatus includes a command-line interface for managing infrastructure and operations.
+| Method | Notes | Complexity | Customization |
+|--------|-------|------------|---------------|
+| `npx solstatus@latest` | Install complete SolStatus stack into Cloudflare account | Low | Low |
+| Fork repo | Customize, but syncing with upstream in mind | Medium | High |
+| `pnpm i @solstatus/infra` | Use as library alongside other Alchemy IaC | Medium | Medium |
+
 
 ### Quick Start
 
 ```bash
 # Install dependencies
-pnpm install
+pnpm i
 
 # Run the CLI
 pnpm cli --help
-
-# Or directly
-tsx ./src/index.ts --help
 ```
 
 ### Required Options
@@ -225,6 +227,19 @@ This repository uses Dependabot to keep dependencies up to date:
 - npm dependencies are checked weekly (grouped as minor and patch updates)
 - GitHub Actions are checked monthly
 - PR limits are set to avoid overwhelming with dependency updates
+
+### npm Publishing
+Packages are automatically published to npm when release-please creates tags:
+- `solstatus` - Main CLI package
+- `@solstatus/common` - Shared utilities and schemas
+- `@solstatus/api` - API workers
+- `@solstatus/app` - Web application
+- `@solstatus/infra` - Infrastructure tools
+
+To enable npm publishing:
+1. Create an npm access token at https://www.npmjs.com/
+2. Add it as a GitHub secret named `NPM_TOKEN`
+3. Release-please will create tags that trigger the publish workflow
 
 ## CLI Documentation
 

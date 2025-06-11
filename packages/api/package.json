@@ -1,8 +1,24 @@
 {
   "name": "@solstatus/api",
   "version": "2.0.0",
-  "private": true,
+  "description": "API workers for SolStatus uptime monitoring service",
+  "keywords": ["solstatus", "api", "cloudflare", "workers", "monitoring"],
+  "homepage": "https://github.com/unibeck/solstatus/tree/main/packages/api#readme",
+  "bugs": {
+    "url": "https://github.com/unibeck/solstatus/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unibeck/solstatus.git",
+    "directory": "packages/api"
+  },
+  "license": "MIT",
   "type": "module",
+  "files": [
+    "src",
+    "infra",
+    "README.md"
+  ],
   "imports": {
     "@/infra/*": "./infra/*",
     "@/*": "./src/*"

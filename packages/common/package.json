@@ -1,8 +1,24 @@
 {
   "name": "@solstatus/common",
   "version": "2.0.0",
-  "private": true,
+  "description": "Common utilities and database schemas for SolStatus",
+  "keywords": ["solstatus", "database", "schema", "utilities"],
+  "homepage": "https://github.com/unibeck/solstatus/tree/main/packages/common#readme",
+  "bugs": {
+    "url": "https://github.com/unibeck/solstatus/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unibeck/solstatus.git",
+    "directory": "packages/common"
+  },
+  "license": "MIT",
   "type": "module",
+  "files": [
+    "src",
+    "infra",
+    "README.md"
+  ],
   "exports": {
     ".": "./src/index.ts",
     "./infra": "./infra/index.ts",

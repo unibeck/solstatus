@@ -8,7 +8,7 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext", "ES2022"],
 
     // Specify what module code is generated.
-    "module": "ES2022",
+    "module": "ESNext",
 
     // Specify how TypeScript looks up a file from a given module specifier.
     "moduleResolution": "bundler",

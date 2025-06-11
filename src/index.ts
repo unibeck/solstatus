@@ -9,6 +9,7 @@ import * as path from "path"
 import * as dotenv from "dotenv"
 import { fileURLToPath } from "url"
 import { dirname } from "path"
+import packageJson from "../package.json" with { type: "json" }
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -135,7 +136,7 @@ const main = Command.make(
 // Run the CLI
 const cli = Command.run(main, {
   name: "SolStatus",
-  version: "2.0.0"
+  version: packageJson.version
 })
 
 pipe(

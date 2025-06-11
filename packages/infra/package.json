@@ -1,8 +1,26 @@
 {
   "name": "@solstatus/infra",
   "version": "2.0.0",
-  "private": true,
+  "description": "Infrastructure configuration and deployment tools for SolStatus",
+  "keywords": ["solstatus", "infrastructure", "cloudflare", "deployment", "iac"],
+  "homepage": "https://github.com/unibeck/solstatus/tree/main/packages/infra#readme",
+  "bugs": {
+    "url": "https://github.com/unibeck/solstatus/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unibeck/solstatus.git",
+    "directory": "packages/infra"
+  },
+  "license": "MIT",
   "type": "module",
+  "files": [
+    "src",
+    "scripts",
+    "README.md",
+    "drizzle.config.ts",
+    "wrangler*.jsonc"
+  ],
   "imports": {
     "@/*": "./src/*"
   },

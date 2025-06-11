@@ -1,8 +1,29 @@
 {
   "name": "@solstatus/app",
   "version": "2.0.0",
-  "private": true,
+  "description": "Web application for SolStatus uptime monitoring service",
+  "keywords": ["solstatus", "web", "nextjs", "monitoring", "dashboard"],
+  "homepage": "https://github.com/unibeck/solstatus/tree/main/packages/app#readme",
+  "bugs": {
+    "url": "https://github.com/unibeck/solstatus/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unibeck/solstatus.git",
+    "directory": "packages/app"
+  },
+  "license": "MIT",
   "type": "module",
+  "files": [
+    "src",
+    "infra",
+    "public",
+    "README.md",
+    "next.config.ts",
+    "next-env.d.ts",
+    "tailwind.config.ts",
+    "postcss.config.ts"
+  ],
   "exports": {
     "./infra": "./infra/index.ts"
   },
