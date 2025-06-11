@@ -4,7 +4,11 @@ import alchemy from "alchemy"
 import { DOStateStore } from "alchemy/cloudflare"
 import { SolStatus } from "./solstatus"
 
-const APP_NAME = "solstatus"
+const APP_NAME = process.env.APP_NAME || "solstatus"
+
+if (!process.env.FQDN) {
+  throw new Error("FQDN is not set")
+}
 
 export const ALL_PHASES = ["destroy", "up", "read"] as const
 export type Phase = (typeof ALL_PHASES)[number]
@@ -34,7 +38,7 @@ const infra = await alchemy(APP_NAME, {
 
 await SolStatus(`${APP_NAME}-${stage}`, {
   stage,
-  fqdn: "uptime.solstatus.com",
+  fqdn: process.env.FQDN,
 })
 
 await infra.finalize()
