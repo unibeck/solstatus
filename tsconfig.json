@@ -1,11 +1,16 @@
 {
   "extends": "./tsconfig.base.json",
-  "compileOnSave": false,
-  "files": [],
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "types": ["node"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"],
   "references": [
     { "path": "./packages/common" },
     { "path": "./packages/infra" },
     { "path": "./packages/api" },
-    { "path": "./packages/app" },
+    { "path": "./packages/app" }
   ]
 }

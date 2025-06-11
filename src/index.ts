@@ -104,7 +104,7 @@ const main = Command.make(
       }
 
       // Construct the command
-      const alchemyRunPath = path.join(__dirname, "../../infra/src/alchemy.run.ts")
+      const alchemyRunPath = path.join(__dirname, "../packages/infra/src/alchemy.run.ts")
       const command = `tsx ${alchemyRunPath} ${args.join(" ")}`
 
       yield* Console.log(`Executing: ${command}`)

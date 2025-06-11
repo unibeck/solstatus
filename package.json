@@ -1,10 +1,20 @@
 {
-  "name": "@solstatus/solstatus",
+  "name": "solstatus",
   "version": "2.0.0",
   "type": "module",
   "packageManager": "pnpm@10.12.1",
+  "bin": {
+    "solstatus": "./src/index.ts"
+  },
+  "imports": {
+    "@/*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
+    "cli": "tsx ./src/index.ts",
     "dev": "concurrently --kill-others --names \"API,APP\" --prefix-colors \"bgWhite,bgWhiteBright\" \"pnpm dev:api\" \"wait-on http://localhost:8788 && pnpm dev:app\"",
     "dev:app": "pnpm run --filter '@solstatus/app' dev",
     "dev:api": "pnpm run --filter '@solstatus/api' dev",
@@ -15,14 +25,22 @@
     "format": "biome check . --write",
     "clean": "rm -rf ./node_modules/ ./packages/*/node_modules/ ./dist/ ./packages/*/dist/",
     "clean:builds": "rm -rf ./dist/ ./packages/*/dist/",
+    "build": "tsc",
     "types": "tsc --build",
-    "types:each": "pnpm run --filter '@solstatus/common' types && pnpm run --filter '@solstatus/api' types && pnpm run --filter '@solstatus/app' types && pnpm run --filter '@solstatus/infra' types",
-    "cli": "pnpm --filter solstatus run cli"
+    "types:each": "pnpm run --filter '@solstatus/common' types && pnpm run --filter '@solstatus/api' types && pnpm run --filter '@solstatus/app' types && pnpm run --filter '@solstatus/infra' types"
+  },
+  "dependencies": {
+    "@effect/cli": "^0.63.9",
+    "@effect/platform-node": "^0.85.14",
+    "@solstatus/infra": "workspace:*",
+    "dotenv": "catalog:",
+    "effect": "^3.16.5"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "@cloudflare/workers-types": "catalog:",
     "@types/node": "catalog:",
+    "tsx": "catalog:",
     "wrangler": "catalog:",
     "typescript": "catalog:",
     "concurrently": "catalog:",

@@ -94,6 +94,7 @@
 
       // build artifacts
       "!**/dist",
+      "!dist",
       "!**/tsconfig.json",
       "!**/node_modules/**"
     ]

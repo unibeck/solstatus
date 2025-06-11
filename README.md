@@ -12,6 +12,42 @@ An uptime monitoring service that is easy and cheap to run at scale. Create endp
 
 TODO: expectations for cost
 
+## CLI Usage
+
+SolStatus includes a command-line interface for managing infrastructure and operations.
+
+### Quick Start
+
+```bash
+# Install dependencies
+pnpm install
+
+# Run the CLI
+pnpm cli --help
+
+# Or directly
+tsx ./src/index.ts --help
+```
+
+### Required Options
+
+- `--fqdn <domain>` - Fully qualified domain name (required)
+
+### Common Commands
+
+```bash
+# Deploy infrastructure
+pnpm cli --fqdn uptime.example.com
+
+# Deploy to production
+pnpm cli --fqdn uptime.example.com --stage production
+
+# Destroy infrastructure
+pnpm cli --fqdn uptime.example.com --phase destroy
+```
+
+See `pnpm cli --help` for all available options and the full CLI documentation below.
+
 ## v2 TODO:
 - Release notes:
     - Imperative to update to latest v1.x version before upgrading to v2
@@ -37,13 +73,13 @@ TODO: expectations for cost
     - [] test fresh install
     - [] test upgrade from v1.x to v2.x
 - [x] update dependabot to use pnpm catalogs as well
-- [] create @solstatus/cli
+- [x] create solstatus CLI
     - use effect/cli (https://raw.githubusercontent.com/Effect-TS/effect/refs/heads/main/packages/cli/README.md)
     - v2.0
         - fork repo and run local script to trigger cli
     - v2.x
         - publish packages
-        - use npx @solstatus/cli
+        - use npx solstatus
         - does this clone the repo or just use it as a package?
 - [] ci/cd
     - [] add preview infra deploy (https://github.com/sam-goodwin/alchemy/blob/main/.github/workflows/pr-preview.yml) 
@@ -189,3 +225,63 @@ This repository uses Dependabot to keep dependencies up to date:
 - npm dependencies are checked weekly (grouped as minor and patch updates)
 - GitHub Actions are checked monthly
 - PR limits are set to avoid overwhelming with dependency updates
+
+## CLI Documentation
+
+### Options
+
+#### Required Options
+
+- `--fqdn <domain>` - Fully qualified domain name (required)
+
+#### Optional Options
+
+- `--cloudflare-account-id <id>` - Cloudflare Account ID (defaults to env var)
+- `--cloudflare-api-token <token>` - Cloudflare API Token (defaults to env var)
+- `--stage <stage>` - Deployment stage (default: "dev")
+- `--phase <phase>` - Phase to execute: "destroy", "up", or "read" (default: "up")
+- `--quiet` - Run in quiet mode (default: false)
+- `--app-name <name>` - Application name (default: "solstatus")
+
+#### Built-in Options
+
+- `--help` or `-h` - Show help documentation
+- `--version` - Show CLI version
+- `--wizard` - Start wizard mode for interactive command building
+- `--completions <shell>` - Generate shell completions (bash, sh, fish, zsh)
+- `--log-level <level>` - Set minimum log level
+
+### Environment Variables
+
+The CLI will look for Cloudflare credentials in this order:
+1. CLI flags (`--cloudflare-account-id`, `--cloudflare-api-token`)
+2. `.env` file in the current directory
+3. Process environment variables
+
+Required environment variables if not provided via CLI flags:
+- `CLOUDFLARE_ACCOUNT_ID`
+- `CLOUDFLARE_API_TOKEN`
+
+Optional environment variables:
+- `SECRET_ALCHEMY_PASSPHRASE`
+
+### Examples
+
+```bash
+# Basic usage with required FQDN
+pnpm cli --fqdn uptime.solstatus.com
+
+# Deploy to production
+pnpm cli --fqdn uptime.solstatus.com --stage production --phase up
+
+# Destroy infrastructure
+pnpm cli --fqdn uptime.solstatus.com --phase destroy
+
+# With explicit Cloudflare credentials
+pnpm cli --fqdn uptime.solstatus.com \
+  --cloudflare-account-id YOUR_ACCOUNT_ID \
+  --cloudflare-api-token YOUR_API_TOKEN
+
+# Generate shell completions
+source <(pnpm cli --completions bash)
+```
