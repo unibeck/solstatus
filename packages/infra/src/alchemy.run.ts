@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 
 import alchemy from "alchemy"
-import { run } from "./appResources"
+import { SolStatus } from "./solstatus"
 
 const APP_NAME = "solstatus"
 
@@ -15,8 +15,7 @@ const quiet = process.argv.includes("--quiet")
 if (!ALL_PHASES.includes(phase)) {
   throw new Error(`Invalid phase [${phase}]`)
 }
-const resPrefix = `${APP_NAME}-${stage}`
-console.log(`${resPrefix}: ${phase}`)
+console.log(`${APP_NAME}-${stage}: ${phase}`)
 
 const infra = await alchemy(APP_NAME, {
   stage: stage,
@@ -25,9 +24,9 @@ const infra = await alchemy(APP_NAME, {
   password: process.env.SECRET_ALCHEMY_PASSPHRASE,
 })
 
-run(resPrefix, stage).catch((err) => {
-  console.error(err.message)
-  process.exit(1)
+await SolStatus(`${APP_NAME}-${stage}`, {
+  stage,
+  fqdn: "uptime.solstatus.com",
 })
 
 await infra.finalize()

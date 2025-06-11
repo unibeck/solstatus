@@ -5,7 +5,8 @@
   "separate-pull-requests": true,
   "group-pull-request-title-pattern": "chore: release ${component}",
   "draft": false,
-  "prerelease": false,
+  "prerelease": true,
+  "prerelease-type": "beta",
   "release-type": "node",
   "packages": {
     ".": {

@@ -5,22 +5,29 @@ import {
 import { createApp } from "@solstatus/app/infra"
 import { createDB, createSessionsStorageKV } from "@solstatus/common/infra"
 
-export async function run(resPrefix: string, stage: string) {
+export interface SolStatusConfig {
+  stage: string
+  fqdn?: string
+}
+
+export async function SolStatus(name: string, config: SolStatusConfig) {
+  const { stage } = config
+  
   // Shared resources
-  const sessionsStorageKV = await createSessionsStorageKV(resPrefix)
-  const db = await createDB(resPrefix)
+  const sessionsStorageKV = await createSessionsStorageKV(name)
+  const db = await createDB(name)
 
   // API resources
-  const monitorExecWorker = await createMonitorExecWorker(resPrefix, stage, db)
+  const monitorExecWorker = await createMonitorExecWorker(name, stage, db)
   const monitorTriggerWorker = await createMonitorTriggerWorker(
-    resPrefix,
+    name,
     db,
     monitorExecWorker,
   )
 
   // App resources
   const app = await createApp(
-    resPrefix,
+    name,
     db,
     sessionsStorageKV,
     monitorExecWorker,

@@ -36,8 +36,8 @@ TODO: expectations for cost
 - [] test
     - [] test fresh install
     - [] test upgrade from v1.x to v2.x
-- [] update readmes
-- [] update dependabot to use pnpm catalogs as well
+- [x] update dependabot to use pnpm catalogs as well
+- [] create effect/cli script to create a new solstatus instance (https://raw.githubusercontent.com/Effect-TS/effect/refs/heads/main/packages/cli/README.md)
 - [] parameterize init script
   - PRE_FQDN/PROD_FQDN
   - CLOUDFLARE_ACCOUNT_ID

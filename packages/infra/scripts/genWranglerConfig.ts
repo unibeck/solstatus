@@ -1,6 +1,6 @@
 import alchemy from "alchemy"
 import { WranglerJson } from "alchemy/cloudflare"
-import { run } from "@/appResources"
+import { SolStatus } from "@/solstatus"
 
 // TODO: waiting on https://github.com/sam-goodwin/alchemy/pull/230 to land to run alchemy against miniflare to generate these locally
 const genWranglerConfig = async () => {
@@ -8,9 +8,7 @@ const genWranglerConfig = async () => {
   const stage = "dev"
   const phase = "up"
   const quiet = false
-
-  const resPrefix = `${APP_NAME}-${stage}`
-  console.log(`${resPrefix}: ${phase}`)
+  console.log(`${APP_NAME}-${stage}: ${phase}`)
 
   const infra = await alchemy(APP_NAME, {
     stage: stage,
@@ -19,10 +17,10 @@ const genWranglerConfig = async () => {
     password: process.env.SECRET_ALCHEMY_PASSPHRASE,
   })
 
-  const { monitorExecWorker, monitorTriggerWorker } = await run(
-    resPrefix,
+  const { monitorExecWorker, monitorTriggerWorker } = await SolStatus(`${APP_NAME}-${stage}`, {
     stage,
-  )
+    fqdn: "uptime.solstatus.com",
+  })
 
   await WranglerJson("wrangler-monitor-exec", {
     worker: monitorExecWorker,
