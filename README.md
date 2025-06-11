@@ -37,11 +37,16 @@ TODO: expectations for cost
     - [] test fresh install
     - [] test upgrade from v1.x to v2.x
 - [x] update dependabot to use pnpm catalogs as well
-- [] create effect/cli script to create a new solstatus instance (https://raw.githubusercontent.com/Effect-TS/effect/refs/heads/main/packages/cli/README.md)
-- [] parameterize init script
-  - PRE_FQDN/PROD_FQDN
-  - CLOUDFLARE_ACCOUNT_ID
-  - CLOUDFLARE_DATABASE_ID
+- [] create @solstatus/cli
+    - use effect/cli (https://raw.githubusercontent.com/Effect-TS/effect/refs/heads/main/packages/cli/README.md)
+    - v2.0
+        - fork repo and run local script to trigger cli
+    - v2.x
+        - publish packages
+        - use npx @solstatus/cli
+        - does this clone the repo or just use it as a package?
+- [] ci/cd
+    - [] add preview infra deploy (https://github.com/sam-goodwin/alchemy/blob/main/.github/workflows/pr-preview.yml) 
 
 ## v2.1 TODO:
 - [] Worker for Platforms to create a new worker per synthetic monitor (https://x.com/samgoodwin89/status/1926034269543035252)

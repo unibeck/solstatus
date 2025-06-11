@@ -14,7 +14,6 @@ import { Toaster } from "@/registry/new-york-v4/ui/sonner"
 import "@/app/globals.css"
 import "@/app/theme.css"
 
-import { PROD_FQDN } from "@solstatus/common/utils"
 import { ActiveThemeProvider } from "@/components/active-theme"
 import { HeaderProvider } from "@/context/header-context"
 import { cn } from "@/lib/utils"
@@ -29,26 +28,24 @@ export const metadata: Metadata = {
     default: siteConfig.name,
     template: `%s - ${siteConfig.name}`,
   },
-  metadataBase: new URL(`https://${PROD_FQDN}`),
   description: siteConfig.description,
   keywords: ["Monitoring", "Uptime", "Latency", "Status code", "OpsGenie"],
   authors: [
     {
       name: "Jonathan Beckmann",
-      url: "https://github.com/unibeck",
+      url: "https://x.com/SolBeckman_",
     },
   ],
   creator: "Jonathan Beckmann",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: `https://${PROD_FQDN}`,
     title: siteConfig.name,
     description: siteConfig.description,
     siteName: siteConfig.name,
     images: [
       {
-        url: `https://${PROD_FQDN}/og_image.png`,
+        url: "/og_image.png",
         width: 1200,
         height: 630,
         alt: siteConfig.name,
@@ -59,7 +56,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
-    images: [`${PROD_FQDN}/og_image.png`],
+    images: ["/og_image.png"],
     creator: "@SolBeckman_",
   },
   icons: {

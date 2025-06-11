@@ -6,7 +6,6 @@ import type {
   DBResource,
   SessionsStorageKVResource,
 } from "@solstatus/common/infra"
-// import { PROD_FQDN } from "@solstatus/common/utils"
 import alchemy from "alchemy"
 import { KVNamespace, Website } from "alchemy/cloudflare"
 

@@ -1,19 +1,12 @@
-import { PRE_FQDN, PROD_FQDN } from "@solstatus/common/utils"
-
 const DEV: AppEnvMetadata = {
-  appUrl: "http://localhost:8787",
 }
 
 const PRE: AppEnvMetadata = {
   ...DEV,
-
-  appUrl: PRE_FQDN,
 }
 
 const PROD: AppEnvMetadata = {
   ...PRE,
-
-  appUrl: PROD_FQDN,
 }
 
 export enum AppEnvID {
@@ -22,9 +15,8 @@ export enum AppEnvID {
   PROD = "production",
 }
 
-export interface AppEnvMetadata {
-  appUrl: string
-}
+// biome-ignore lint/suspicious/noEmptyInterface: This app env concept is not used yet
+export interface AppEnvMetadata {}
 
 const AppEnvs: { [value in AppEnvID]: AppEnvMetadata } = {
   [AppEnvID.DEV]: DEV,
