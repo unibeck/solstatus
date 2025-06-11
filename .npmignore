@@ -1,0 +1,33 @@
+# Development files
+.github/
+.vscode/
+.cursor/
+.devcontainer/
+scripts/
+docs/
+packages/
+
+# Configuration files
+.dev.vars
+.env*
+.release-please-manifest.json
+release-please-config.json
+pnpm-workspace.yaml
+biome.jsonc
+tsconfig.base.json
+
+# Build artifacts
+.wrangler/
+.next/
+.open-next/
+dist/
+*.tsbuildinfo
+
+# Git
+.git/
+.gitignore
+
+# Other
+.DS_Store
+CHANGELOG.md
+*.log 

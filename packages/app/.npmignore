@@ -1,0 +1,18 @@
+# Source files
+tsconfig.json
+*.tsbuildinfo
+
+# Development
+.env*
+.gitignore
+
+# Build artifacts
+.next/
+.open-next/
+dist/
+.wrangler/
+out/
+
+# Other
+*.log
+.DS_Store 
