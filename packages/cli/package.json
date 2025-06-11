@@ -1,5 +1,5 @@
 {
-  "name": "@solstatus/cli",
+  "name": "solstatus",
   "version": "2.0.0",
   "type": "module",
   "bin": {

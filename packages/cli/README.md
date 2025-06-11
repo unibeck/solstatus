@@ -1,6 +1,6 @@
-# SolStatus Infrastructure CLI
+# SolStatus CLI
 
-A command-line interface for managing SolStatus infrastructure using Effect/CLI.
+The main command-line interface for managing SolStatus infrastructure and operations.
 
 ## Installation
 
@@ -25,7 +25,10 @@ tsx ./src/index.ts [options]
 ./src/index.ts [options]
 
 # From the monorepo root
-pnpm --filter @solstatus/cli run cli [options]
+pnpm cli [options]
+
+# Or using workspace filter
+pnpm --filter solstatus run cli [options]
 ```
 
 ## Options

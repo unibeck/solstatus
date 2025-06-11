@@ -56,7 +56,7 @@ const fqdn = Options.text("fqdn").pipe(
 
 // Create the main command
 const main = Command.make(
-  "solstatus-cli",
+  "solstatus",
   {
     cloudflareAccountId,
     cloudflareApiToken,
@@ -134,8 +134,8 @@ const main = Command.make(
 
 // Run the CLI
 const cli = Command.run(main, {
-  name: "SolStatus CLI",
-  version: "1.0.0"
+  name: "SolStatus",
+  version: "2.0.0"
 })
 
 pipe(
