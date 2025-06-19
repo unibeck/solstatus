@@ -36,6 +36,11 @@ const secretAlchemyPassphrase = Options.text("secret-alchemy-passphrase").pipe(
   Options.optional,
 )
 
+const betterAuthSecret = Options.text("better-auth-secret").pipe(
+  Options.withDescription("Better Auth Secret for authentication"),
+  Options.optional,
+)
+
 const stage = Options.text("stage").pipe(
   Options.withDescription("Deployment stage (default: dev)"),
   Options.withDefault("dev"),
@@ -67,6 +72,7 @@ const main = Command.make(
     cloudflareAccountId,
     cloudflareApiToken,
     secretAlchemyPassphrase,
+    betterAuthSecret,
     stage,
     phase,
     quiet,
@@ -127,6 +133,39 @@ const main = Command.make(
         )
       }
 
+      let betterAuthSecret = Option.getOrElse(
+        config.betterAuthSecret,
+        () => process.env.BETTER_AUTH_SECRET || "",
+      )
+
+      if (!betterAuthSecret) {
+        // Generate a random 32-character hex passphrase
+        betterAuthSecret = randomBytes(16).toString("hex")
+        
+        yield* Console.log(
+          "🔑 No --better-auth-secret or env.BETTER_AUTH_SECRET provided. Generating new secret..."
+        )
+
+        // Read existing .env file or create empty content
+        let envContent = ""
+        if (fs.existsSync(envPath)) {
+          envContent = fs.readFileSync(envPath, "utf-8")
+        }
+
+        // Add new secret to .env file
+        if (envContent && !envContent.endsWith("\n")) {
+          envContent += "\n"
+        }
+        envContent += `BETTER_AUTH_SECRET="${betterAuthSecret}"\n`
+
+        // Write to .env file
+        fs.writeFileSync(envPath, envContent)
+        
+        yield* Console.log(
+          `✅ Generated and saved new secret to ${envPath}`
+        )
+      }
+
       // Prepare environment variables
       const env = {
         ...process.env,
@@ -134,6 +173,7 @@ const main = Command.make(
         CLOUDFLARE_API_TOKEN: apiToken,
         ALCHEMY_STATE_TOKEN: apiToken,
         SECRET_ALCHEMY_PASSPHRASE: secretAlchemyPassphrase,
+        BETTER_AUTH_SECRET: betterAuthSecret,
         APP_NAME: config.appName,
         FQDN: config.fqdn,
       }
