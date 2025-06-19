@@ -19,7 +19,7 @@ export async function createMonitorExecWorker(
     rpc: type<MonitorExec>,
     bindings: {
       DB: db,
-      OPSGENIE_API_KEY: alchemy.secret(process.env.OPSGENIE_API_KEY),
+      OPSGENIE_API_KEY: alchemy.secret(process.env.OPSGENIE_API_KEY || ""),
       APP_ENV: stage,
     },
   })

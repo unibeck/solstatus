@@ -1,3 +1,5 @@
+import { dirname, resolve } from "node:path"
+import { fileURLToPath } from "node:url"
 import { D1Database, KVNamespace } from "alchemy/cloudflare"
 
 export async function createSessionsStorageKV(resPrefix: string) {
@@ -13,10 +15,15 @@ export type SessionsStorageKVResource = Awaited<
 
 export async function createDB(resPrefix: string): Promise<D1Database> {
   const dbName = `${resPrefix}-db`
+  
+  const __filename = fileURLToPath(import.meta.url)
+  const __dirname = dirname(__filename)
+  const migrationsDir = resolve(__dirname, "../src/db/migrations")
+
   return await D1Database(dbName, {
     name: dbName,
     adopt: true,
-    migrationsDir: "src/db/migrations",
+    migrationsDir: migrationsDir,
     primaryLocationHint: "enam",
     readReplication: {
       mode: "auto",

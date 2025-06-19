@@ -30,6 +30,11 @@ const cloudflareApiToken = Options.text("cloudflare-api-token").pipe(
   Options.optional,
 )
 
+const alchemyPassphrase = Options.text("alchemy-passphrase").pipe(
+  Options.withDescription("Alchemy Passphrase for state secrets"),
+  Options.optional,
+)
+
 const stage = Options.text("stage").pipe(
   Options.withDescription("Deployment stage (default: dev)"),
   Options.withDefault("dev"),
@@ -60,6 +65,7 @@ const main = Command.make(
   {
     cloudflareAccountId,
     cloudflareApiToken,
+    alchemyPassphrase,
     stage,
     phase,
     quiet,
@@ -87,12 +93,25 @@ const main = Command.make(
         return yield* Effect.fail(1)
       }
 
+      const alchemyPassphrase = Option.getOrElse(
+        config.alchemyPassphrase,
+        () => process.env.SECRET_ALCHEMY_PASSPHRASE || "",
+      )
+
+      if (!alchemyPassphrase) {
+        yield* Console.error(
+          "Error: SECRET_ALCHEMY_PASSPHRASE must be provided via CLI flags, .env file, or environment variables",
+        )
+        return yield* Effect.fail(1)
+      }
+
       // Prepare environment variables
       const env = {
         ...process.env,
         CLOUDFLARE_ACCOUNT_ID: accountId,
         CLOUDFLARE_API_TOKEN: apiToken,
-        SECRET_ALCHEMY_PASSPHRASE: process.env.SECRET_ALCHEMY_PASSPHRASE || "",
+        ALCHEMY_STATE_TOKEN: apiToken,
+        SECRET_ALCHEMY_PASSPHRASE: alchemyPassphrase,
         APP_NAME: config.appName,
         FQDN: config.fqdn,
       }
@@ -109,12 +128,6 @@ const main = Command.make(
         "../packages/infra/src/alchemy.run.ts",
       )
       const command = `tsx ${alchemyRunPath} ${args.join(" ")}`
-
-      yield* Console.log(`Executing: ${command}`)
-      yield* Console.log(`FQDN: ${config.fqdn}`)
-      yield* Console.log(`Stage: ${config.stage}`)
-      yield* Console.log(`Phase: ${config.phase}`)
-      yield* Console.log(`App Name: ${config.appName}`)
 
       try {
         // Execute the command

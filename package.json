@@ -52,11 +52,11 @@
     "types:each": "pnpm run --filter '@solstatus/common' types && pnpm run --filter '@solstatus/api' types && pnpm run --filter '@solstatus/app' types && pnpm run --filter '@solstatus/infra' types"
   },
   "dependencies": {
-    "@effect/cli": "^0.63.9",
-    "@effect/platform-node": "^0.85.14",
+    "@effect/cli": "^0.64.1",
+    "@effect/platform-node": "^0.86.2",
     "@solstatus/infra": "workspace:*",
     "dotenv": "catalog:",
-    "effect": "^3.16.5"
+    "effect": "^3.16.8"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
