@@ -5,21 +5,20 @@ import {
   endpointSignature,
   MonitorTriggerNotInitializedError,
 } from "@solstatus/common/utils"
-import { diffable } from "diffable-objects"
+import { state } from "diffable-objects"
 import { eq } from "drizzle-orm"
 import { ReasonPhrases, StatusCodes } from "http-status-codes"
 import type { MonitorTriggerEnv } from "../infra/types/env"
 
-// Define types for state and init payload
 type MonitorType = "endpoint" | "synthetic"
 type Runtime = "playwright-cf-latest" | "puppeteer-cf-latest"
 
 interface MonitorState {
   monitorId: string | null
   monitorType: MonitorType | null
-  checkInterval: number | null // in seconds
-  timeoutSeconds?: number | null // Only for synthetic
-  runtime?: Runtime | null // Only for synthetic
+  checkInterval: number | null
+  timeoutSeconds?: number | null
+  runtime?: Runtime | null
 }
 
 export interface InitPayload {
@@ -36,14 +35,13 @@ export interface InitPayload {
 export class MonitorTrigger extends DurableObject {
   declare readonly env: MonitorTriggerEnv
 
-  @diffable
-  #state: MonitorState = {
+  #state = state<MonitorState>(this.ctx, "state", {
     monitorId: null,
     monitorType: null,
     checkInterval: null,
     timeoutSeconds: null,
     runtime: null,
-  }
+  })
 
   // Updated init method
   async init(payload: InitPayload) {
