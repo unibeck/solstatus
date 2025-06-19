@@ -25,10 +25,10 @@ export async function createApp(
 
   const app = await Website(appName, {
     name: appName,
-    command: "pnpm clean && pnpm run build:opennextjs",
+    // command: "pnpm clean && pnpm run build:opennextjs",
     main: ".open-next/worker.js",
     assets: ".open-next/assets",
-    url: true,
+    url: false,
     compatibilityFlags: ["nodejs_compat"],
     observability: {
       enabled: true,
@@ -48,7 +48,7 @@ export async function createApp(
       NEXT_INC_CACHE_KV: kvIncrementalCache,
     },
   })
-  console.log(`${appName}: ${app.url}`)
+  console.log(`${appName}: https://${fqdn}`)
   return app
 }
 export type AppResource = Awaited<ReturnType<typeof createApp>>

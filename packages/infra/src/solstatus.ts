@@ -1,3 +1,4 @@
+import path from "node:path"
 import {
   createMonitorExecWorker,
   createMonitorTriggerWorker,
@@ -26,6 +27,12 @@ export async function SolStatus(name: string, config: SolStatusConfig) {
   )
 
   // App resources
+  
+  // Save current directory and change to app directory
+  const originalCwd = process.cwd()
+  const appDir = path.join(process.cwd(), '../packages/app')
+  process.chdir(appDir)
+  
   const app = await createApp(
     name,
     db,
@@ -34,6 +41,9 @@ export async function SolStatus(name: string, config: SolStatusConfig) {
     monitorTriggerWorker,
     fqdn,
   )
+  
+  // Restore original directory
+  process.chdir(originalCwd)
 
   return {
     sessionsStorageKV,
