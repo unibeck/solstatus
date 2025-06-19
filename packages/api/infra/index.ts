@@ -1,3 +1,5 @@
+import { dirname, resolve } from "node:path"
+import { fileURLToPath } from "node:url"
 import type { DBResource } from "@solstatus/common/infra"
 import alchemy, { type } from "alchemy"
 import { DurableObjectNamespace, Worker } from "alchemy/cloudflare"
@@ -13,9 +15,14 @@ export async function createMonitorExecWorker(
   db: DBResource,
 ) {
   const workerName = `${resPrefix}-monitor-exec`
+
+  const __filename = fileURLToPath(import.meta.url)
+  const __dirname = dirname(__filename)
+  const entrypoint = resolve(__dirname, "../src/monitor-exec.ts")
+
   return await Worker(workerName, {
     name: workerName,
-    entrypoint: "../src/monitor-exec.ts",
+    entrypoint: entrypoint,
     rpc: type<MonitorExec>,
     bindings: {
       DB: db,
@@ -34,9 +41,14 @@ export async function createMonitorTriggerWorker(
   monitorExecWorker: MonitorExecWorkerResource,
 ) {
   const workerName = `${resPrefix}-monitor-trigger`
+
+  const __filename = fileURLToPath(import.meta.url)
+  const __dirname = dirname(__filename)
+  const entrypoint = resolve(__dirname, "../src/monitor-trigger.ts")
+
   return await Worker(workerName, {
     name: workerName,
-    entrypoint: "../src/monitor-trigger.ts",
+    entrypoint: entrypoint,
     rpc: type<MonitorTriggerRPC>,
     bindings: {
       DB: db,

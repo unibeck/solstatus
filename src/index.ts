@@ -1,6 +1,7 @@
 #!/usr/bin/env tsx
 
 import { execSync } from "node:child_process"
+import { randomBytes } from "node:crypto"
 import fs from "node:fs"
 import path, { dirname } from "node:path"
 import { fileURLToPath } from "node:url"
@@ -30,7 +31,7 @@ const cloudflareApiToken = Options.text("cloudflare-api-token").pipe(
   Options.optional,
 )
 
-const alchemyPassphrase = Options.text("alchemy-passphrase").pipe(
+const secretAlchemyPassphrase = Options.text("secret-alchemy-passphrase").pipe(
   Options.withDescription("Alchemy Passphrase for state secrets"),
   Options.optional,
 )
@@ -65,7 +66,7 @@ const main = Command.make(
   {
     cloudflareAccountId,
     cloudflareApiToken,
-    alchemyPassphrase,
+    secretAlchemyPassphrase,
     stage,
     phase,
     quiet,
@@ -93,16 +94,37 @@ const main = Command.make(
         return yield* Effect.fail(1)
       }
 
-      const alchemyPassphrase = Option.getOrElse(
-        config.alchemyPassphrase,
+      let secretAlchemyPassphrase = Option.getOrElse(
+        config.secretAlchemyPassphrase,
         () => process.env.SECRET_ALCHEMY_PASSPHRASE || "",
       )
 
-      if (!alchemyPassphrase) {
-        yield* Console.error(
-          "Error: SECRET_ALCHEMY_PASSPHRASE must be provided via CLI flags, .env file, or environment variables",
+      if (!secretAlchemyPassphrase) {
+        // Generate a random 32-character hex passphrase
+        secretAlchemyPassphrase = randomBytes(16).toString("hex")
+        
+        yield* Console.log(
+          "🔑 No --secret-alchemy-passphrase or env.SECRET_ALCHEMY_PASSPHRASE provided. Generating new passphrase..."
         )
-        return yield* Effect.fail(1)
+
+        // Read existing .env file or create empty content
+        let envContent = ""
+        if (fs.existsSync(envPath)) {
+          envContent = fs.readFileSync(envPath, "utf-8")
+        }
+
+        // Add new passphrase to .env file
+        if (envContent && !envContent.endsWith("\n")) {
+          envContent += "\n"
+        }
+        envContent += `SECRET_ALCHEMY_PASSPHRASE="${secretAlchemyPassphrase}"\n`
+
+        // Write to .env file
+        fs.writeFileSync(envPath, envContent)
+        
+        yield* Console.log(
+          `✅ Generated and saved new passphrase to ${envPath}`
+        )
       }
 
       // Prepare environment variables
@@ -111,7 +133,7 @@ const main = Command.make(
         CLOUDFLARE_ACCOUNT_ID: accountId,
         CLOUDFLARE_API_TOKEN: apiToken,
         ALCHEMY_STATE_TOKEN: apiToken,
-        SECRET_ALCHEMY_PASSPHRASE: alchemyPassphrase,
+        SECRET_ALCHEMY_PASSPHRASE: secretAlchemyPassphrase,
         APP_NAME: config.appName,
         FQDN: config.fqdn,
       }
