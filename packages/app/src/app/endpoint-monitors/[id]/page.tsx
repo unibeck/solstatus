@@ -40,7 +40,7 @@ export default function EndpointMonitorDetailPage() {
   const router = useRouter()
   const endpointMonitorId = params.id as string
   const { setHeaderLeftContent, setHeaderRightContent } = useHeaderContext()
-  const searchParams = useSearchParams() // Get search params
+  const searchParams = useSearchParams()
 
   const [endpointMonitor, setEndpointMonitor] = useState<z.infer<
     typeof endpointMonitorsSelectSchema

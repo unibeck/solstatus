@@ -47,6 +47,7 @@ export default withBundleAnalyzer(nextConfig)
 // added by create cloudflare to enable calling `getCloudflareContext()` in `next dev`
 import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare"
 
+// FYI, .dev.vars are loaded from the infra package because of this
 initOpenNextCloudflareForDev({
   configPath: "../../packages/infra/wrangler.jsonc",
   persist: {

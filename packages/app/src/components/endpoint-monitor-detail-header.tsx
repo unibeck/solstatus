@@ -1,4 +1,5 @@
 "use client"
+
 import type { endpointMonitorsSelectSchema } from "@solstatus/common/db"
 import {
   IconActivity,
@@ -13,9 +14,10 @@ import {
   Play,
   RefreshCw,
 } from "lucide-react"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState, useTransition } from "react"
 import { toast } from "sonner"
 import type { z } from "zod"
+import { getInfraMetadata, type InfraMetadata } from "@/app/actions/infraMetadata"
 import { DEFAULT_TOAST_OPTIONS } from "@/lib/toasts"
 import { Badge } from "@/registry/new-york-v4/ui/badge"
 import { Button } from "@/registry/new-york-v4/ui/button"
@@ -38,6 +40,15 @@ export function EndpointMonitorDetailHeader({
   onStatusChange,
 }: WebsiteDetailHeaderProps) {
   const [isLoading, setIsLoading] = useState(false)
+
+  const [infraMetadata, setInfraMetadata] = useState<InfraMetadata | null>(null)
+  const [isInfraMetadataPending, startInfraMetadataTransition] = useTransition()
+  useEffect(() => {
+    startInfraMetadataTransition(async () => {
+      const updatedInfraMetadata = await getInfraMetadata()
+      setInfraMetadata(updatedInfraMetadata)
+    })
+  }, [])
 
   const refreshWebsiteData = useCallback(async () => {
     if (onStatusChange) {
@@ -156,6 +167,7 @@ export function EndpointMonitorDetailHeader({
         </div>
       </div>
       <div className="flex flex-col sm:flex-row gap-4">
+        {!isInfraMetadataPending && infraMetadata && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="default" disabled={isLoading}>
@@ -166,7 +178,7 @@ export function EndpointMonitorDetailHeader({
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
               <a
-                href="https://dash.cloudflare.com/UPDATE_ME_ABC"
+                href={`https://dash.cloudflare.com/${infraMetadata.cloudflareAccountId}/workers/services/view/${infraMetadata.monitorExecName}/production/observability/logs?workers-observability-view=invocations`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -176,7 +188,7 @@ export function EndpointMonitorDetailHeader({
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <a
-                href="https://dash.cloudflare.com/UPDATE_ME_ABC"
+                href={`https://dash.cloudflare.com/${infraMetadata.cloudflareAccountId}/workers/services/view/${infraMetadata.monitorTriggerName}/production/observability/logs?workers-observability-view=invocations`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -184,8 +196,9 @@ export function EndpointMonitorDetailHeader({
                 View Trigger
               </a>
             </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

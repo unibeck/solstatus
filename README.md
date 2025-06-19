@@ -71,6 +71,7 @@ See `pnpm cli --help` for all available options and the full CLI documentation b
 - [] update bootstrap script
 - [x] fix infra entrypoint for monitor-exec and monitor-trigger(?)
 - [] implement adopt logic for alchemy
+- [] update .env.example files
 - [] test
     - [] test fresh install
     - [] test upgrade from v1.x to v2.x

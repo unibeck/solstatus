@@ -16,6 +16,7 @@ export async function createApp(
   monitorExecWorker: MonitorExecWorkerResource,
   monitorTriggerWorker: MonitorTriggerWorkerResource,
   fqdn: string,
+  cloudflareAccountId: string,
 ) {
   const appName = `${resPrefix}-app`
 
@@ -46,8 +47,12 @@ export async function createApp(
       MONITOR_EXEC: monitorExecWorker,
       MONITOR_TRIGGER_RPC: monitorTriggerWorker,
       NEXT_INC_CACHE_KV: kvIncrementalCache,
+      MONITOR_EXEC_NAME: monitorExecWorker.name,
+      MONITOR_TRIGGER_NAME: monitorTriggerWorker.name,
+      CLOUDFLARE_ACCOUNT_ID: cloudflareAccountId,
     },
   })
+
   console.log(`${appName}: https://${fqdn}`)
   return app
 }
