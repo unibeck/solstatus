@@ -47,8 +47,8 @@
     "format": "biome check . --write",
     "clean": "rm -rf ./node_modules/ ./packages/*/node_modules/ ./dist/ ./packages/*/dist/",
     "clean:builds": "rm -rf ./dist/ ./packages/*/dist/",
-    "build": "tsc",
-    "types": "tsc --build",
+    "build": "tsc --build",
+    "types": "tsc",
     "types:each": "pnpm run --filter '@solstatus/common' types && pnpm run --filter '@solstatus/api' types && pnpm run --filter '@solstatus/app' types && pnpm run --filter '@solstatus/infra' types"
   },
   "dependencies": {

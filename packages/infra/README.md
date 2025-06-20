@@ -1,6 +1,6 @@
 # @solstatus/infra
 
-Infrastructure configuration and deployment tools for SolStatus uptime monitoring service.
+Infrastructure configuration and deployment for SolStatus.
 
 ## Installation
 
@@ -8,33 +8,28 @@ Infrastructure configuration and deployment tools for SolStatus uptime monitorin
 pnpm i @solstatus/infra
 ```
 
-## Overview
+## Database Management
 
-This package provides infrastructure as code and deployment tools for SolStatus:
+To generate the latest migration files, run:
+```shell
+pnpm run db:generate
+```
 
-- Alchemy-based infrastructure deployment
-- Wrangler configurations for Cloudflare Workers
-- Database migration management
-- Development and production environment setup
+Then, test the migration locally:
+```shell
+pnpm run db:migrate
+```
 
-## Key Components
+To run the migration script for production:
+```shell
+pnpm run db:migrate:prod
+```
 
-- **Alchemy Configuration**: Infrastructure as code using Alchemy framework
-- **Database Management**: D1 database creation, migrations, and seeding
-- **Wrangler Configs**: Cloudflare Workers configuration templates
+To view/edit your database with Drizzle Studio:
+```shell
+# Local database
+pnpm run db:studio
 
-## Development
-
-```bash
-# Deploy infrastructure
-pnpm infra:up
-
-# Destroy infrastructure
-pnpm infra:destroy
-
-# Database setup
-pnpm db:setup
-
-# Run migrations
-pnpm db:migrate
+# Production database
+pnpm run db:studio:prod
 ```

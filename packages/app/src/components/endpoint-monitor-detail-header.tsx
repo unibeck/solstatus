@@ -9,7 +9,6 @@ import {
   IconPencil,
 } from "@tabler/icons-react"
 import {
-  ExternalLink,
   MoreVertical,
   Pause,
   Play,
@@ -142,18 +141,20 @@ export function EndpointMonitorDetailHeader({
 
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-      <div>
+      <div className="min-w-0 flex-1">
         <a
           href={endpointMonitor.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center mt-2 hover:text-muted-foreground text-3xl font-bold"
+          className="flex items-center mt-2 hover:text-muted-foreground text-3xl font-bold mr-6"
+          title={endpointMonitor.url}
         >
-          {endpointMonitor.url}
-          <ExternalLink className="h-3.5 w-3.5 ml-1" />
+          <span className="overflow-hidden text-ellipsis">
+            {endpointMonitor.url}
+          </span>
         </a>
 
-        <div className="mt-2 text-sm text-muted-foreground flex items-center gap-1.5">
+        <div className="mt-2 text-sm text-muted-foreground flex items-center gap-1.5 flex-wrap">
           <Badge variant="secondary">
             Expected Status:{" "}
             {endpointMonitor.expectedStatusCode ? (

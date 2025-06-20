@@ -1,18 +1,13 @@
 # @solstatus/api
 
-API workers for SolStatus.
-
 ## Overview
+Built 100% on Cloudflare, using Workers, Durable Objects, and D1. A quick explanation of the architecture:
+- Each endpoint has its own Durable Object, known as the Trigger. This acts as a programmable CronJob via the Alarm API
+- The Trigger calls a Worker, known as the Executioner. 
+    - This is a fire and forget call via `waitUntil()` — minimizing the time the Durable Object is running and thus its cost (charged for Wall Time)
+- The Executioner handles making the request to the respective endpoint and updating the DB
+    - This is extremely cost effective since Workers are charged for CPU Time, and waiting on I/O tasks like this costs nothing 
 
-This package provides the core monitoring functionality for SolStatus:
+## Development
 
-- **Monitor Executor**: Performs the actual HTTP checks against monitored endpoints
-- **Monitor Trigger**: Manages scheduling and triggers for monitoring checks
-- Infrastructure configuration for Cloudflare Workers
-
-## Architecture
-
-The API is built using:
-- Cloudflare Workers for serverless execution
-- Durable Objects for stateful scheduling
-- D1 for data persistence
+It is suggested to run dev from the root of the repo, as there are other services that should be running. More details on that in the root [README](../../README.md#local-dev).
