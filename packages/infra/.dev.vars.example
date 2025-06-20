@@ -1,6 +1,6 @@
 NEXT_TELEMETRY_DISABLED=1
 
-APP_ENV=development
+APP_ENV=dev
 
 CLOUDFLARE_ACCOUNT_ID="not-relevant-for-local-dev"
 MONITOR_EXEC_NAME="monitor-exec-local"

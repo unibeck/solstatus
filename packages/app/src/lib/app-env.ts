@@ -9,9 +9,9 @@ const PROD: AppEnvMetadata = {
 }
 
 export enum AppEnvID {
-  DEV = "development",
-  PRE = "preview",
-  PROD = "production",
+  DEV = "dev",
+  PRE = "pre",
+  PROD = "prod",
 }
 
 // biome-ignore lint/suspicious/noEmptyInterface: This app env concept is not used yet
@@ -25,16 +25,16 @@ const AppEnvs: { [value in AppEnvID]: AppEnvMetadata } = {
 
 export function getAppEnvID(): AppEnvID {
   console.log(`Getting app env ID for [${process.env.NEXT_PUBLIC_APP_ENV}]`)
-  return getAppEnvIDFromStr(process.env.NEXT_PUBLIC_APP_ENV || "development")
+  return getAppEnvIDFromStr(process.env.NEXT_PUBLIC_APP_ENV || "dev")
 }
 
 export function getAppEnvIDFromStr(appEnvStr: string): AppEnvID {
   switch (appEnvStr.toLowerCase()) {
-    case "development":
+    case "dev":
       return AppEnvID.DEV
-    case "preview":
+    case "pre":
       return AppEnvID.PRE
-    case "production":
+    case "prod":
       return AppEnvID.PROD
     default:
       throw new Error(`Unknown environment: ${appEnvStr}`)

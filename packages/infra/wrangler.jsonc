@@ -12,7 +12,7 @@
     "enabled": true
   },
   "vars": {
-    "APP_ENV": "development"
+    "APP_ENV": "dev"
   },
   "assets": {
     "binding": "ASSETS",
@@ -52,15 +52,15 @@
     ]
   },
   "env": {
-    "production": {
+    "prod": {
       "routes": [
         {
-          "pattern": "sub.example.com/*",
+          "pattern": "uptime.example.com",
           "custom_domain": true
         }
       ],
       "vars": {
-        "APP_ENV": "production"
+        "APP_ENV": "prod"
       },
       "d1_databases": [
         {
@@ -72,11 +72,11 @@
       "services": [
         {
           "binding": "MONITOR_EXEC",
-          "service": "monitor-exec-production"
+          "service": "solstatus-prod-monitor-exec"
         },
         {
           "binding": "MONITOR_TRIGGER_RPC",
-          "service": "monitor-trigger-production"
+          "service": "solstatus-prod-monitor-trigger"
         }
       ],
       "durable_objects": {
@@ -84,7 +84,7 @@
           {
             "name": "MONITOR_TRIGGER",
             "class_name": "MonitorTrigger",
-            "script_name": "monitor-trigger-production"
+            "script_name": "solstatus-prod-monitor-trigger"
           }
         ]
       }

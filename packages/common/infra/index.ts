@@ -14,7 +14,9 @@ export type SessionsStorageKVResource = Awaited<
 >
 
 export async function createDB(resPrefix: string): Promise<D1Database> {
-  const dbName = `${resPrefix}-db`
+  const dbName = `${resPrefix}`
+  // TODO: migrate from solstatus-prod to solstatus-prod-db eventually (https://developers.cloudflare.com/d1/best-practices/import-export-data/)
+  // const dbName = `${resPrefix}-db`
 
   const __filename = fileURLToPath(import.meta.url)
   const __dirname = dirname(__filename)

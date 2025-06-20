@@ -40,7 +40,7 @@
     "build:opennextjs": "opennextjs-cloudflare build && node scripts/log-opennext-bundle.js",
     "start": "next start",
     "start:opennextjs": "opennextjs-cloudflare preview -- --persist-to=../infra/.wrangler/state -c ../infra/wrangler.jsonc",
-    "deploy:prod": "pnpm build:opennextjs && wrangler deploy --env production",
+    "deploy:prod": "pnpm build:opennextjs && wrangler deploy --env prod",
     "format": "biome check . --write",
     "types": "tsc",
     "clean": "rm -rf .next .open-next .dist"

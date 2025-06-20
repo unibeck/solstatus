@@ -12,7 +12,7 @@
     "enabled": true
   },
   "vars": {
-    "ENVIRONMENT": "development"
+    "ENVIRONMENT": "dev"
   },
   "d1_databases": [
     {
@@ -43,9 +43,9 @@
     }
   ],
   "env": {
-    "production": {
+    "prod": {
       "vars": {
-        "ENVIRONMENT": "production"
+        "ENVIRONMENT": "prod"
       },
       "d1_databases": [
         {
@@ -58,7 +58,7 @@
       "services": [
         {
           "binding": "MONITOR_EXEC",
-          "service": "monitor-exec-production"
+          "service": "solstatus-prod-monitor-exec"
         }
       ],
       "durable_objects": {
@@ -66,7 +66,7 @@
           {
             "name": "MONITOR_TRIGGER",
             "class_name": "MonitorTrigger",
-            "script_name": "monitor-trigger-production"
+            "script_name": "solstatus-prod-monitor-trigger"
           }
         ]
       }

@@ -30,7 +30,7 @@ yarn-error.log*
 .wrangler
 .wrangler_backup
 .env
-.env.production
+.env.prod
 .dev.vars
 .prod.vars
 

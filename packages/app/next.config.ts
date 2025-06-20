@@ -7,7 +7,7 @@ const APP_VERSION = "1.6.2"
 
 let gitCommitSHA = "dev"
 console.log(`APP_ENV: ${process.env.APP_ENV}`)
-if (process.env.APP_ENV !== "development") {
+if (process.env.APP_ENV !== "dev") {
   try {
     gitCommitSHA = execSync("git rev-parse --short HEAD")
       .toString()

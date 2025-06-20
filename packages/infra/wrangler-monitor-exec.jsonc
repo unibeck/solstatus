@@ -12,7 +12,7 @@
     "enabled": true
   },
   "vars": {
-    "APP_ENV": "development"
+    "APP_ENV": "dev"
   },
   "d1_databases": [
     {
@@ -23,9 +23,9 @@
     }
   ],
   "env": {
-    "production": {
+    "prod": {
       "vars": {
-        "APP_ENV": "production"
+        "APP_ENV": "prod"
       },
       "d1_databases": [
         {

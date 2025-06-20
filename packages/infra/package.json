@@ -40,11 +40,11 @@
     "db:create:prod": "wrangler d1 create solstatus-prod",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "wrangler d1 migrations apply DB --local --cwd ../../ --config ./wrangler.jsonc",
-    "db:migrate:prod": "wrangler d1 migrations apply DB --env production --remote",
+    "db:migrate:prod": "wrangler d1 migrations apply DB --env prod --remote",
     "db:seed": "tsx scripts/seed.ts",
     "db:setup": "pnpm run db:create && pnpm run db:generate && pnpm run db:migrate && pnpm run db:seed",
     "db:studio": "drizzle-kit studio",
-    "db:studio:prod": "APP_ENV=production drizzle-kit studio",
+    "db:studio:prod": "APP_ENV=prod drizzle-kit studio",
     "wrangler:gen": "tsx scripts/genWranglerConfig.ts",
     "format": "biome check . --write",
     "types": "tsc"

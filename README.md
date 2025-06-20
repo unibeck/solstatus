@@ -27,7 +27,7 @@ pnpm cli --help
 pnpm cli --fqdn uptime.example.com
 
 # Deploy to production
-pnpm cli --fqdn uptime.example.com --stage production
+pnpm cli --fqdn uptime.example.com --stage prod
 
 # Destroy infrastructure
 pnpm cli --fqdn uptime.example.com --phase destroy
@@ -36,7 +36,12 @@ pnpm cli --fqdn uptime.example.com --phase destroy
 ## v2 TODO:
 - Release notes:
     - Imperative to update to latest v1.x version before upgrading to v2
-    - Migration code for a breaking change from v1.5 to v1.6 has been removed 
+    - Migration code for a breaking change from v1.5 to v1.6 has been removed
+    - to adopt previous services to IaC you need to rename the services to the new format:
+        - Worker: `monitor-exec-production` -> `solstatus-prod-monitor-exec`
+        - Worker: `monitor-trigger-production` -> `solstatus-prod-monitor-trigger`
+        - Worker: `solstatus-production` -> `solstatus-prod-app`
+    - [] test upgrade from v1.x to v2.x
 - [x] fix useform ssr
 - [x] implement bun workspaces/catalog
 - [x] Reconsider pnpm in favor of bun
@@ -56,19 +61,13 @@ pnpm cli --fqdn uptime.example.com --phase destroy
 - [x] update .env.example files
 - [] document token permissions needed for the infra
 - [] test
-    - [] test fresh install
+    - [x] test fresh install
     - [] test upgrade from v1.x to v2.x
 - [x] update dependabot to use pnpm catalogs as well
 - [x] create solstatus CLI
     - use effect/cli (https://raw.githubusercontent.com/Effect-TS/effect/refs/heads/main/packages/cli/README.md)
     - v2.0
         - fork repo and run local script to trigger cli
-    - v2.x
-        - publish packages
-        - use npx solstatus
-        - does this clone the repo or just use it as a package?
-- [] ci/cd
-    - [] add preview infra deploy (https://github.com/sam-goodwin/alchemy/blob/main/.github/workflows/pr-preview.yml) 
 
 ## Local Dev
 
