@@ -1,3 +1,7 @@
+import type { endpointMonitorsSelectSchema } from "@solstatus/common/db"
+import type { InfraMetadata } from "@solstatus/common/utils/types"
+import type { z } from "zod"
+
 /**
  * Opsgenie API integration for creating alerts
  *
@@ -75,43 +79,42 @@ export async function sendOpsgenieAlert(
  * Create an alert for a failed endpointMonitor check
  *
  * @param apiKey - Opsgenie API key
- * @param endpointMonitorName - Name of the endpointMonitor that failed
- * @param endpointMonitorUrl - URL of the endpointMonitor that failed
+ * @param endpointMonitor - EndpointMonitor that failed
+ * @param infraMetadata - Infra metadata
  * @param status - HTTP status code (if any)
  * @param error - Error message (if any)
  * @returns Response from Opsgenie API
  */
 export async function createEndpointMonitorDownAlert(
   apiKey: string,
-  endpointMonitorName: string,
-  endpointMonitorUrl: string,
+  endpointMonitor: z.infer<typeof endpointMonitorsSelectSchema>,
+  infraMetadata: InfraMetadata,
   status?: number,
   error?: string,
 ): Promise<OpsgenieAlertResponse | null> {
-  const message = `Endpoint Monitor Down: ${endpointMonitorName}`
+  const message = `Endpoint Monitor Down: ${endpointMonitor.name}`
 
   const description = status
-    ? `Endpoint Monitor ${endpointMonitorName} (${endpointMonitorUrl}) is down with status code ${status}.`
-    : `Endpoint Monitor ${endpointMonitorName} (${endpointMonitorUrl}) is down. ${error || ""}`
+    ? `Endpoint Monitor ${endpointMonitor.name} (${endpointMonitor.url}) is down with status code ${status}.`
+    : `Endpoint Monitor ${endpointMonitor.name} (${endpointMonitor.url}) is down. ${error || ""}`
 
   return sendOpsgenieAlert(apiKey, {
     message,
     description,
-    alias: `endpointMonitor-down-${endpointMonitorUrl.replace(/[^a-zA-Z0-9]/g, "-")}`,
+    alias: `endpointMonitor-down-${endpointMonitor.url.replace(/[^a-zA-Z0-9]/g, "-")}`,
     priority: "P2",
-    tags: ["solstatus", "downtime"],
-    entity: endpointMonitorUrl,
+    tags: ["solstatus", "down"],
+    entity: endpointMonitor.url,
     source: "SolStatus",
     details: {
-      endpointMonitor: endpointMonitorName,
-      url: endpointMonitorUrl,
+      endpointMonitor: endpointMonitor.name,
+      endpointMonitorId: endpointMonitor.id,
+      url: endpointMonitor.url,
       status: status?.toString() || "N/A",
       error: error || "",
       monitorRepo: "https://github.com/unibeck/solstatus",
-      // cloudflareWorkerDashboard:
-      //   "https://dash.cloudflare.com/UPDATE_ME_ABC",
-      // cloudflareMonitorDODashboard:
-      //   "https://dash.cloudflare.com/UPDATE_ME_ABC",
+      cfMonitorExecDashboard: `https://dash.cloudflare.com/${infraMetadata.cloudflareAccountId}/workers/services/view/${infraMetadata.monitorExecName}/production/observability/logs?view=events&needle=%7B%22value%22%3A%22%28${encodeURIComponent(endpointMonitor.url)}%29%22%2C%22matchCase%22%3Afalse%2C%22isRegex%22%3Afalse%7D&time=%7B%22value%22%3A3%2C%22unit%22%3A%22days%22%2C%22type%22%3A%22relative%22%7D`,
+      cfMonitorTriggerDashboard: `https://dash.cloudflare.com/${infraMetadata.cloudflareAccountId}/workers/services/view/${infraMetadata.monitorTriggerName}/production/observability/logs?view=events&needle=%7B%22value%22%3A%22%5B${encodeURIComponent(endpointMonitor.id)}%5D%22%2C%22isRegex%22%3Afalse%2C%22matchCase%22%3Afalse%7D&time=%7B%22value%22%3A3%2C%22unit%22%3A%22days%22%2C%22type%22%3A%22relative%22%7D`,
     },
   })
 }

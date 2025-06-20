@@ -15,7 +15,7 @@ export type SessionsStorageKVResource = Awaited<
 
 export async function createDB(resPrefix: string): Promise<D1Database> {
   const dbName = `${resPrefix}-db`
-  
+
   const __filename = fileURLToPath(import.meta.url)
   const __dirname = dirname(__filename)
   const migrationsDir = resolve(__dirname, "../src/db/migrations")

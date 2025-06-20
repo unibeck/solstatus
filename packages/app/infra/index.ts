@@ -35,6 +35,7 @@ export async function createApp(
     observability: {
       enabled: true,
     },
+    wrangler: false,
     routes: [
       {
         pattern: fqdn,

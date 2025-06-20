@@ -1,23 +1,14 @@
 import { WorkerEntrypoint } from "cloudflare:workers"
-import type {
-  endpointMonitorsPatchSchema,
-  endpointMonitorsSelectSchema,
-} from "@solstatus/common/db"
 import { takeFirstOrNull, useDrizzle } from "@solstatus/common/db"
-import type { schema } from "@solstatus/common/db/schema"
 import {
   EndpointMonitorsTable,
   UptimeChecksTable,
 } from "@solstatus/common/db/schema"
-import {
-  createEndpointMonitorDownAlert,
-  endpointSignature,
-} from "@solstatus/common/utils"
+import { endpointSignature } from "@solstatus/common/utils"
 import { eq } from "drizzle-orm"
-import type { DrizzleD1Database } from "drizzle-orm/d1"
 import { ReasonPhrases, StatusCodes } from "http-status-codes"
-import type { z } from "zod"
 import type { MonitorExecEnv } from "../infra/types/env"
+import { handleFailureTracking, sendAlert } from "./utils/error-tracking"
 
 export default class MonitorExec extends WorkerEntrypoint {
   declare readonly env: MonitorExecEnv
@@ -107,7 +98,7 @@ export default class MonitorExec extends WorkerEntrypoint {
       errorMessage,
       endpointMonitor,
       db,
-      this.env.OPSGENIE_API_KEY,
+      this.env,
     )
   }
 
@@ -128,94 +119,6 @@ export default class MonitorExec extends WorkerEntrypoint {
       throw new Error(`EndpointMonitor [${endpointMonitorId}] does not exist`)
     }
 
-    await sendAlert(
-      status,
-      errorMessage,
-      endpointMonitor,
-      this.env.OPSGENIE_API_KEY,
-    )
-  }
-}
-
-async function handleFailureTracking(
-  isExpectedStatus: boolean,
-  status: number,
-  errorMessage: string,
-  endpointMonitor: z.infer<typeof endpointMonitorsSelectSchema>,
-  db: DrizzleD1Database<typeof schema>,
-  opsgenieApiKey: string,
-) {
-  if (isExpectedStatus) {
-    // Reset consecutive failures if the check passes
-    if (endpointMonitor.consecutiveFailures > 0) {
-      await db
-        .update(EndpointMonitorsTable)
-        .set({ consecutiveFailures: 0 })
-        .where(eq(EndpointMonitorsTable.id, endpointMonitor.id))
-    }
-  } else {
-    const consecutiveFailures = endpointMonitor.consecutiveFailures + 1
-    console.log(
-      `${endpointSignature(endpointMonitor)} has ${consecutiveFailures} consecutive failures`,
-    )
-
-    const endpointMonitorPatch: z.infer<typeof endpointMonitorsPatchSchema> = {
-      consecutiveFailures: consecutiveFailures,
-    }
-
-    // Send alert if this is the second consecutive failure and no alert has been sent yet
-    if (
-      consecutiveFailures >= endpointMonitor.alertThreshold &&
-      !endpointMonitor.activeAlert
-    ) {
-      await sendAlert(status, errorMessage, endpointMonitor, opsgenieApiKey)
-      endpointMonitorPatch.activeAlert = true
-    }
-
-    await db
-      .update(EndpointMonitorsTable)
-      .set(endpointMonitorPatch)
-      .where(eq(EndpointMonitorsTable.id, endpointMonitor.id))
-  }
-}
-
-async function sendAlert(
-  status: number,
-  errorMessage: string,
-  endpointMonitor: z.infer<typeof endpointMonitorsSelectSchema>,
-  opsgenieApiKey: string,
-) {
-  if (!opsgenieApiKey) {
-    console.error("OPSGENIE_API_KEY is not set, cannot send alert")
-    return
-  }
-
-  console.log(
-    `${endpointSignature(endpointMonitor)}: consecutive failures threshold (${endpointMonitor.alertThreshold}) reached, sending alert...`,
-  )
-
-  try {
-    const result = await createEndpointMonitorDownAlert(
-      opsgenieApiKey,
-      endpointMonitor.name,
-      endpointMonitor.url,
-      status,
-      errorMessage,
-    )
-
-    if (result) {
-      console.log(
-        `${endpointSignature(endpointMonitor)}: alert sent successfully. RequestId: ${result.requestId}`,
-      )
-    } else {
-      console.error(
-        `${endpointSignature(endpointMonitor)}: failed to send alert`,
-      )
-    }
-  } catch (error) {
-    console.error(
-      `${endpointSignature(endpointMonitor)}: error sending alert.`,
-      error,
-    )
+    await sendAlert(status, errorMessage, endpointMonitor, this.env)
   }
 }

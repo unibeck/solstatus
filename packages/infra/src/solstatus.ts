@@ -1,8 +1,5 @@
 import path from "node:path"
-import {
-  createMonitorExecWorker,
-  createMonitorTriggerWorker,
-} from "@solstatus/api/infra"
+import { createApi } from "@solstatus/api/infra"
 import { createApp } from "@solstatus/app/infra"
 import { createDB, createSessionsStorageKV } from "@solstatus/common/infra"
 
@@ -20,18 +17,18 @@ export async function SolStatus(name: string, config: SolStatusConfig) {
   const db = await createDB(name)
 
   // API resources
-  const monitorExecWorker = await createMonitorExecWorker(name, stage, db)
-  const monitorTriggerWorker = await createMonitorTriggerWorker(
+  const { monitorExecWorker, monitorTriggerWorker } = await createApi(
     name,
+    stage,
     db,
-    monitorExecWorker,
+    cloudflareAccountId,
   )
 
   // App resources
   const originalCwd = process.cwd()
-  const appDir = path.join(process.cwd(), '../packages/app')
+  const appDir = path.join(process.cwd(), "../packages/app")
   process.chdir(appDir)
-  
+
   const app = await createApp(
     name,
     db,
@@ -41,7 +38,7 @@ export async function SolStatus(name: string, config: SolStatusConfig) {
     fqdn,
     cloudflareAccountId,
   )
-  
+
   // Restore original directory
   process.chdir(originalCwd)
 

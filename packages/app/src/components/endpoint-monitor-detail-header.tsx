@@ -1,6 +1,7 @@
 "use client"
 
 import type { endpointMonitorsSelectSchema } from "@solstatus/common/db"
+import type { InfraMetadata } from "@solstatus/common/utils/types"
 import {
   IconActivity,
   IconLogs,
@@ -17,7 +18,7 @@ import {
 import { useCallback, useEffect, useState, useTransition } from "react"
 import { toast } from "sonner"
 import type { z } from "zod"
-import { getInfraMetadata, type InfraMetadata } from "@/app/actions/infraMetadata"
+import { getInfraMetadata } from "@/app/actions/infraMetadata"
 import { DEFAULT_TOAST_OPTIONS } from "@/lib/toasts"
 import { Badge } from "@/registry/new-york-v4/ui/badge"
 import { Button } from "@/registry/new-york-v4/ui/button"
@@ -168,34 +169,34 @@ export function EndpointMonitorDetailHeader({
       </div>
       <div className="flex flex-col sm:flex-row gap-4">
         {!isInfraMetadataPending && infraMetadata && (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="default" disabled={isLoading}>
-              Logs
-              <IconLogs className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem asChild>
-              <a
-                href={`https://dash.cloudflare.com/${infraMetadata.cloudflareAccountId}/workers/services/view/${infraMetadata.monitorExecName}/production/observability/logs?view=events&needle=%7B%22value%22%3A%22%28${encodeURIComponent(endpointMonitor.url)}%29%22%2C%22matchCase%22%3Afalse%2C%22isRegex%22%3Afalse%7D&time=%7B%22value%22%3A3%2C%22unit%22%3A%22days%22%2C%22type%22%3A%22relative%22%7D`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <IconActivity className="mr-2 h-4 w-4" />
-                View Execution
-              </a>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <a
-                href={`https://dash.cloudflare.com/${infraMetadata.cloudflareAccountId}/workers/services/view/${infraMetadata.monitorTriggerName}/production/observability/logs?view=events&needle=%7B%22value%22%3A%22%5B${encodeURIComponent(endpointMonitor.id)}%5D%22%2C%22isRegex%22%3Afalse%2C%22matchCase%22%3Afalse%7D&time=%7B%22value%22%3A3%2C%22unit%22%3A%22days%22%2C%22type%22%3A%22relative%22%7D`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <IconMetronome className="mr-2 h-4 w-4" />
-                View Trigger
-              </a>
-            </DropdownMenuItem>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="default" disabled={isLoading}>
+                Logs
+                <IconLogs className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem asChild>
+                <a
+                  href={`https://dash.cloudflare.com/${infraMetadata.cloudflareAccountId}/workers/services/view/${infraMetadata.monitorExecName}/production/observability/logs?view=events&needle=%7B%22value%22%3A%22%28${encodeURIComponent(endpointMonitor.url)}%29%22%2C%22matchCase%22%3Afalse%2C%22isRegex%22%3Afalse%7D&time=%7B%22value%22%3A3%2C%22unit%22%3A%22days%22%2C%22type%22%3A%22relative%22%7D`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <IconActivity className="mr-2 h-4 w-4" />
+                  View Execution
+                </a>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <a
+                  href={`https://dash.cloudflare.com/${infraMetadata.cloudflareAccountId}/workers/services/view/${infraMetadata.monitorTriggerName}/production/observability/logs?view=events&needle=%7B%22value%22%3A%22%5B${encodeURIComponent(endpointMonitor.id)}%5D%22%2C%22isRegex%22%3Afalse%2C%22matchCase%22%3Afalse%7D&time=%7B%22value%22%3A3%2C%22unit%22%3A%22days%22%2C%22type%22%3A%22relative%22%7D`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <IconMetronome className="mr-2 h-4 w-4" />
+                  View Trigger
+                </a>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )}

@@ -108,9 +108,9 @@ const main = Command.make(
       if (!secretAlchemyPassphrase) {
         // Generate a random 32-character hex passphrase
         secretAlchemyPassphrase = randomBytes(16).toString("hex")
-        
+
         yield* Console.log(
-          "🔑 No --secret-alchemy-passphrase or env.SECRET_ALCHEMY_PASSPHRASE provided. Generating new passphrase..."
+          "🔑 No --secret-alchemy-passphrase or env.SECRET_ALCHEMY_PASSPHRASE provided. Generating new passphrase...",
         )
 
         // Read existing .env file or create empty content
@@ -127,9 +127,9 @@ const main = Command.make(
 
         // Write to .env file
         fs.writeFileSync(envPath, envContent)
-        
+
         yield* Console.log(
-          `✅ Generated and saved new passphrase to ${envPath}`
+          `✅ Generated and saved new passphrase to ${envPath}`,
         )
       }
 
@@ -141,9 +141,9 @@ const main = Command.make(
       if (!betterAuthSecret) {
         // Generate a random 32-character hex passphrase
         betterAuthSecret = randomBytes(16).toString("hex")
-        
+
         yield* Console.log(
-          "🔑 No --better-auth-secret or env.BETTER_AUTH_SECRET provided. Generating new secret..."
+          "🔑 No --better-auth-secret or env.BETTER_AUTH_SECRET provided. Generating new secret...",
         )
 
         // Read existing .env file or create empty content
@@ -160,10 +160,8 @@ const main = Command.make(
 
         // Write to .env file
         fs.writeFileSync(envPath, envContent)
-        
-        yield* Console.log(
-          `✅ Generated and saved new secret to ${envPath}`
-        )
+
+        yield* Console.log(`✅ Generated and saved new secret to ${envPath}`)
       }
 
       // Prepare environment variables
