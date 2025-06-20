@@ -9,6 +9,7 @@ import {
   IconPencil,
 } from "@tabler/icons-react"
 import {
+  ExternalLink,
   MoreVertical,
   Pause,
   Play,
@@ -211,9 +212,10 @@ export function EndpointMonitorDetailHeader({
           href={endpointMonitor.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="group flex items-center mt-2 hover:text-muted-foreground text-3xl font-bold mr-6"
+          className="group relative flex items-center mt-2 hover:text-muted-foreground text-3xl font-bold mr-6"
           title={endpointMonitor.url}
         >
+          <ExternalLink className="absolute -left-6 h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
           <span className="overflow-hidden text-ellipsis">
             <span className="sm:hidden">{formatUrl(endpointMonitor.url, 16)}</span>
             <span className="hidden sm:inline md:hidden">{formatUrl(endpointMonitor.url, 24)}</span>
