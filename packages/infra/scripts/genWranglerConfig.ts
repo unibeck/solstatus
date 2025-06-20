@@ -22,6 +22,7 @@ const genWranglerConfig = async () => {
     {
       stage,
       fqdn: "uptime.solstatus.com",
+      cloudflareAccountId: "local"
     },
   )
 

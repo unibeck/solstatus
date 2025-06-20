@@ -22,11 +22,12 @@ export async function createApp(
 
   const kvIncrementalCache = await KVNamespace(`${appName}-inc-cache`, {
     title: `${appName}-inc-cache`,
+    adopt: true,
   })
 
   const app = await Website(appName, {
     name: appName,
-    // command: "pnpm clean && pnpm run build:opennextjs",
+    // command: "pnpm build:opennextjs",
     main: ".open-next/worker.js",
     assets: ".open-next/assets",
     url: false,
@@ -36,7 +37,7 @@ export async function createApp(
     },
     routes: [
       {
-        pattern: `${fqdn}/*`,
+        pattern: fqdn,
         customDomain: true,
       },
     ],

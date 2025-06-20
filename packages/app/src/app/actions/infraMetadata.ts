@@ -9,10 +9,10 @@ export interface InfraMetadata {
 }
 
 export async function getInfraMetadata(): Promise<InfraMetadata> {
-    const { env } = getCloudflareContext()
-    const cloudflareAccountId = env.CLOUDFLARE_ACCOUNT_ID
-    const monitorExecName = env.MONITOR_EXEC_NAME
-    const monitorTriggerName = env.MONITOR_TRIGGER_NAME
+    const cfEnv = getCloudflareContext().env
+    const cloudflareAccountId = cfEnv.CLOUDFLARE_ACCOUNT_ID
+    const monitorExecName = cfEnv.MONITOR_EXEC_NAME
+    const monitorTriggerName = cfEnv.MONITOR_TRIGGER_NAME
 
     return {
         cloudflareAccountId,

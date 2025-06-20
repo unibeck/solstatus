@@ -178,7 +178,7 @@ export function EndpointMonitorDetailHeader({
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
               <a
-                href={`https://dash.cloudflare.com/${infraMetadata.cloudflareAccountId}/workers/services/view/${infraMetadata.monitorExecName}/production/observability/logs?workers-observability-view=invocations`}
+                href={`https://dash.cloudflare.com/${infraMetadata.cloudflareAccountId}/workers/services/view/${infraMetadata.monitorExecName}/production/observability/logs?view=events&needle=%7B%22value%22%3A%22%28${encodeURIComponent(endpointMonitor.url)}%29%22%2C%22matchCase%22%3Afalse%2C%22isRegex%22%3Afalse%7D&time=%7B%22value%22%3A3%2C%22unit%22%3A%22days%22%2C%22type%22%3A%22relative%22%7D`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -188,7 +188,7 @@ export function EndpointMonitorDetailHeader({
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <a
-                href={`https://dash.cloudflare.com/${infraMetadata.cloudflareAccountId}/workers/services/view/${infraMetadata.monitorTriggerName}/production/observability/logs?workers-observability-view=invocations`}
+                href={`https://dash.cloudflare.com/${infraMetadata.cloudflareAccountId}/workers/services/view/${infraMetadata.monitorTriggerName}/production/observability/logs?view=events&needle=%7B%22value%22%3A%22%5B${encodeURIComponent(endpointMonitor.id)}%5D%22%2C%22isRegex%22%3Afalse%2C%22matchCase%22%3Afalse%7D&time=%7B%22value%22%3A3%2C%22unit%22%3A%22days%22%2C%22type%22%3A%22relative%22%7D`}
                 target="_blank"
                 rel="noopener noreferrer"
               >

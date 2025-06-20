@@ -28,8 +28,6 @@ export async function SolStatus(name: string, config: SolStatusConfig) {
   )
 
   // App resources
-  
-  // Save current directory and change to app directory
   const originalCwd = process.cwd()
   const appDir = path.join(process.cwd(), '../packages/app')
   process.chdir(appDir)

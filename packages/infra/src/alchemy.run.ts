@@ -8,6 +8,9 @@ const APP_NAME = process.env.APP_NAME || "solstatus"
 if (!process.env.FQDN) {
   throw new Error("FQDN is not set")
 }
+if (!process.env.CLOUDFLARE_ACCOUNT_ID) {
+  throw new Error("CLOUDFLARE_ACCOUNT_ID is not set")
+}
 
 export const ALL_PHASES = ["destroy", "up", "read"] as const
 export type Phase = (typeof ALL_PHASES)[number]
@@ -39,6 +42,7 @@ const infra = await alchemy(APP_NAME, {
 await SolStatus(`${APP_NAME}-${stage}`, {
   stage,
   fqdn: process.env.FQDN,
+  cloudflareAccountId: process.env.CLOUDFLARE_ACCOUNT_ID,
 })
 
 await infra.finalize()
