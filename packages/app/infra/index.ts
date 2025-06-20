@@ -27,7 +27,7 @@ export async function createApp(
 
   const app = await Website(appName, {
     name: appName,
-    // command: "pnpm build:opennextjs",
+    command: "pnpm build:opennextjs",
     main: ".open-next/worker.js",
     assets: ".open-next/assets",
     url: false,

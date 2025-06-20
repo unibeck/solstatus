@@ -35,6 +35,71 @@ interface WebsiteDetailHeaderProps {
   onStatusChange?: () => void
 }
 
+// Creatively format URLs based on length
+function formatUrl(url: string, maxLength: number): string {
+  // If URL is short enough, return as-is
+  if (url.length <= maxLength) {
+    return url
+  }
+
+  try {
+    const urlObj = new URL(url)
+    
+    // Start with just the hostname (FQDN)
+    let formatted = urlObj.hostname
+    
+    // If we have a pathname and it's not just "/"
+    if (urlObj.pathname && urlObj.pathname !== '/') {
+      const pathParts = urlObj.pathname.split('/').filter(Boolean)
+      
+      // Calculate remaining space for path
+      const remainingSpace = maxLength - formatted.length - 3 // -3 for "..."
+      
+      if (remainingSpace > 0 && pathParts.length > 0) {
+        // Try to show the most specific (last) parts of the path
+        let pathToShow = ''
+        let isPartialPath = false
+        
+        // Start from the end and work backwards
+        for (let i = pathParts.length - 1; i >= 0; i--) {
+          const part = pathParts[i]
+          const tentativePath = i === pathParts.length - 1 ? `/${part}` : `/${part}${pathToShow}`
+          
+          if (tentativePath.length <= remainingSpace) {
+            pathToShow = tentativePath
+            // Check if we've included all parts
+            if (i === 0) {
+              isPartialPath = false
+            } else {
+              isPartialPath = true
+            }
+          } else {
+            // If even one segment is too long, truncate it
+            if (pathToShow === '') {
+              const truncatedPart = part.substring(0, Math.max(0, remainingSpace - 4)) // -4 for "/..."
+              pathToShow = `/${truncatedPart}...`
+            }
+            isPartialPath = true
+            break
+          }
+        }
+        
+        // Add ellipsis at the beginning only if we're showing a partial path
+        if (isPartialPath && pathToShow && !pathToShow.includes('...')) {
+          formatted += `/...${pathToShow}`
+        } else {
+          formatted += pathToShow
+        }
+      }
+    }
+    
+    return formatted
+  } catch (_e) {
+    // If URL parsing fails, just truncate the original
+    return `${url.substring(0, maxLength - 3)}...`
+  }
+}
+
 export function EndpointMonitorDetailHeader({
   endpointMonitor,
   onStatusChange,
@@ -146,11 +211,15 @@ export function EndpointMonitorDetailHeader({
           href={endpointMonitor.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center mt-2 hover:text-muted-foreground text-3xl font-bold mr-6"
+          className="group flex items-center mt-2 hover:text-muted-foreground text-3xl font-bold mr-6"
           title={endpointMonitor.url}
         >
           <span className="overflow-hidden text-ellipsis">
-            {endpointMonitor.url}
+            <span className="sm:hidden">{formatUrl(endpointMonitor.url, 16)}</span>
+            <span className="hidden sm:inline md:hidden">{formatUrl(endpointMonitor.url, 24)}</span>
+            <span className="hidden md:inline lg:hidden">{formatUrl(endpointMonitor.url, 40)}</span>
+            <span className="hidden lg:inline xl:hidden">{formatUrl(endpointMonitor.url, 60)}</span>
+            <span className="hidden xl:inline">{formatUrl(endpointMonitor.url, 80)}</span>
           </span>
         </a>
 

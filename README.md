@@ -51,10 +51,9 @@ pnpm cli --fqdn uptime.example.com --phase destroy
     - accomplish this by moving api specific infra to the api package, common infra to the common package, and app specific infra to the app package. 
     - The infra package will then be a package that combines all of the infra code together(?)
 - [x] catalog all drizzle libs
-- [] update bootstrap script
 - [x] fix infra entrypoint for monitor-exec and monitor-trigger(?)
 - [] implement adopt logic for alchemy
-- [] update .env.example files
+- [x] update .env.example files
 - [] document token permissions needed for the infra
 - [] test
     - [] test fresh install
