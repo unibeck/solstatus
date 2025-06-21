@@ -45,27 +45,28 @@ function formatUrl(url: string, maxLength: number): string {
 
   try {
     const urlObj = new URL(url)
-    
+
     // Start with just the hostname (FQDN)
     let formatted = urlObj.hostname
-    
+
     // If we have a pathname and it's not just "/"
-    if (urlObj.pathname && urlObj.pathname !== '/') {
-      const pathParts = urlObj.pathname.split('/').filter(Boolean)
-      
+    if (urlObj.pathname && urlObj.pathname !== "/") {
+      const pathParts = urlObj.pathname.split("/").filter(Boolean)
+
       // Calculate remaining space for path
       const remainingSpace = maxLength - formatted.length - 3 // -3 for "..."
-      
+
       if (remainingSpace > 0 && pathParts.length > 0) {
         // Try to show the most specific (last) parts of the path
-        let pathToShow = ''
+        let pathToShow = ""
         let isPartialPath = false
-        
+
         // Start from the end and work backwards
         for (let i = pathParts.length - 1; i >= 0; i--) {
           const part = pathParts[i]
-          const tentativePath = i === pathParts.length - 1 ? `/${part}` : `/${part}${pathToShow}`
-          
+          const tentativePath =
+            i === pathParts.length - 1 ? `/${part}` : `/${part}${pathToShow}`
+
           if (tentativePath.length <= remainingSpace) {
             pathToShow = tentativePath
             // Check if we've included all parts
@@ -76,24 +77,27 @@ function formatUrl(url: string, maxLength: number): string {
             }
           } else {
             // If even one segment is too long, truncate it
-            if (pathToShow === '') {
-              const truncatedPart = part.substring(0, Math.max(0, remainingSpace - 4)) // -4 for "/..."
+            if (pathToShow === "") {
+              const truncatedPart = part.substring(
+                0,
+                Math.max(0, remainingSpace - 4),
+              ) // -4 for "/..."
               pathToShow = `/${truncatedPart}...`
             }
             isPartialPath = true
             break
           }
         }
-        
+
         // Add ellipsis at the beginning only if we're showing a partial path
-        if (isPartialPath && pathToShow && !pathToShow.includes('...')) {
+        if (isPartialPath && pathToShow && !pathToShow.includes("...")) {
           formatted += `/...${pathToShow}`
         } else {
           formatted += pathToShow
         }
       }
     }
-    
+
     return formatted
   } catch (_e) {
     // If URL parsing fails, just truncate the original
@@ -217,11 +221,21 @@ export function EndpointMonitorDetailHeader({
         >
           <ExternalLink className="absolute -left-6 h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
           <span className="overflow-hidden text-ellipsis">
-            <span className="sm:hidden">{formatUrl(endpointMonitor.url, 16)}</span>
-            <span className="hidden sm:inline md:hidden">{formatUrl(endpointMonitor.url, 24)}</span>
-            <span className="hidden md:inline lg:hidden">{formatUrl(endpointMonitor.url, 40)}</span>
-            <span className="hidden lg:inline xl:hidden">{formatUrl(endpointMonitor.url, 60)}</span>
-            <span className="hidden xl:inline">{formatUrl(endpointMonitor.url, 80)}</span>
+            <span className="sm:hidden">
+              {formatUrl(endpointMonitor.url, 16)}
+            </span>
+            <span className="hidden sm:inline md:hidden">
+              {formatUrl(endpointMonitor.url, 24)}
+            </span>
+            <span className="hidden md:inline lg:hidden">
+              {formatUrl(endpointMonitor.url, 40)}
+            </span>
+            <span className="hidden lg:inline xl:hidden">
+              {formatUrl(endpointMonitor.url, 60)}
+            </span>
+            <span className="hidden xl:inline">
+              {formatUrl(endpointMonitor.url, 80)}
+            </span>
           </span>
         </a>
 

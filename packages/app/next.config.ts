@@ -2,7 +2,7 @@ import { execSync } from "node:child_process"
 import type { NextConfig } from "next"
 
 // x-release-please-start-version
-const APP_VERSION = "1.6.2"
+const APP_VERSION = "2.0.0"
 // x-release-please-end-version
 
 let gitCommitSHA = "dev"
@@ -49,8 +49,8 @@ import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare"
 
 // FYI, .dev.vars are loaded from the infra package because of this
 initOpenNextCloudflareForDev({
-  configPath: "../../packages/infra/wrangler.jsonc",
+  configPath: "../infra/wrangler.jsonc",
   persist: {
-    path: "../../packages/infra/.wrangler/state/v3",
+    path: "../infra/.wrangler/state/v3",
   },
 })
