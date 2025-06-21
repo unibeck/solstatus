@@ -1,0 +1,67 @@
+{
+  "name": "@solstatus/api",
+  "version": "2.0.0",
+  "description": "API workers for SolStatus uptime monitoring service",
+  "keywords": [
+    "solstatus",
+    "api",
+    "cloudflare",
+    "workers",
+    "monitoring"
+  ],
+  "homepage": "https://github.com/unibeck/solstatus/tree/main/packages/api#readme",
+  "bugs": {
+    "url": "https://github.com/unibeck/solstatus/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unibeck/solstatus.git",
+    "directory": "packages/api"
+  },
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "src",
+    "infra",
+    "README.md"
+  ],
+  "imports": {
+    "@/infra/*": "./infra/*",
+    "@/*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./monitor-exec": "./src/monitor-exec.ts",
+    "./monitor-trigger": "./src/monitor-trigger.ts",
+    "./infra": "./infra/index.ts"
+  },
+  "scripts": {
+    "dev": "concurrently --kill-others --names \"EXEC,TRGR\" --prefix-colors \"blue,magenta\" \"pnpm dev:api-exec\" \"wait-on http://localhost:8787 && pnpm dev:api-trigger\"",
+    "dev:api-exec": "wrangler dev --persist-to=../infra/.wrangler/state -c ../infra/wrangler-monitor-exec.jsonc --port 8787",
+    "dev:api-trigger": "wrangler dev --persist-to=../infra/.wrangler/state -c ../infra/wrangler-monitor-trigger.jsonc --port 8788",
+    "deploy:prod": "pnpm deploy:prod:api-exec && pnpm deploy:prod:api-trigger",
+    "deploy:prod:api-exec": "wrangler deploy --env prod -c ../infra/wrangler-monitor-exec.jsonc",
+    "deploy:prod:api-trigger": "wrangler deploy --env prod -c ../infra/wrangler-monitor-trigger.jsonc",
+    "format": "biome check . --write",
+    "types": "tsc"
+  },
+  "dependencies": {
+    "@solstatus/common": "workspace:*",
+    "drizzle-orm": "catalog:",
+    "drizzle-seed": "catalog:",
+    "drizzle-zod": "catalog:",
+    "diffable-objects": "^0.1.1",
+    "http-status-codes": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "alchemy": "catalog:",
+    "@biomejs/biome": "catalog:",
+    "@cloudflare/workers-types": "catalog:",
+    "@types/node": "catalog:",
+    "drizzle-kit": "catalog:",
+    "typescript": "catalog:",
+    "concurrently": "catalog:",
+    "wait-on": "catalog:"
+  }
+}

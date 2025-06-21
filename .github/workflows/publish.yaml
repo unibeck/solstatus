@@ -1,0 +1,69 @@
+name: Publish to npm
+
+on:
+  push:
+    tags:
+      - 'solstatus@*'
+      - '@solstatus/common@*'
+      - '@solstatus/api@*'
+      - '@solstatus/app@*'
+      - '@solstatus/infra@*'
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Build packages
+        run: pnpm run build || echo "No build script found"
+
+      - name: Determine package to publish
+        id: determine_package
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          
+          if [[ "$TAG" == "solstatus@"* ]]; then
+            echo "package=solstatus" >> $GITHUB_OUTPUT
+            echo "directory=." >> $GITHUB_OUTPUT
+          elif [[ "$TAG" == "@solstatus/common@"* ]]; then
+            echo "package=@solstatus/common" >> $GITHUB_OUTPUT
+            echo "directory=packages/common" >> $GITHUB_OUTPUT
+          elif [[ "$TAG" == "@solstatus/api@"* ]]; then
+            echo "package=@solstatus/api" >> $GITHUB_OUTPUT
+            echo "directory=packages/api" >> $GITHUB_OUTPUT
+          elif [[ "$TAG" == "@solstatus/app@"* ]]; then
+            echo "package=@solstatus/app" >> $GITHUB_OUTPUT
+            echo "directory=packages/app" >> $GITHUB_OUTPUT
+          elif [[ "$TAG" == "@solstatus/infra@"* ]]; then
+            echo "package=@solstatus/infra" >> $GITHUB_OUTPUT
+            echo "directory=packages/infra" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Publish to npm
+        run: |
+          cd ${{ steps.determine_package.outputs.directory }}
+          echo "Publishing ${{ steps.determine_package.outputs.package }}..."
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} 

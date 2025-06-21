@@ -1,0 +1,15 @@
+# Source files
+tsconfig.json
+*.tsbuildinfo
+
+# Development
+.env*
+.gitignore
+
+# Build artifacts
+dist/
+.wrangler/
+
+# Other
+*.log
+.DS_Store 
