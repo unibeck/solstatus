@@ -50,6 +50,7 @@ async function createMonitorExecWorker(
 
   return await Worker(infraMetadata.monitorExecName, {
     name: infraMetadata.monitorExecName,
+    adopt: true,
     entrypoint: entrypoint,
     rpc: type<MonitorExec>,
     bindings: {
@@ -77,6 +78,7 @@ async function createMonitorTriggerWorker(
 
   return await Worker(infraMetadata.monitorTriggerName, {
     name: infraMetadata.monitorTriggerName,
+    adopt: true,
     entrypoint: entrypoint,
     rpc: type<MonitorTriggerRPC>,
     bindings: {

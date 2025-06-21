@@ -52,8 +52,8 @@
     "types:each": "pnpm run --filter '@solstatus/common' types && pnpm run --filter '@solstatus/api' types && pnpm run --filter '@solstatus/app' types && pnpm run --filter '@solstatus/infra' types"
   },
   "dependencies": {
-    "@effect/cli": "^0.64.1",
-    "@effect/platform-node": "^0.86.2",
+    "@effect/cli": "^0.64.2",
+    "@effect/platform-node": "^0.86.4",
     "@solstatus/infra": "workspace:*",
     "dotenv": "catalog:",
     "effect": "^3.16.8"

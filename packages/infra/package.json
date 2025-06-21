@@ -36,10 +36,10 @@
   "scripts": {
     "infra:up": "pnpm exec ./src/alchemy.run.ts",
     "infra:destroy": "pnpm exec ./src/alchemy.run.ts destroy",
-    "db:create": "wrangler d1 execute solstatus-local --local --command='SELECT 1' --cwd ../../ --config ./wrangler.jsonc",
+    "db:create": "wrangler d1 execute solstatus-local --local --command='SELECT 1' --cwd ../../ --config ./packages/infra/wrangler.jsonc",
     "db:create:prod": "wrangler d1 create solstatus-prod",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "wrangler d1 migrations apply DB --local --cwd ../../ --config ./wrangler.jsonc",
+    "db:migrate": "wrangler d1 migrations apply DB --local --cwd ../../ --config ./packages/infra/wrangler.jsonc",
     "db:migrate:prod": "wrangler d1 migrations apply DB --env prod --remote",
     "db:seed": "tsx scripts/seed.ts",
     "db:setup": "pnpm run db:create && pnpm run db:generate && pnpm run db:migrate && pnpm run db:seed",
@@ -58,7 +58,7 @@
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "@cloudflare/workers-types": "catalog:",
-    "@libsql/client": "^0.15.6",
+    "@libsql/client": "^0.15.9",
     "@types/node": "catalog:",
     "dotenv": "catalog:",
     "drizzle-kit": "catalog:",
