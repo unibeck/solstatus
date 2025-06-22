@@ -2,27 +2,26 @@
 
 ## 2.0.0-beta.0 (2025-06-22)
 
+### Updates
 
-### Features
+* IaC via Alchemy
+* Monorepo via pnpm
+  * App and Api services now have separate dependency trees and bundles
+* UI improvements, especially to the endpoint monitor page
+* Performance improvements (which also means reduced costs!)
+* Biome v2
+* Incremental cache
+* Many small bug fixes
 
-* alert threshold per endpoint monitor ([f16284a](https://github.com/unibeck/solstatus/commit/f16284a7bbd3e803f21fbf6e0ea4d9e01e9422fc))
-* display app version ([#35](https://github.com/unibeck/solstatus/issues/35)) ([774efa9](https://github.com/unibeck/solstatus/commit/774efa9bab2eac9bec64a51a2e42e3737c7d9456))
-* **front:** call zustand store fetch functions on endpoint creation ([27109d1](https://github.com/unibeck/solstatus/commit/27109d17ea55a24bbfcad72c3e3456406023cb42))
-* implement release-please ([494d492](https://github.com/unibeck/solstatus/commit/494d4923eced1f18e9923ceebfa4ee33d2c4dd7e))
-* make bootstrap script executable ([3409734](https://github.com/unibeck/solstatus/commit/3409734b78c0bea060497b239055722c0fd4ed2b))
-* rebrand to SolStatus (from uptime-monitor) ([eda1211](https://github.com/unibeck/solstatus/commit/eda121135a43fe8fffa5cd08e01083dfed1d7a6a))
-* refresh endpoint monitor data after state change ([544fe02](https://github.com/unibeck/solstatus/commit/544fe02ea2fb3349ca16c7e9f37335a31a582054))
+### Upgrade from v1.7.x to v2.0.x
 
+It is advisable to read the updated README.md first to get familiar with the new repo structure. That said, updating is an easy two step process
 
-### Bug Fixes
-
-* add @ tag separator to release names ([04d3d17](https://github.com/unibeck/solstatus/commit/04d3d17d5f961d21c67b754bc5a6e1404456c4c3))
-* automate confirmation for database setup in bootstrap script ([af96378](https://github.com/unibeck/solstatus/commit/af963782dc3b8675a770f46b95e1dab1a4443b91))
-* Fix logo font and make it theme aware ([917ed78](https://github.com/unibeck/solstatus/commit/917ed789ba69c253503c2030f5b0b211aa7dc7aa))
-* improved layout and updated dependencies ([55ad0fe](https://github.com/unibeck/solstatus/commit/55ad0fe3842620bd45116aa91225224ceeb8d34c))
-* refine release-please ([2cb8694](https://github.com/unibeck/solstatus/commit/2cb869470c2211ac5c7a6fc511d4ce5965fad129))
-* Revert drizzle-zod dependency update ([7221c18](https://github.com/unibeck/solstatus/commit/7221c183dcb427d1799f8dc63175aef2baa4a8cb)), closes [#74](https://github.com/unibeck/solstatus/issues/74)
-* Support Cloudflare Free tier with reduced bundle size (below 3 MBs) ([1b08b81](https://github.com/unibeck/solstatus/commit/1b08b8191f84e0c6491204b544af8c610c13c325))
+1) Rename the following Cloudflare resources:
+        - Worker: `monitor-exec-production` -> `solstatus-prod-monitor-exec`
+        - Worker: `monitor-trigger-production` -> `solstatus-prod-monitor-trigger`
+        - Worker: `solstatus-production` -> `solstatus-prod-app`
+2) Run `pnpm cli --fqdn uptime.example.com --stage prod` (with your actual FQDN)
 
 ## [1.7.1](https://github.com/unibeck/solstatus/compare/solstatus@v1.7.0...solstatus@v1.7.1) (2025-05-25)
 
