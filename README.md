@@ -64,8 +64,8 @@ pnpm cli --fqdn uptime.example.com --phase destroy
     - [] test upgrade from v1.x to v2.x
         - [x] DO adoption fix
         - [] DNS creation on custom domain from worker routes ()
-        - [] D1 adoption fix ()
-        - [] DOStateStore fix ()
+        - [] D1 adoption fix (https://github.com/sam-goodwin/alchemy/issues/450)
+        - [] DOStateStore fix (https://github.com/sam-goodwin/alchemy/issues/451)
 - [x] update dependabot to use pnpm catalogs as well
 - [x] create solstatus CLI
     - use effect/cli (https://raw.githubusercontent.com/Effect-TS/effect/refs/heads/main/packages/cli/README.md)

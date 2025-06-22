@@ -62,10 +62,11 @@
     "@biomejs/biome": "catalog:",
     "@cloudflare/workers-types": "catalog:",
     "@types/node": "catalog:",
-    "tsx": "catalog:",
-    "wrangler": "catalog:",
-    "typescript": "catalog:",
     "concurrently": "catalog:",
-    "wait-on": "catalog:"
+    "release-please": "^17.1.0",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "wait-on": "catalog:",
+    "wrangler": "catalog:"
   }
 }

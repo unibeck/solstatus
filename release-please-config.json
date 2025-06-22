@@ -31,5 +31,5 @@
       "updatePeerDependencies": true
     }
   ],
-  "extra-files": ["./packages/app/next.config.ts"]
+  "extra-files": ["packages/app/next.config.ts"]
 }
