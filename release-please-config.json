@@ -12,16 +12,16 @@
     ".": {
       "component": "solstatus"
     },
-    "./packages/app": {
+    "packages/app": {
       "component": "@solstatus/app"
     },
-    "./packages/api": {
+    "packages/api": {
       "component": "@solstatus/api"
     },
-    "./packages/infra": {
+    "packages/infra": {
       "component": "@solstatus/infra"
     },
-    "./packages/common": {
+    "packages/common": {
       "component": "@solstatus/common"
     }
   },
