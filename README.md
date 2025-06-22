@@ -41,7 +41,6 @@ pnpm cli --fqdn uptime.example.com --phase destroy
         - Worker: `monitor-exec-production` -> `solstatus-prod-monitor-exec`
         - Worker: `monitor-trigger-production` -> `solstatus-prod-monitor-trigger`
         - Worker: `solstatus-production` -> `solstatus-prod-app`
-    - [] test upgrade from v1.x to v2.x
 - [x] fix useform ssr
 - [x] implement bun workspaces/catalog
 - [x] Reconsider pnpm in favor of bun
@@ -57,12 +56,16 @@ pnpm cli --fqdn uptime.example.com --phase destroy
     - The infra package will then be a package that combines all of the infra code together(?)
 - [x] catalog all drizzle libs
 - [x] fix infra entrypoint for monitor-exec and monitor-trigger(?)
-- [] implement adopt logic for alchemy
+- [x] implement adopt logic for alchemy
 - [x] update .env.example files
 - [] document token permissions needed for the infra
 - [] test
     - [x] test fresh install
     - [] test upgrade from v1.x to v2.x
+        - [x] DO adoption fix
+        - [] DNS creation on custom domain from worker routes ()
+        - [] D1 adoption fix ()
+        - [] DOStateStore fix ()
 - [x] update dependabot to use pnpm catalogs as well
 - [x] create solstatus CLI
     - use effect/cli (https://raw.githubusercontent.com/Effect-TS/effect/refs/heads/main/packages/cli/README.md)
