@@ -1,5 +1,28 @@
 # Changelog
 
+## 2.0.0-beta.0 (2025-06-22)
+
+### Updates
+
+* IaC via Alchemy
+* Monorepo via pnpm
+  * App and Api services now have separate dependency trees and bundles
+* UI improvements, especially to the endpoint monitor page
+* Performance improvements (which also means reduced costs!)
+* Biome v2
+* Incremental cache
+* Many small bug fixes
+
+### Upgrade from v1.7.x to v2.0.x
+
+It is advisable to read the updated README.md first to get familiar with the new repo structure. That said, updating is an easy two step process
+
+1) Rename the following Cloudflare resources:
+        - Worker: `monitor-exec-production` -> `solstatus-prod-monitor-exec`
+        - Worker: `monitor-trigger-production` -> `solstatus-prod-monitor-trigger`
+        - Worker: `solstatus-production` -> `solstatus-prod-app`
+2) Run `pnpm cli --fqdn uptime.example.com --stage prod` (with your actual FQDN)
+
 ## [1.7.1](https://github.com/unibeck/solstatus/compare/solstatus@v1.7.0...solstatus@v1.7.1) (2025-05-25)
 
 
