@@ -2,7 +2,7 @@ import { execSync } from "node:child_process"
 import type { NextConfig } from "next"
 
 // x-release-please-start-version
-const APP_VERSION = "2.0.0"
+const APP_VERSION = "2.0.0-beta.0"
 // x-release-please-end-version
 
 let gitCommitSHA = "dev"
