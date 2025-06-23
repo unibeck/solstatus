@@ -5,7 +5,7 @@ import { createDB, createSessionsStorageKV } from "@solstatus/common/infra"
 
 export interface SolStatusConfig {
   stage: string
-  fqdn: string
+  fqdn?: string
   cloudflareAccountId: string
 }
 

@@ -62,7 +62,8 @@ const appName = Options.text("app-name").pipe(
 )
 
 const fqdn = Options.text("fqdn").pipe(
-  Options.withDescription("Fully qualified domain name (required)"),
+  Options.withDescription("Fully qualified domain name (optional - if not provided, a worker URL will be generated)"),
+  Options.optional,
 )
 
 // Create the main command
@@ -164,6 +165,12 @@ const main = Command.make(
         yield* Console.log(`✅ Generated and saved new secret to ${envPath}`)
       }
 
+      // Get optional FQDN
+      const fqdnValue = Option.getOrElse(
+        config.fqdn,
+        () => "",
+      )
+
       // Prepare environment variables
       const env = {
         ...process.env,
@@ -173,7 +180,7 @@ const main = Command.make(
         SECRET_ALCHEMY_PASSPHRASE: secretAlchemyPassphrase,
         BETTER_AUTH_SECRET: betterAuthSecret,
         APP_NAME: config.appName,
-        FQDN: config.fqdn,
+        ...(fqdnValue && { FQDN: fqdnValue }),
       }
 
       // Build command arguments

@@ -15,7 +15,7 @@ export async function createApp(
   sessionsStorageKV: SessionsStorageKVResource,
   monitorExecWorker: MonitorExecWorkerResource,
   monitorTriggerWorker: MonitorTriggerWorkerResource,
-  fqdn: string,
+  fqdn: string | undefined,
   cloudflareAccountId: string,
 ) {
   const appName = `${resPrefix}-app`
@@ -30,18 +30,20 @@ export async function createApp(
     command: "pnpm build:opennextjs",
     main: ".open-next/worker.js",
     assets: ".open-next/assets",
-    url: false,
+    url: !fqdn,
     compatibilityFlags: ["nodejs_compat"],
     observability: {
       enabled: true,
     },
     wrangler: false,
-    routes: [
-      {
-        pattern: fqdn,
-        customDomain: true,
-      },
-    ],
+    ...(fqdn && {
+      routes: [
+        {
+          pattern: fqdn,
+          customDomain: true,
+        },
+      ],
+    }),
     bindings: {
       DB: db,
       SESSIONS_KV: sessionsStorageKV,
@@ -55,7 +57,11 @@ export async function createApp(
     },
   })
 
-  console.log(`${appName}: https://${fqdn}`)
+  if (fqdn) {
+    console.log(`${appName}: https://${fqdn}`)
+  } else {
+    console.log(`${appName}: ${app.url}`)
+  }
   return app
 }
 export type AppResource = Awaited<ReturnType<typeof createApp>>
