@@ -35,7 +35,7 @@
     "format": "biome check . --write"
   },
   "dependencies": {
-    "@hookform/resolvers": "^5.0.1",
+    "@hookform/resolvers": "^5.1.1",
     "@radix-ui/react-accessible-icon": "^1.1.7",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",
@@ -75,16 +75,16 @@
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
     "diffable-objects": "^0.1.1",
-    "drizzle-orm": "^0.43.1",
+    "drizzle-orm": "^0.44.2",
     "drizzle-seed": "^0.3.1",
-    "drizzle-zod": "0.7.1",
+    "drizzle-zod": "0.8.2",
     "embla-carousel-autoplay": "8.6.0",
     "embla-carousel-react": "8.6.0",
     "geist": "^1.4.2",
     "input-otp": "^1.4.2",
-    "lucide-react": "^0.511.0",
+    "lucide-react": "^0.525.0",
     "nanoid": "^5.1.5",
-    "next": "15.3.2",
+    "next": "15.3.4",
     "next-themes": "^0.4.6",
     "next-zod-route": "^0.2.6",
     "postcss": "^8.5.3",
@@ -106,7 +106,7 @@
     "zustand": "^5.0.5"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.0.0-beta.5",
+    "@biomejs/biome": "2.0.6",
     "@hono/zod-openapi": "^0.19.6",
     "@libsql/client": "^0.15.7",
     "@next/bundle-analyzer": "^15.3.2",
