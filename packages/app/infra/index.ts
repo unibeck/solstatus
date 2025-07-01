@@ -27,7 +27,7 @@ export async function createApp(
 
   const app = await Website(appName, {
     name: appName,
-    command: "pnpm build:opennextjs",
+    // command: "pnpm build:opennextjs",
     main: ".open-next/worker.js",
     assets: ".open-next/assets",
     url: !fqdn,
@@ -37,10 +37,10 @@ export async function createApp(
     },
     wrangler: false,
     ...(fqdn && {
-      routes: [
+      domains: [
         {
-          pattern: fqdn,
-          customDomain: true,
+          domainName: fqdn,
+          adopt: true,
         },
       ],
     }),
