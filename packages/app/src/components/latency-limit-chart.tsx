@@ -211,7 +211,6 @@ export function LatencyLimitChart({
           <defs>
             {/* Vertical gradient for stroke color (Inverted) */}
             {/* y1=100% (bottom), y2=0% (top) */}
-            {/** biome-ignore lint/nursery/useUniqueElementIds: We're using a hacky workaround to get the gradient to work */}
             <linearGradient
               id="colorResponseTime"
               x1="0%"

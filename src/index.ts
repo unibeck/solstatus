@@ -62,7 +62,9 @@ const appName = Options.text("app-name").pipe(
 )
 
 const fqdn = Options.text("fqdn").pipe(
-  Options.withDescription("Fully qualified domain name (optional - if not provided, a worker URL will be generated)"),
+  Options.withDescription(
+    "Fully qualified domain name (optional - if not provided, a worker URL will be generated)",
+  ),
   Options.optional,
 )
 
@@ -166,10 +168,7 @@ const main = Command.make(
       }
 
       // Get optional FQDN
-      const fqdnValue = Option.getOrElse(
-        config.fqdn,
-        () => "",
-      )
+      const fqdnValue = Option.getOrElse(config.fqdn, () => "")
 
       // Prepare environment variables
       const env = {
