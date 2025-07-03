@@ -114,10 +114,13 @@
 }
 
 @layer base {
+  html {
+    @apply h-full overflow-hidden;
+  }
   * {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply h-full overflow-y-auto overflow-x-hidden bg-background text-foreground;
   }
 }
