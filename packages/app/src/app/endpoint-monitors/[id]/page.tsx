@@ -90,6 +90,68 @@ export default function EndpointMonitorDetailPage() {
     }
   }, [endpointMonitorId, router])
 
+  const fetchUptimeData = useCallback(async () => {
+    if (!endpointMonitorId) return
+    
+    setIsUptimeDataLoading(true)
+    setUptimeDataError(null)
+
+    try {
+      const response = await fetch(
+        `/api/endpoint-monitors/${endpointMonitorId}/uptime/range?range=${timeRange}`,
+      )
+      if (!response.ok) {
+        console.error(
+          `Failed to fetch combined data for endpointMonitor ${endpointMonitorId} with error: ${response.statusText}`,
+        )
+        setUptimeData([])
+        setUptimePercentage(null)
+        setAvgLatency(null)
+        setUptimeDataError(`Failed to load data: ${response.statusText}`)
+        return
+      }
+
+      const responseData = (await response.json()) as z.infer<
+        typeof uptimeChecksSelectSchema
+      >[]
+
+      setUptimeData(responseData)
+      setUptimeDataError(null)
+    } catch (error) {
+      console.error("Error fetching combined uptime/latency data:", error)
+      setUptimeData([])
+      setUptimeDataError(
+        "An error occurred while loading endpointMonitor data.",
+      )
+    } finally {
+      setIsUptimeDataLoading(false)
+    }
+  }, [endpointMonitorId, timeRange])
+
+  const fetchLatestUptimeCheck = useCallback(async () => {
+    if (!endpointMonitorId) return
+
+    try {
+      const response = await fetch(
+        `/api/endpoint-monitors/${endpointMonitorId}/uptime`,
+      )
+      if (!response.ok) {
+        if (response.status !== 404) {
+          console.error(
+            `Failed to fetch latest uptime check: ${response.statusText}`,
+          )
+        }
+        setLatestUptimeCheck(null)
+        return
+      }
+      const data = await response.json()
+      setLatestUptimeCheck(data as LatestUptimeCheck)
+    } catch (error) {
+      console.error("Error fetching latest uptime check:", error)
+      setLatestUptimeCheck(null)
+    }
+  }, [endpointMonitorId])
+
   const refreshAllData = useCallback(async () => {
     if (endpointMonitorId) {
       await Promise.all([
@@ -98,7 +160,7 @@ export default function EndpointMonitorDetailPage() {
         fetchLatestUptimeCheck(),
       ])
     }
-  }, [endpointMonitorId, fetchWebsite])
+  }, [endpointMonitorId, fetchWebsite, fetchUptimeData, fetchLatestUptimeCheck])
 
   useAutoRefresh({
     onRefresh: refreshAllData,
@@ -193,50 +255,8 @@ export default function EndpointMonitorDetailPage() {
   ])
 
   useEffect(() => {
-    if (!endpointMonitorId) {
-      return
-    }
-
-    const fetchUptimeData = async () => {
-      setIsUptimeDataLoading(true)
-      setUptimeDataError(null)
-
-      try {
-        const response = await fetch(
-          `/api/endpoint-monitors/${endpointMonitorId}/uptime/range?range=${timeRange}`,
-        )
-        if (!response.ok) {
-          console.error(
-            `Failed to fetch combined data for endpointMonitor ${endpointMonitorId} with error: ${response.statusText}`,
-          )
-          // Reset states on error
-          setUptimeData([])
-          setUptimePercentage(null)
-          setAvgLatency(null)
-          setUptimeDataError(`Failed to load data: ${response.statusText}`)
-          return
-        }
-
-        const responseData = (await response.json()) as z.infer<
-          typeof uptimeChecksSelectSchema
-        >[]
-
-        setUptimeData(responseData)
-        setUptimeDataError(null)
-      } catch (error) {
-        console.error("Error fetching combined uptime/latency data:", error)
-        // Reset states on error
-        setUptimeData([])
-        setUptimeDataError(
-          "An error occurred while loading endpointMonitor data.",
-        )
-      } finally {
-        setIsUptimeDataLoading(false)
-      }
-    }
-
     fetchUptimeData()
-  }, [endpointMonitorId, timeRange])
+  }, [fetchUptimeData])
 
   useEffect(() => {
     if (uptimeData.length > 0) {
@@ -261,38 +281,9 @@ export default function EndpointMonitorDetailPage() {
     }
   }, [uptimeData])
 
-  // Fetch latest uptime check
   useEffect(() => {
-    if (!endpointMonitorId) {
-      return
-    }
-
-    const fetchLatestUptimeCheck = async () => {
-      // Consider adding loading/error state specifically for this fetch if needed
-      try {
-        const response = await fetch(
-          `/api/endpoint-monitors/${endpointMonitorId}/uptime`,
-        )
-        if (!response.ok) {
-          if (response.status !== 404) {
-            // Don't error if no check exists yet
-            console.error(
-              `Failed to fetch latest uptime check: ${response.statusText}`,
-            )
-          }
-          setLatestUptimeCheck(null)
-          return
-        }
-        const data = await response.json()
-        setLatestUptimeCheck(data as LatestUptimeCheck)
-      } catch (error) {
-        console.error("Error fetching latest uptime check:", error)
-        setLatestUptimeCheck(null) // Reset on error
-      }
-    }
-
     fetchLatestUptimeCheck()
-  }, [endpointMonitorId])
+  }, [fetchLatestUptimeCheck])
 
   if (isLoading) {
     return (
