@@ -41,36 +41,6 @@ pnpm cli --fqdn uptime.example.com --phase destroy
         - Worker: `monitor-exec-production` -> `solstatus-prod-monitor-exec`
         - Worker: `monitor-trigger-production` -> `solstatus-prod-monitor-trigger`
         - Worker: `solstatus-production` -> `solstatus-prod-app`
-- [x] fix useform ssr
-- [x] implement bun workspaces/catalog
-- [x] Reconsider pnpm in favor of bun
-- [x] fix monorepo deps and types
-- [x] use https://www.npmjs.com/package/http-status-codes instead of stoker
-- [x] remove all next/nextjs references
-- [x] app version
-- [x] rpc type inference https://x.com/samgoodwin89/status/1928040299030343994
-- [x] update CI
-    - [x] add a step to check types
-- [x] circular dependency (api -> infra -> api) via tsconfig.json references
-    - accomplish this by moving api specific infra to the api package, common infra to the common package, and app specific infra to the app package. 
-    - The infra package will then be a package that combines all of the infra code together(?)
-- [x] catalog all drizzle libs
-- [x] fix infra entrypoint for monitor-exec and monitor-trigger(?)
-- [x] implement adopt logic for alchemy
-- [x] update .env.example files
-- [] document token permissions needed for the infra
-- [] test
-    - [x] test fresh install
-    - [] test upgrade from v1.x to v2.x
-        - [x] DO adoption fix
-        - [] DNS creation on custom domain from worker routes ()
-        - [] D1 adoption fix (https://github.com/sam-goodwin/alchemy/issues/450)
-        - [] DOStateStore fix (https://github.com/sam-goodwin/alchemy/issues/451)
-- [x] update dependabot to use pnpm catalogs as well
-- [x] create solstatus CLI
-    - use effect/cli (https://raw.githubusercontent.com/Effect-TS/effect/refs/heads/main/packages/cli/README.md)
-    - v2.0
-        - fork repo and run local script to trigger cli
 
 ## Local Dev
 

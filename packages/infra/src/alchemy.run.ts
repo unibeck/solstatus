@@ -27,12 +27,12 @@ const infra = await alchemy(APP_NAME, {
   phase: phase,
   quiet,
   password: process.env.SECRET_ALCHEMY_PASSPHRASE,
-  // stateStore: (scope) =>
-  //   new DOStateStore(scope, {
-  //     worker: {
-  //       name: `${APP_NAME}-${stage}-alchemy-state`,
-  //     },
-  //   }),
+  stateStore: (scope) =>
+    new DOStateStore(scope, {
+      worker: {
+        name: `${APP_NAME}-${stage}-alchemy-state`,
+      },
+    }),
 })
 
 await SolStatus(`${APP_NAME}-${stage}`, {
