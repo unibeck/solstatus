@@ -20,6 +20,7 @@ import {
   defaultHeaderContent,
   useHeaderContext,
 } from "@/context/header-context"
+import { useAutoRefresh } from "@/hooks/use-auto-refresh"
 import { Badge } from "@/registry/new-york-v4/ui/badge"
 import { Button } from "@/registry/new-york-v4/ui/button"
 import { Card, CardContent } from "@/registry/new-york-v4/ui/card"
@@ -89,16 +90,24 @@ export default function EndpointMonitorDetailPage() {
     }
   }, [endpointMonitorId, router])
 
+  const refreshAllData = useCallback(async () => {
+    if (endpointMonitorId) {
+      await Promise.all([
+        fetchWebsite(),
+        fetchUptimeData(),
+        fetchLatestUptimeCheck(),
+      ])
+    }
+  }, [endpointMonitorId, fetchWebsite])
+
+  useAutoRefresh({
+    onRefresh: refreshAllData,
+    enabled: !!endpointMonitorId,
+  })
+
   useEffect(() => {
     if (endpointMonitorId) {
       fetchWebsite()
-      const intervalId = setInterval(fetchWebsite, 60 * 1000)
-
-      return () => {
-        clearInterval(intervalId)
-        setHeaderLeftContent(null)
-        setHeaderRightContent(defaultHeaderContent)
-      }
     }
 
     return () => {
@@ -227,9 +236,6 @@ export default function EndpointMonitorDetailPage() {
     }
 
     fetchUptimeData()
-    const intervalId = setInterval(fetchUptimeData, 60 * 1000)
-
-    return () => clearInterval(intervalId)
   }, [endpointMonitorId, timeRange])
 
   useEffect(() => {
@@ -286,9 +292,6 @@ export default function EndpointMonitorDetailPage() {
     }
 
     fetchLatestUptimeCheck()
-    const intervalId = setInterval(fetchLatestUptimeCheck, 60 * 1000)
-
-    return () => clearInterval(intervalId)
   }, [endpointMonitorId])
 
   if (isLoading) {
