@@ -39,28 +39,27 @@ export function RefreshProgressBar() {
     <div
       role="progressbar"
       aria-label="Auto-refresh progress"
-      className={`relative w-full ${hoverHeight} transition-all duration-200 ease-in-out bg-muted/20`}
+      className={`relative w-full ${hoverHeight} transition-all duration-200 ease-in-out bg-muted/80`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {isRefreshEnabled && (
-        <div
-          className={`h-full ${progressBarColor} transition-all duration-100 ease-linear`}
-          style={{ width: `${refreshProgress}%` }}
-        />
+        <div className="flex justify-center h-full">
+          <div
+            className={`h-full ${progressBarColor} transition-all duration-100 ease-linear`}
+            style={{ width: `${refreshProgress}%` }}
+          />
+        </div>
       )}
 
       {isHovered && (
-        <div className="absolute inset-0 flex items-center justify-between px-3 bg-background/95 backdrop-blur-sm border-t">
-          <span className="text-sm text-muted-foreground">
-            Auto-refresh: {intervalLabels[refreshInterval]}
-          </span>
-
+        <div
+          className={`absolute top-0 left-1/2 h-full w-fit -translate-x-1/2 flex items-center justify-center gap-2 px-3 text-secondary ${progressBarColor}`}
+        >
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="h-6 px-2">
                 <IconSettings className="h-3 w-3 mr-1" />
-                Change
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -78,6 +77,10 @@ export function RefreshProgressBar() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+
+          <span className="text-sm">
+            Auto-refresh: {intervalLabels[refreshInterval]}
+          </span>
         </div>
       )}
     </div>
