@@ -91,8 +91,10 @@ export default function EndpointMonitorDetailPage() {
   }, [endpointMonitorId, router])
 
   const fetchUptimeData = useCallback(async () => {
-    if (!endpointMonitorId) return
-    
+    if (!endpointMonitorId) {
+      return
+    }
+
     setIsUptimeDataLoading(true)
     setUptimeDataError(null)
 
@@ -129,7 +131,9 @@ export default function EndpointMonitorDetailPage() {
   }, [endpointMonitorId, timeRange])
 
   const fetchLatestUptimeCheck = useCallback(async () => {
-    if (!endpointMonitorId) return
+    if (!endpointMonitorId) {
+      return
+    }
 
     try {
       const response = await fetch(
