@@ -291,17 +291,6 @@ export default function EndpointMonitorDetailPage() {
     return () => clearInterval(intervalId)
   }, [endpointMonitorId])
 
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-      }
-    }
-
-    document.addEventListener("visibilitychange", handleVisibilityChange)
-    return () =>
-      document.removeEventListener("visibilitychange", handleVisibilityChange)
-  }, [])
-
   if (isLoading) {
     return (
       <div className="container mx-auto py-8 px-4">
