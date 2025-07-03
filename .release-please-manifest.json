@@ -4,5 +4,6 @@
   "@solstatus/api": "2.0.0",
   "@solstatus/infra": "2.0.0-beta.1",
   "@solstatus/common": "2.0.0",
-  ".": "2.0.0-beta.1"
+  ".": "2.0.0-beta.1",
+  "packages/infra": "1.0.0"
 }
