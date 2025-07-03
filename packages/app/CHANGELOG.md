@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.0.0 (2025-07-03)
+
+
+### Features
+
+* make fqdn optional, and use worker.dev url if not present ([579e224](https://github.com/unibeck/solstatus/commit/579e224926fa6b77d9f01d82e196d37803d47e7f))
+* release v2 ([8d09d77](https://github.com/unibeck/solstatus/commit/8d09d77f92ceec9bd7cba2e9fb4a514a406b588d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @solstatus/api bumped to 1.0.0
+    * @solstatus/common bumped to 1.0.0
+
 ## 2.0.0-beta.1 (2025-06-23)
 
 
