@@ -1,0 +1,146 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "dev (app)",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["dev"],
+      "options": {
+        "cwd": "${workspaceFolder}/packages/app"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "group": "dev"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "dev (api)",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["dev"],
+      "options": {
+        "cwd": "${workspaceFolder}/packages/api"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "group": "dev"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "dev",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["dev"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "group": "dev"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "term (common)",
+      "type": "process",
+      "command": "${env:SHELL}",
+      "args": ["-l"],
+      "options": {
+        "cwd": "${workspaceFolder}/packages/common"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "echo": false,
+        "focus": true,
+        "panel": "dedicated"
+      },
+      "runOptions": {
+        "runOn": "folderOpen",
+        "instanceLimit": 10
+      }
+    },
+    {
+      "label": "term (infra)",
+      "type": "process",
+      "command": "${env:SHELL}",
+      "args": ["-l"],
+      "options": {
+        "cwd": "${workspaceFolder}/packages/infra"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "echo": false,
+        "focus": true,
+        "panel": "dedicated"
+      },
+      "runOptions": {
+        "runOn": "folderOpen",
+        "instanceLimit": 10
+      }
+    },
+    {
+      "label": "term (api)",
+      "type": "process",
+      "command": "${env:SHELL}",
+      "args": ["-l"],
+      "options": {
+        "cwd": "${workspaceFolder}/packages/api"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "echo": false,
+        "focus": true,
+        "panel": "dedicated"
+      },
+      "runOptions": {
+        "runOn": "folderOpen",
+        "instanceLimit": 10
+      }
+    },
+    {
+      "label": "term (app)",
+      "type": "process",
+      "command": "${env:SHELL}",
+      "args": ["-l"],
+      "options": {
+        "cwd": "${workspaceFolder}/packages/app"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "echo": false,
+        "focus": true,
+        "panel": "dedicated"
+      },
+      "runOptions": {
+        "runOn": "folderOpen",
+        "instanceLimit": 10
+      }
+    },
+    {
+      "label": "terminal",
+      "dependsOn": [
+        "term (common)",
+        "term (infra)",
+        "term (api)",
+        "term (app)"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}

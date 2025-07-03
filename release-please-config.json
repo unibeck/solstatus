@@ -1,13 +1,33 @@
 {
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "include-v-in-tag": true,
   "tag-separator": "@",
+  "separate-pull-requests": true,
+  "group-pull-request-title-pattern": "chore: release ${component}",
   "draft": false,
-  "prerelease": false,
+  "release-type": "node",
   "packages": {
     ".": {
-      "release-type": "node"
+      "component": "solstatus"
+    },
+    "packages/app": {
+      "component": "@solstatus/app"
+    },
+    "packages/api": {
+      "component": "@solstatus/api"
+    },
+    "packages/infra": {
+      "component": "@solstatus/infra"
+    },
+    "packages/common": {
+      "component": "@solstatus/common"
     }
   },
-  "extra-files": ["next.config.ts"],
-  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
+  "plugins": [
+    {
+      "type": "node-workspace",
+      "updatePeerDependencies": true
+    }
+  ],
+  "extra-files": ["packages/app/next.config.ts"]
 }

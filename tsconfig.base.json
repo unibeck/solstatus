@@ -1,0 +1,54 @@
+// Visit https://aka.ms/tsconfig.json to read more about this file
+{
+  "compilerOptions": {
+    // Set the JavaScript language version for emitted JavaScript and include compatible library declarations.
+    "target": "ES2022",
+
+    // Specify a set of bundled library declaration files that describe the target runtime environment.
+    "lib": ["DOM", "DOM.Iterable", "ESNext", "ES2022"],
+
+    // Specify what module code is generated.
+    "module": "ESNext",
+
+    // Specify how TypeScript looks up a file from a given module specifier.
+    "moduleResolution": "bundler",
+
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+
+    // Enable importing .json files
+    "resolveJsonModule": true,
+
+    // Specify what JSX code is generated.
+    "jsx": "react-jsx",
+
+    // Enable error reporting in type-checked JavaScript files.
+    "checkJs": false,
+
+    // Disable emitting files from a compilation.
+    "noEmit": false,
+
+    // Ensure that each file can be safely transpiled without relying on other imports.
+    "isolatedModules": true,
+    // Allow 'import x from y' when a module doesn't have a default export.
+    "allowSyntheticDefaultImports": true,
+    // Ensure that casing is correct in imports.
+    "forceConsistentCasingInFileNames": true,
+
+    // Enable all strict type-checking options.
+    "strict": true,
+
+    // Skip type checking all .d.ts files.
+    "skipLibCheck": true,
+
+    // "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "downlevelIteration": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "skipDefaultLibCheck": true,
+    "incremental": true
+  }
+}

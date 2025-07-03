@@ -1,10 +1,9 @@
 name: "Release Version"
 
 permissions:
-  id-token: write
   contents: write
-  issues: write
   pull-requests: write
+  issues: write
 
 on:
   push:
@@ -14,7 +13,17 @@ on:
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
+      # Package-specific outputs
+      solstatus_release_created: ${{ steps.release.outputs['solstatus--release_created'] }}
+      app_release_created: ${{ steps.release.outputs['@solstatus/app--release_created'] }}
+      api_release_created: ${{ steps.release.outputs['@solstatus/api--release_created'] }}
+      infra_release_created: ${{ steps.release.outputs['@solstatus/infra--release_created'] }}
+      common_release_created: ${{ steps.release.outputs['@solstatus/common--release_created'] }}
     steps:
       - uses: googleapis/release-please-action@v4
+        id: release
         with:
           config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json

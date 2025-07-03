@@ -1,3 +1,8 @@
 {
-  ".": "1.7.1"
+  "solstatus": "2.0.0",
+  "@solstatus/app": "2.0.0-beta.1",
+  "@solstatus/api": "2.0.0",
+  "@solstatus/infra": "2.0.0-beta.1",
+  "@solstatus/common": "2.0.0",
+  ".": "2.0.0-beta.1"
 }

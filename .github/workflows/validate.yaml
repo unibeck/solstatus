@@ -6,7 +6,23 @@ on:
       - master
 
 jobs:
-  deploy:
+  typecheck:
+    runs-on: ubuntu-latest
+    name: Check TypeScript Types
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: true
+
+      - name: Check types
+        run: pnpm types
+
+  lint-and-format:
     runs-on: ubuntu-latest
     name: Run Biome Linter and Formatter
     steps:

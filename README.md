@@ -10,48 +10,48 @@ An uptime monitoring service that is easy and cheap to run at scale. Create endp
 
 ![Demo dashboard](./docs/dashboard-demo.gif)
 
-TODO: expectations for cost
+## Quick Start
 
-## Quick Deploy
+```bash
+# Install dependencies
+pnpm i
 
-0) Fork the repo
-1) Copy and fill out
-    - `.env.example` -> `.env`
-2) Create production D1 database
-    - run `pnpm db:create:prod`
-    - search for `UPDATE_ME_D1_ID` and replace with the id
-    - run migrations with `pnpm db:migrate:prod`
-3) Update production fully qualified domain name
-    - search for `UPDATE_ME_PROD_FQDN` and replace with your production FQDN (e.g. `solstatus.example.com`)
-4) Deploy the app and api with `pnpm run deploy`
+# Run the CLI
+pnpm cli --help
+```
 
-Optional:
-- Search for `UPDATE_ME_ABC` and replace with your unique values
+### Common Commands
 
-## Backend
-Built 100% on Cloudflare, using Workers, Durable Objects, and D1. A quick explanation of the architecture:
-- Each endpoint has its own Durable Object, known as the Trigger. This acts as a programmable CronJob via the Alarm API
-- The Trigger calls a Worker, known as the Executioner. 
-    - This is a fire and forget call via `waitUntil()` — minimizing the time the Durable Object is running and thus its cost (charged for Wall Time)
-- The Executioner handles making the request to the respective endpoint and updating the DB
-    - This is extremely cost effective since Workers are charged for CPU Time, and waiting on I/O tasks like this costs nothing 
+```bash
+# Deploy infrastructure
+pnpm cli --fqdn uptime.example.com
 
-You can find this code in the `./api` directory.
+# Deploy to production
+pnpm cli --fqdn uptime.example.com --stage prod
 
-## Frontend
-Standard NextJS v15, shadcn, TailwindCSS v4, and Drizzle stack. Some other notable points:
-- pnpm as package manager
-- biome as linter/formatter
-- zustand for state management
-- opennext with the CF adapter (not that it changes much)
-- OpenAPI support via scalar
+# Destroy infrastructure
+pnpm cli --fqdn uptime.example.com --phase destroy
+```
 
-You can find this code in the `./src` directory.
+## v2 TODO:
+- Release notes:
+    - Imperative to update to latest v1.x version before upgrading to v2
+    - Migration code for a breaking change from v1.5 to v1.6 has been removed
+    - to adopt previous services to IaC you need to rename the services to the new format:
+        - Worker: `monitor-exec-production` -> `solstatus-prod-monitor-exec`
+        - Worker: `monitor-trigger-production` -> `solstatus-prod-monitor-trigger`
+        - Worker: `solstatus-production` -> `solstatus-prod-app`
 
 ## Local Dev
 
+For a holistic dev experience, it is best to run dev from the root of the repo.
+
 ### Init
-Fill out the env files and run to confirm you're using the correct CF account:
+
+First, copy the `./packages/infra/.dev.vars.example` file to `./packages/infra/.dev.vars`.
+
+Then, run the following command to confirm you're using the correct CF account:
+and run to confirm you're using the correct CF account:
 ```sh
 pnpm exec wrangler whoami
 ```
@@ -119,29 +119,7 @@ pnpm i
 
 ## Database Management
 
-To generate the latest migration files, run:
-```shell
-pnpm run db:generate
-```
-
-Then, test the migration locally:
-```shell
-pnpm run db:migrate
-```
-
-To run the migration script for production:
-```shell
-pnpm run db:migrate:prod
-```
-
-To view/edit your database with Drizzle Studio:
-```shell
-# Local database
-pnpm run db:studio
-
-# Production database
-pnpm run db:studio:prod
-```
+See the [infra README](./packages/infra/README.md#database-management) for more details.
 
 ## CI/CD
 
@@ -150,3 +128,16 @@ This repository uses Dependabot to keep dependencies up to date:
 - npm dependencies are checked weekly (grouped as minor and patch updates)
 - GitHub Actions are checked monthly
 - PR limits are set to avoid overwhelming with dependency updates
+
+### npm Publishing
+Packages are automatically published to npm when release-please creates tags:
+- `solstatus` - Main CLI package
+- `@solstatus/common` - Shared utilities and schemas
+- `@solstatus/api` - API workers
+- `@solstatus/app` - Web application
+- `@solstatus/infra` - Infrastructure tools
+
+To enable npm publishing:
+1. Create an npm access token at https://www.npmjs.com/
+2. Add it as a GitHub secret named `NPM_TOKEN`
+3. Release-please will create tags that trigger the publish workflow
