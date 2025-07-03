@@ -31,48 +31,74 @@ export function RefreshProgressBar() {
     isRefreshEnabled,
   } = useHeaderContext()
   const [isHovered, setIsHovered] = useState(false)
+  const [isDropdownOpen, setDropdownOpen] = useState(false)
+  const [transitionDurationClass, setTransitionDurationClass] =
+    useState("duration-200")
 
   const progressBarColor = theme === "dark" ? "bg-white" : "bg-black"
-  const hoverHeight = isHovered ? "h-8" : "h-1"
+  const showDetails = isHovered || isDropdownOpen
+  const hoverHeight = showDetails ? "h-8" : "h-1"
+
+  const handleSelect = (interval: RefreshInterval) => {
+    setRefreshInterval(interval)
+    setTransitionDurationClass("duration-500")
+    setTimeout(() => {
+      setDropdownOpen(false)
+      setIsHovered(false)
+    }, 1500)
+  }
+
+  const handleMouseEnter = () => {
+    setTransitionDurationClass("duration-200")
+    setIsHovered(true)
+  }
+
+  const handleMouseLeave = () => {
+    setTransitionDurationClass("duration-500")
+    setIsHovered(false)
+  }
 
   return (
     <div
-      role="progressbar"
-      aria-label="Auto-refresh progress"
-      className={`relative w-full ${hoverHeight} transition-all duration-200 ease-in-out bg-muted/80`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className="pb-3"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      {isRefreshEnabled && (
-        <div className="flex justify-center h-full">
-          <div
-            className={`h-full ${progressBarColor} transition-all duration-100 ease-linear`}
-            style={{ width: `${refreshProgress}%` }}
-          />
-        </div>
-      )}
-
-      {isHovered && (
+      <div
+        role="progressbar"
+        aria-label="Auto-refresh progress"
+        className={`relative w-full ${hoverHeight} transition-all ${transitionDurationClass} ease-in-out bg-muted/80`}
+      >
+        {isRefreshEnabled && (
+          <div className="flex justify-center h-full">
+            <div
+              className={`h-full ${progressBarColor} transition-all duration-100 ease-linear`}
+              style={{ width: `${refreshProgress}%` }}
+            />
+          </div>
+        )}
         <div
-          className={`absolute top-0 left-1/2 h-full w-fit -translate-x-1/2 flex items-center justify-center gap-2 px-3 text-secondary ${progressBarColor}`}
+          className={`absolute top-0 left-1/2 h-full w-fit -translate-x-1/2 flex items-center justify-center gap-2 whitespace-nowrap px-3 text-secondary ${progressBarColor} transition-all origin-center ${transitionDurationClass} ${
+            showDetails ? "scale-x-100 opacity-100" : "scale-x-0 opacity-0"
+          }`}
         >
-          <DropdownMenu>
+          <DropdownMenu onOpenChange={setDropdownOpen}>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="h-6 px-2">
-                <IconSettings className="h-3 w-3 mr-1" />
+                <IconSettings className="h-3 w-3" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setRefreshInterval(10)}>
+            <DropdownMenuContent align="start">
+              <DropdownMenuItem onSelect={() => handleSelect(10)}>
                 10 seconds
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setRefreshInterval(30)}>
+              <DropdownMenuItem onSelect={() => handleSelect(30)}>
                 30 seconds
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setRefreshInterval(60)}>
+              <DropdownMenuItem onSelect={() => handleSelect(60)}>
                 1 minute
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setRefreshInterval("off")}>
+              <DropdownMenuItem onSelect={() => handleSelect("off")}>
                 Off
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -82,7 +108,7 @@ export function RefreshProgressBar() {
             Auto-refresh: {intervalLabels[refreshInterval]}
           </span>
         </div>
-      )}
+      </div>
     </div>
   )
 }

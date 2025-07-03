@@ -320,7 +320,7 @@ export default function EndpointMonitorDetailPage() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="container mx-auto pt-2 pb-8 px-4">
       <div className="@container/main flex flex-1 flex-col gap-2">
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-4 lg:px-6">
           <EndpointMonitorDetailHeader
