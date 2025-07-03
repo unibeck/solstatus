@@ -45,7 +45,7 @@ export function RefreshProgressBar() {
     setTimeout(() => {
       setDropdownOpen(false)
       setIsHovered(false)
-    }, 1500)
+    }, 500)
   }
 
   const handleMouseEnter = () => {
@@ -60,9 +60,10 @@ export function RefreshProgressBar() {
 
   return (
     <div
-      className="pb-3"
+      className="pb-4"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      role="group"
     >
       <div
         role="progressbar"
@@ -74,39 +75,49 @@ export function RefreshProgressBar() {
             <div
               className={`h-full ${progressBarColor} transition-all duration-100 ease-linear`}
               style={{ width: `${refreshProgress}%` }}
+              // style={{ width: "10%" }}
             />
           </div>
         )}
         <div
-          className={`absolute top-0 left-1/2 h-full w-fit -translate-x-1/2 flex items-center justify-center gap-2 whitespace-nowrap px-3 text-secondary ${progressBarColor} transition-all origin-center ${transitionDurationClass} ${
-            showDetails ? "scale-x-100 opacity-100" : "scale-x-0 opacity-0"
-          }`}
+          className={"absolute top-0 left-1/2 h-full w-fit -translate-x-1/2"}
         >
-          <DropdownMenu onOpenChange={setDropdownOpen}>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="h-6 px-2">
-                <IconSettings className="h-3 w-3" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
-              <DropdownMenuItem onSelect={() => handleSelect(10)}>
-                10 seconds
-              </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => handleSelect(30)}>
-                30 seconds
-              </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => handleSelect(60)}>
-                1 minute
-              </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => handleSelect("off")}>
-                Off
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div
+            className={`absolute inset-0 ${progressBarColor} transition-transform origin-center ${transitionDurationClass} ${
+              showDetails ? "scale-x-100" : "scale-x-0"
+            }`}
+          />
+          <div
+            className={`relative flex h-full items-center justify-center gap-2 whitespace-nowrap px-3 text-secondary ${
+              showDetails ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <DropdownMenu onOpenChange={setDropdownOpen}>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-6 px-2">
+                  <IconSettings className="h-3 w-3" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start">
+                <DropdownMenuItem onSelect={() => handleSelect(10)}>
+                  10 seconds
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => handleSelect(30)}>
+                  30 seconds
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => handleSelect(60)}>
+                  1 minute
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => handleSelect("off")}>
+                  Off
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
-          <span className="text-sm">
-            Auto-refresh: {intervalLabels[refreshInterval]}
-          </span>
+            <span className="text-sm">
+              Auto-refresh: {intervalLabels[refreshInterval]}
+            </span>
+          </div>
         </div>
       </div>
     </div>
