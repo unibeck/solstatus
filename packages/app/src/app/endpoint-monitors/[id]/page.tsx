@@ -92,6 +92,13 @@ export default function EndpointMonitorDetailPage() {
   useEffect(() => {
     if (endpointMonitorId) {
       fetchWebsite()
+      const intervalId = setInterval(fetchWebsite, 60 * 1000)
+
+      return () => {
+        clearInterval(intervalId)
+        setHeaderLeftContent(null)
+        setHeaderRightContent(defaultHeaderContent)
+      }
     }
 
     return () => {
@@ -220,6 +227,9 @@ export default function EndpointMonitorDetailPage() {
     }
 
     fetchUptimeData()
+    const intervalId = setInterval(fetchUptimeData, 60 * 1000)
+
+    return () => clearInterval(intervalId)
   }, [endpointMonitorId, timeRange])
 
   useEffect(() => {
@@ -276,7 +286,21 @@ export default function EndpointMonitorDetailPage() {
     }
 
     fetchLatestUptimeCheck()
+    const intervalId = setInterval(fetchLatestUptimeCheck, 60 * 1000)
+
+    return () => clearInterval(intervalId)
   }, [endpointMonitorId])
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+      }
+    }
+
+    document.addEventListener("visibilitychange", handleVisibilityChange)
+    return () =>
+      document.removeEventListener("visibilitychange", handleVisibilityChange)
+  }, [])
 
   if (isLoading) {
     return (
