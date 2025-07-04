@@ -7,6 +7,17 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /*
+    Prevents scrollbar from appearing when the body is locked, such as when a dialog, drawer, or dropdown is open
+    https://www.reddit.com/r/reactjs/comments/1fjcwkh/comment/mdw3ohu/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button 
+  */
+  body[data-scroll-locked][data-scroll-locked] {
+    overflow: auto !important;
+  }
+  body[data-scroll-locked] {
+    margin-right: 0 !important;
+  }
+
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -114,13 +125,10 @@
 }
 
 @layer base {
-  html {
-    @apply h-full overflow-hidden;
-  }
   * {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply h-full overflow-y-auto overflow-x-hidden bg-background text-foreground;
+    @apply bg-background text-foreground;
   }
 }
