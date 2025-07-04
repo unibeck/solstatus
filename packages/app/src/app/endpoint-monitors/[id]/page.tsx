@@ -10,7 +10,7 @@ import { ArrowLeft } from "lucide-react"
 import type { Route } from "next"
 import Link from "next/link"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import type { z } from "zod"
 import { EndpointMonitorDetailHeader } from "@/components/endpoint-monitor-detail-header"
 import { EndpointMonitorSectionCards } from "@/components/endpoint-monitor-section-cards"
@@ -65,9 +65,9 @@ export default function EndpointMonitorDetailPage() {
   const [avgLatency, setAvgLatency] = useState<number | null>(null)
   const [isUptimeDataLoading, setIsUptimeDataLoading] = useState(true)
   const [uptimeDataError, setUptimeDataError] = useState<string | null>(null)
+  const isInitialRender = useRef(true)
 
   const fetchWebsite = useCallback(async () => {
-    setIsLoading(true)
     try {
       const response = await fetch(
         `/api/endpoint-monitors/${endpointMonitorId}`,
@@ -156,36 +156,45 @@ export default function EndpointMonitorDetailPage() {
     }
   }, [endpointMonitorId])
 
+  // Create a ref to hold the latest fetchUptimeData function.
+  // This allows refreshAllData to remain stable while still calling the latest fetchUptimeData.
+  const fetchUptimeDataRef = useRef(fetchUptimeData)
+  useEffect(() => {
+    fetchUptimeDataRef.current = fetchUptimeData
+  }, [fetchUptimeData])
+
   const refreshAllData = useCallback(async () => {
     if (endpointMonitorId) {
       await Promise.all([
         fetchWebsite(),
-        fetchUptimeData(),
+        fetchUptimeDataRef.current(),
         fetchLatestUptimeCheck(),
       ])
     }
-  }, [endpointMonitorId, fetchWebsite, fetchUptimeData, fetchLatestUptimeCheck])
+  }, [endpointMonitorId, fetchWebsite, fetchLatestUptimeCheck])
 
   useAutoRefresh({
     onRefresh: refreshAllData,
     enabled: !!endpointMonitorId,
   })
 
+  // This effect is now responsible for fetching uptime data when the timeRange changes.
+  // It skips the initial render because useAutoRefresh handles the initial data load.
   useEffect(() => {
-    if (endpointMonitorId) {
-      fetchWebsite()
+    if (isInitialRender.current) {
+      isInitialRender.current = false
+      return
     }
+    fetchUptimeData()
+  }, [fetchUptimeData])
 
+  useEffect(() => {
+    // The useAutoRefresh hook now handles the initial data fetch.
     return () => {
       setHeaderLeftContent(null)
       setHeaderRightContent(defaultHeaderContent)
     }
-  }, [
-    endpointMonitorId,
-    setHeaderLeftContent,
-    setHeaderRightContent,
-    fetchWebsite,
-  ])
+  }, [setHeaderLeftContent, setHeaderRightContent])
 
   useEffect(() => {
     if (endpointMonitor) {
@@ -259,10 +268,6 @@ export default function EndpointMonitorDetailPage() {
   ])
 
   useEffect(() => {
-    fetchUptimeData()
-  }, [fetchUptimeData])
-
-  useEffect(() => {
     if (uptimeData.length > 0) {
       const uptimePercentage =
         (uptimeData.filter((check) => check.isExpectedStatus).length /
@@ -284,10 +289,6 @@ export default function EndpointMonitorDetailPage() {
       setAvgLatency(null)
     }
   }, [uptimeData])
-
-  useEffect(() => {
-    fetchLatestUptimeCheck()
-  }, [fetchLatestUptimeCheck])
 
   if (isLoading) {
     return (

@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useRef } from "react"
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react"
 import { useHeaderContext } from "@/context/header-context"
 
 interface UseAutoRefreshOptions {
@@ -22,8 +22,12 @@ export function useAutoRefresh({
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null)
   const startTimeRef = useRef<number>(0)
 
-  // Immediately set auto-refresh as available for the component that uses this hook
-  setIsAutoRefreshAvailable(true)
+  useLayoutEffect(() => {
+    setIsAutoRefreshAvailable(true)
+    return () => {
+      setIsAutoRefreshAvailable(false)
+    }
+  }, [setIsAutoRefreshAvailable])
 
   const clearIntervals = useCallback(() => {
     if (intervalRef.current) {
@@ -35,13 +39,6 @@ export function useAutoRefresh({
       progressIntervalRef.current = null
     }
   }, [])
-
-  useEffect(
-    () => () => {
-      setIsAutoRefreshAvailable(false)
-    },
-    [setIsAutoRefreshAvailable],
-  )
 
   const startRefresh = useCallback(() => {
     if (!isRefreshEnabled || !enabled || refreshInterval === "off") {
