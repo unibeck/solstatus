@@ -24,8 +24,8 @@ import {
   YAxis,
 } from "recharts"
 import type { z } from "zod"
-import { PolkaDots } from "@/components/bg-patterns/polka-dots"
 import type { TimeRange } from "@/types/endpointMonitor"
+import { PolkaDots } from "./bg-patterns/polka-dots"
 
 const getTimeBucketStart = (timestampMs: number, range: TimeRange): number => {
   const date = new Date(timestampMs)
@@ -372,9 +372,9 @@ export const UptimeChart: React.FC<UptimeChartProps> = ({
 
   if (processedData.length === 0 && !isLoading) {
     return (
-      <div className="flex items-center justify-center h-full relative">
+      <div className="flex items-center justify-center h-full relative overflow-hidden rounded-lg bg-muted/50">
         <PolkaDots />
-        <div className="relative text-muted-foreground">
+        <div className="relative text-muted-foreground z-10 p-8">
           No uptime data available for the selected period.
         </div>
       </div>
@@ -382,88 +382,90 @@ export const UptimeChart: React.FC<UptimeChartProps> = ({
   }
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <BarChart
-        data={processedData}
-        margin={{
-          top: 16,
-          right: 8,
-          left: 16,
-          bottom: 4,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" vertical={false} />
-        <XAxis
-          dataKey="timeBucket"
-          type="number"
-          domain={xDomain}
-          tickFormatter={(tick) => formatXAxis(tick, timeRange)}
-          scale="time"
-          axisLine={false}
-          tickLine={false}
-        />
-        <YAxis
-          allowDecimals={false}
-          domain={yDomain}
-          axisLine={false}
-          tickLine={false}
-          width={30}
-          label={{
-            value: "# of Checks",
-            angle: -90,
-            position: "insideLeft",
-            style: { textAnchor: "middle" },
-            offset: -8,
+    <div className="p-4 py-6 h-full">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart
+          data={processedData}
+          margin={{
+            top: 16,
+            right: 8,
+            left: 16,
+            bottom: 4,
           }}
-        />
-        <Tooltip
-          content={<CustomUptimeTooltip range={timeRange} />}
-          cursor={{ fill: "hsl(var(--muted))", fillOpacity: 0.3 }}
-        />
-        <Legend wrapperStyle={{ paddingTop: "10px" }} />
+        >
+          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+          <XAxis
+            dataKey="timeBucket"
+            type="number"
+            domain={xDomain}
+            tickFormatter={(tick) => formatXAxis(tick, timeRange)}
+            scale="time"
+            axisLine={false}
+            tickLine={false}
+          />
+          <YAxis
+            allowDecimals={false}
+            domain={yDomain}
+            axisLine={false}
+            tickLine={false}
+            width={30}
+            label={{
+              value: "# of Checks",
+              angle: -90,
+              position: "insideLeft",
+              style: { textAnchor: "middle" },
+              offset: -10,
+            }}
+          />
+          <Tooltip
+            content={<CustomUptimeTooltip range={timeRange} />}
+            cursor={{ fill: "hsl(var(--muted))", fillOpacity: 0.3 }}
+          />
+          <Legend wrapperStyle={{ paddingTop: "10px" }} />
 
-        {/* Stacked Bars */}
-        <Bar
-          dataKey="count2xx"
-          stackId="a"
-          name="2xx"
-          fill="#22c55e"
-          radius={[2, 2, 0, 0]}
-          isAnimationActive={false}
-        />
-        <Bar
-          dataKey="count3xx"
-          stackId="a"
-          name="3xx"
-          fill="#facc15"
-          radius={[0, 0, 0, 0]}
-          isAnimationActive={false}
-        />
-        <Bar
-          dataKey="count4xx"
-          stackId="a"
-          name="4xx"
-          fill="#f97316"
-          radius={[0, 0, 0, 0]}
-          isAnimationActive={false}
-        />
-        <Bar
-          dataKey="count5xx"
-          stackId="a"
-          name="5xx"
-          fill="#ef4444"
-          radius={[0, 0, 0, 0]}
-          isAnimationActive={false}
-        />
-        <Bar
-          dataKey="countNoData"
-          stackId="a"
-          name="No Data"
-          fill="#ccc"
-          radius={[0, 0, 2, 2]}
-          isAnimationActive={false}
-        />
-      </BarChart>
-    </ResponsiveContainer>
+          {/* Stacked Bars */}
+          <Bar
+            dataKey="count2xx"
+            stackId="a"
+            name="2xx"
+            fill="#22c55e"
+            radius={[2, 2, 0, 0]}
+            isAnimationActive={false}
+          />
+          <Bar
+            dataKey="count3xx"
+            stackId="a"
+            name="3xx"
+            fill="#facc15"
+            radius={[0, 0, 0, 0]}
+            isAnimationActive={false}
+          />
+          <Bar
+            dataKey="count4xx"
+            stackId="a"
+            name="4xx"
+            fill="#f97316"
+            radius={[0, 0, 0, 0]}
+            isAnimationActive={false}
+          />
+          <Bar
+            dataKey="count5xx"
+            stackId="a"
+            name="5xx"
+            fill="#ef4444"
+            radius={[0, 0, 0, 0]}
+            isAnimationActive={false}
+          />
+          <Bar
+            dataKey="countNoData"
+            stackId="a"
+            name="No Data"
+            fill="#ccc"
+            radius={[0, 0, 2, 2]}
+            isAnimationActive={false}
+          />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
   )
 }

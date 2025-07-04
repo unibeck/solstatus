@@ -70,7 +70,9 @@ export function RefreshProgressBar() {
         {isRefreshEnabled && (
           <div className="flex justify-center h-full">
             <div
-              className={"h-full bg-black dark:bg-white transition-all duration-100 ease-linear"}
+              className={
+                "h-full bg-black dark:bg-white transition-all duration-100 ease-linear"
+              }
               style={{ width: `${refreshProgress}%` }}
               // style={{ width: "10%" }}
             />
@@ -91,7 +93,11 @@ export function RefreshProgressBar() {
           >
             <DropdownMenu onOpenChange={setDropdownOpen}>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="h-6 px-2 border-none focus-visible:ring-0">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-6 px-2 border-none focus-visible:ring-0"
+                >
                   <IconSettings className="h-3 w-3" />
                 </Button>
               </DropdownMenuTrigger>

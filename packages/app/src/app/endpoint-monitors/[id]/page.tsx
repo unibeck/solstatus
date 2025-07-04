@@ -12,6 +12,7 @@ import Link from "next/link"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useRef, useState } from "react"
 import type { z } from "zod"
+import { PolkaDots } from "@/components/bg-patterns/polka-dots"
 import { EndpointMonitorDetailHeader } from "@/components/endpoint-monitor-detail-header"
 import { EndpointMonitorSectionCards } from "@/components/endpoint-monitor-section-cards"
 import LatencyRangeChart from "@/components/latency-range-chart"
@@ -360,25 +361,39 @@ export default function EndpointMonitorDetailPage() {
             error={uptimeDataError}
           />
           <div className="mt-0 flex flex-col gap-6">
-            <Card>
-              <CardContent className="pt-6">
-                <div className="h-[200px]">
-                  <UptimeChart
-                    data={uptimeData}
-                    timeRange={timeRange}
-                    isLoading={isUptimeDataLoading}
-                    error={uptimeDataError}
-                  />
+            {uptimeData.length > 0 ? (
+              <>
+                <Card className="p-0">
+                  <CardContent className="p-0">
+                    <div className="h-[200px]">
+                      <UptimeChart
+                        data={uptimeData}
+                        timeRange={timeRange}
+                        isLoading={isUptimeDataLoading}
+                        error={uptimeDataError}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="h-[400px]">
+                      <LatencyRangeChart
+                        data={uptimeData}
+                        timeRange={timeRange}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </>
+            ) : (
+              <div className="flex items-center justify-center h-full relative overflow-hidden rounded-lg bg-muted/50">
+                <PolkaDots />
+                <div className="relative text-muted-foreground z-10 p-8">
+                  No uptime data available for the selected period.
                 </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="pt-6">
-                <div className="h-[400px]">
-                  <LatencyRangeChart data={uptimeData} timeRange={timeRange} />
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+            )}
           </div>
         </div>
       </div>
