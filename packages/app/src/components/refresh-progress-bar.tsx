@@ -1,7 +1,6 @@
 "use client"
 
 import { IconSettings } from "@tabler/icons-react"
-import { useTheme } from "next-themes"
 import { useState } from "react"
 import {
   type RefreshInterval,
@@ -23,7 +22,6 @@ const intervalLabels: Record<RefreshInterval, string> = {
 }
 
 export function RefreshProgressBar() {
-  const { theme } = useTheme()
   const {
     refreshInterval,
     setRefreshInterval,
@@ -35,7 +33,6 @@ export function RefreshProgressBar() {
   const [transitionDurationClass, setTransitionDurationClass] =
     useState("duration-200")
 
-  const progressBarColor = theme === "dark" ? "bg-white" : "bg-black"
   const showDetails = isHovered || isDropdownOpen
   const hoverHeight = showDetails ? "h-8" : "h-1"
 
@@ -73,7 +70,7 @@ export function RefreshProgressBar() {
         {isRefreshEnabled && (
           <div className="flex justify-center h-full">
             <div
-              className={`h-full ${progressBarColor} transition-all duration-100 ease-linear`}
+              className={"h-full bg-black dark:bg-white transition-all duration-100 ease-linear"}
               style={{ width: `${refreshProgress}%` }}
               // style={{ width: "10%" }}
             />
@@ -83,7 +80,7 @@ export function RefreshProgressBar() {
           className={"absolute top-0 left-1/2 h-full w-fit -translate-x-1/2"}
         >
           <div
-            className={`absolute inset-0 ${progressBarColor} transition-transform origin-center ${transitionDurationClass} ${
+            className={`absolute inset-0 bg-black dark:bg-white transition-transform origin-center ${transitionDurationClass} ${
               showDetails ? "scale-x-100" : "scale-x-0"
             }`}
           />
@@ -94,7 +91,7 @@ export function RefreshProgressBar() {
           >
             <DropdownMenu onOpenChange={setDropdownOpen}>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="h-6 px-2">
+                <Button variant="ghost" size="sm" className="h-6 px-2 border-none focus-visible:ring-0">
                   <IconSettings className="h-3 w-3" />
                 </Button>
               </DropdownMenuTrigger>
