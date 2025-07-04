@@ -19,7 +19,7 @@ import LatencyRangeChart from "@/components/latency-range-chart"
 import { UptimeChart } from "@/components/uptime-chart"
 import {
   defaultHeaderContent,
-  useHeaderContext,
+  useHeaderContentOnly,
 } from "@/context/header-context"
 import { useAutoRefresh } from "@/hooks/use-auto-refresh"
 import { Badge } from "@/registry/new-york-v4/ui/badge"
@@ -41,7 +41,7 @@ export default function EndpointMonitorDetailPage() {
   const params = useParams()
   const router = useRouter()
   const endpointMonitorId = params.id as string
-  const { setHeaderLeftContent, setHeaderRightContent } = useHeaderContext()
+  const { setHeaderLeftContent, setHeaderRightContent } = useHeaderContentOnly()
   const searchParams = useSearchParams()
 
   const [endpointMonitor, setEndpointMonitor] = useState<z.infer<

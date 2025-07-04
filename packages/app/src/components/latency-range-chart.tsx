@@ -11,7 +11,7 @@ import {
   subWeeks,
 } from "date-fns"
 import type React from "react"
-import { useMemo } from "react"
+import { memo, useMemo } from "react"
 import {
   Area,
   AreaChart,
@@ -288,7 +288,7 @@ interface LatencyRangeChartProps {
   timeRange: TimeRange
 }
 
-const LatencyRangeChart: React.FC<LatencyRangeChartProps> = ({
+const LatencyRangeChart: React.FC<LatencyRangeChartProps> = memo(({
   data,
   timeRange,
 }) => {
@@ -414,6 +414,6 @@ const LatencyRangeChart: React.FC<LatencyRangeChartProps> = ({
       </AreaChart>
     </ResponsiveContainer>
   )
-}
+})
 
 export default LatencyRangeChart

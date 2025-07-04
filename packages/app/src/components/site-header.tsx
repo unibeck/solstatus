@@ -1,13 +1,13 @@
 "use client"
 
 import { RefreshProgressBar } from "@/components/refresh-progress-bar"
-import { useHeaderContext } from "@/context/header-context"
+import { useHeaderContentOnly } from "@/context/header-context"
 import { Separator } from "@/registry/new-york-v4/ui/separator"
 import { SidebarTrigger } from "@/registry/new-york-v4/ui/sidebar"
 
 export function SiteHeader() {
   const { headerLeftContent, headerRightContent, isAutoRefreshAvailable } =
-    useHeaderContext()
+    useHeaderContentOnly()
   return (
     <header className="relative">
       <div className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">

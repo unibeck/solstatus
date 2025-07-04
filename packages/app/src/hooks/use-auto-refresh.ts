@@ -21,6 +21,7 @@ export function useAutoRefresh({
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null)
   const startTimeRef = useRef<number>(0)
+  const rafIdRef = useRef<number | null>(null)
 
   useLayoutEffect(() => {
     setIsAutoRefreshAvailable(true)
@@ -37,6 +38,10 @@ export function useAutoRefresh({
     if (progressIntervalRef.current) {
       clearInterval(progressIntervalRef.current)
       progressIntervalRef.current = null
+    }
+    if (rafIdRef.current) {
+      cancelAnimationFrame(rafIdRef.current)
+      rafIdRef.current = null
     }
   }, [])
 
@@ -55,10 +60,15 @@ export function useAutoRefresh({
     const updateProgress = () => {
       const elapsed = Date.now() - startTimeRef.current
       const progress = Math.min((elapsed / intervalMs) * 100, 100)
-      setRefreshProgress(progress)
+      
+      // Use requestAnimationFrame for smoother updates
+      rafIdRef.current = requestAnimationFrame(() => {
+        setRefreshProgress(progress)
+      })
     }
 
-    progressIntervalRef.current = setInterval(updateProgress, 100)
+    // Update less frequently (4 times per second instead of 10)
+    progressIntervalRef.current = setInterval(updateProgress, 250)
 
     intervalRef.current = setInterval(() => {
       onRefresh()

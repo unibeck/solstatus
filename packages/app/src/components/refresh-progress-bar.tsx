@@ -1,7 +1,7 @@
 "use client"
 
 import { IconSettings } from "@tabler/icons-react"
-import { useState } from "react"
+import { memo, useState } from "react"
 import {
   type RefreshInterval,
   useHeaderContext,
@@ -21,7 +21,7 @@ const intervalLabels: Record<RefreshInterval, string> = {
   off: "Off",
 }
 
-export function RefreshProgressBar() {
+export const RefreshProgressBar = memo(function RefreshProgressBar() {
   const {
     refreshInterval,
     setRefreshInterval,
@@ -71,7 +71,7 @@ export function RefreshProgressBar() {
           <div className="flex justify-center h-full">
             <div
               className={
-                "h-full bg-black dark:bg-white transition-all duration-100 ease-linear"
+                "h-full bg-black dark:bg-white transition-all duration-300 ease-linear"
               }
               style={{ width: `${refreshProgress}%` }}
               // style={{ width: "10%" }}
@@ -125,4 +125,4 @@ export function RefreshProgressBar() {
       </div>
     </div>
   )
-}
+})

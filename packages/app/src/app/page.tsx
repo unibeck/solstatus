@@ -5,13 +5,13 @@ import { useEffect } from "react"
 import { AddEndpointMonitorDialog } from "@/components/add-endpoint-monitor-dialog"
 import { DataTable } from "@/components/data-table"
 import { SectionCards } from "@/components/section-cards"
-import { useHeaderContext } from "@/context/header-context"
+import { useHeaderContentOnly } from "@/context/header-context"
 import { Button } from "@/registry/new-york-v4/ui/button"
 import { useStatsStore } from "@/store/dashboard-stats-store"
 import { useDataTableStore } from "@/store/data-table-store"
 
 export default function Page() {
-  const { setHeaderLeftContent, setHeaderRightContent } = useHeaderContext()
+  const { setHeaderLeftContent, setHeaderRightContent } = useHeaderContentOnly()
 
   const fetchEndpointMonitors = useDataTableStore(
     (state) => state.fetchEndpointMonitors,

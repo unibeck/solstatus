@@ -12,7 +12,7 @@ import {
   subWeeks,
 } from "date-fns"
 import type React from "react"
-import { useMemo } from "react"
+import { memo, useMemo } from "react"
 import {
   Bar,
   BarChart,
@@ -299,7 +299,7 @@ interface UptimeChartProps {
   error?: string | null
 }
 
-export const UptimeChart: React.FC<UptimeChartProps> = ({
+export const UptimeChart: React.FC<UptimeChartProps> = memo(({
   data,
   timeRange,
   isLoading = false,
@@ -468,4 +468,4 @@ export const UptimeChart: React.FC<UptimeChartProps> = ({
       </ResponsiveContainer>
     </div>
   )
-}
+})
