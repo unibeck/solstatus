@@ -23,6 +23,7 @@ import {
 } from "recharts"
 import type { z } from "zod"
 import type { TimeRange } from "@/types/endpointMonitor"
+import { ChartLoadingOverlay } from "./chart-loading-overlay"
 
 const getTimeBucketStart = (timestampMs: number, range: TimeRange): number => {
   const date = new Date(timestampMs)
@@ -286,11 +287,15 @@ const CustomTooltip = ({
 interface LatencyRangeChartProps {
   data: z.infer<typeof uptimeChecksSelectSchema>[]
   timeRange: TimeRange
+  isLoading?: boolean
+  error?: string | null
 }
 
 const LatencyRangeChart: React.FC<LatencyRangeChartProps> = memo(({
   data,
   timeRange,
+  isLoading = false,
+  error = null,
 }) => {
   const processedData = useMemo(() => {
     if (data.length === 0) {
@@ -365,54 +370,77 @@ const LatencyRangeChart: React.FC<LatencyRangeChartProps> = memo(({
     return [domainMin, domainMax]
   }, [processedData])
 
+  // Show full loading state only when there's no data at all
+  if (isLoading && processedData.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-full text-muted-foreground">
+        Loading latency data...
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-full text-red-600">
+        Error loading latency data: {error}
+      </div>
+    )
+  }
+
   return (
-    <ResponsiveContainer width="100%" height={400}>
-      <AreaChart
-        data={processedData}
-        margin={{
-          top: 8,
-          left: 16,
-          bottom: 16,
-        }}
-      >
-        <XAxis
-          dataKey="timeBucket"
-          type="number"
-          domain={xDomain}
-          tickFormatter={(tick) => formatXAxis(tick, timeRange)}
-          scale="time"
-        />
-        <YAxis
-          label={{
-            value: "Latency",
-            angle: -90,
-            position: "insideLeft",
-            style: { textAnchor: "middle" },
-            offset: -8,
+    <div className="relative h-full">
+      {/* Show loading overlay on top of existing chart */}
+      {isLoading && processedData.length > 0 && (
+        <ChartLoadingOverlay message="Updating latency data..." />
+      )}
+      <ResponsiveContainer width="100%" height={400}>
+        <AreaChart
+          data={processedData}
+          margin={{
+            top: 8,
+            left: 16,
+            bottom: 16,
           }}
-          domain={yDomain}
-          allowDecimals={false}
-          tickFormatter={(value) => msToHumanReadable(value, true)}
-        />
-        <Tooltip content={<CustomTooltip range={timeRange} />} />
-        <Legend />
-        <Area
-          type="bump"
-          dataKey={(data: ProcessedDataPoint) =>
-            data.minLatency !== null && data.maxLatency !== null
-              ? [data.minLatency, data.maxLatency]
-              : null
-          }
-          stroke="#8884d8"
-          strokeWidth={2}
-          fill="#8884d8"
-          fillOpacity={0.2}
-          name="Min/Max Range"
-          connectNulls={true}
-          isAnimationActive={false}
-        />
-      </AreaChart>
-    </ResponsiveContainer>
+        >
+          <XAxis
+            dataKey="timeBucket"
+            type="number"
+            domain={xDomain}
+            tickFormatter={(tick) => formatXAxis(tick, timeRange)}
+            scale="time"
+          />
+          <YAxis
+            label={{
+              value: "Latency",
+              angle: -90,
+              position: "insideLeft",
+              style: { textAnchor: "middle" },
+              offset: -8,
+            }}
+            domain={yDomain}
+            allowDecimals={false}
+            tickFormatter={(value) => msToHumanReadable(value, true)}
+          />
+          <Tooltip content={<CustomTooltip range={timeRange} />} />
+          <Legend />
+          <Area
+            type="bump"
+            dataKey={(data: ProcessedDataPoint) =>
+              data.minLatency !== null && data.maxLatency !== null
+                ? [data.minLatency, data.maxLatency]
+                : null
+            }
+            stroke="#8884d8"
+            strokeWidth={2}
+            fill="#8884d8"
+            fillOpacity={0.2}
+            name="Min/Max Range"
+            connectNulls={true}
+            isAnimationActive={false}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
   )
 })
 

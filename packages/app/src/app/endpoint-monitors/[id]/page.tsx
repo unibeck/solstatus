@@ -67,6 +67,7 @@ export default function EndpointMonitorDetailPage() {
   const [isUptimeDataLoading, setIsUptimeDataLoading] = useState(true)
   const [uptimeDataError, setUptimeDataError] = useState<string | null>(null)
   const isInitialRender = useRef(true)
+  const hasLoadedDataOnce = useRef(false)
 
   const fetchWebsite = useCallback(async () => {
     try {
@@ -96,6 +97,9 @@ export default function EndpointMonitorDetailPage() {
       return
     }
 
+    // Check if we have existing data before starting the fetch
+    const hasExistingData = uptimeData.length > 0
+
     setIsUptimeDataLoading(true)
     setUptimeDataError(null)
 
@@ -107,9 +111,12 @@ export default function EndpointMonitorDetailPage() {
         console.error(
           `Failed to fetch combined data for endpointMonitor ${endpointMonitorId} with error: ${response.statusText}`,
         )
-        setUptimeData([])
-        setUptimePercentage(null)
-        setAvgLatency(null)
+        // Don't clear existing data on error during refresh
+        if (!hasExistingData) {
+          setUptimeData([])
+          setUptimePercentage(null)
+          setAvgLatency(null)
+        }
         setUptimeDataError(`Failed to load data: ${response.statusText}`)
         return
       }
@@ -120,16 +127,20 @@ export default function EndpointMonitorDetailPage() {
 
       setUptimeData(responseData)
       setUptimeDataError(null)
+      hasLoadedDataOnce.current = true
     } catch (error) {
       console.error("Error fetching combined uptime/latency data:", error)
-      setUptimeData([])
+      // Don't clear existing data on error during refresh
+      if (!hasExistingData) {
+        setUptimeData([])
+      }
       setUptimeDataError(
         "An error occurred while loading endpointMonitor data.",
       )
     } finally {
       setIsUptimeDataLoading(false)
     }
-  }, [endpointMonitorId, timeRange])
+  }, [endpointMonitorId, timeRange, uptimeData.length])
 
   const fetchLatestUptimeCheck = useCallback(async () => {
     if (!endpointMonitorId) {
@@ -361,7 +372,7 @@ export default function EndpointMonitorDetailPage() {
             error={uptimeDataError}
           />
           <div className="mt-0 flex flex-col gap-6">
-            {uptimeData.length > 0 ? (
+            {(uptimeData.length > 0 || (isUptimeDataLoading && hasLoadedDataOnce.current)) ? (
               <>
                 <Card className="p-0">
                   <CardContent className="p-0">
@@ -381,6 +392,8 @@ export default function EndpointMonitorDetailPage() {
                       <LatencyRangeChart
                         data={uptimeData}
                         timeRange={timeRange}
+                        isLoading={isUptimeDataLoading}
+                        error={uptimeDataError}
                       />
                     </div>
                   </CardContent>
@@ -390,7 +403,11 @@ export default function EndpointMonitorDetailPage() {
               <div className="flex items-center justify-center h-full relative overflow-hidden rounded-lg bg-muted/50">
                 <PolkaDots />
                 <div className="relative text-muted-foreground z-10 p-8">
-                  No uptime data available for the selected period.
+                  {isUptimeDataLoading ? (
+                    "Loading uptime data..."
+                  ) : (
+                    "No uptime data available for the selected period."
+                  )}
                 </div>
               </div>
             )}

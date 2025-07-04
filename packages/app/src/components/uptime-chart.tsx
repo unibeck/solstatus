@@ -26,6 +26,7 @@ import {
 import type { z } from "zod"
 import type { TimeRange } from "@/types/endpointMonitor"
 import { PolkaDots } from "./bg-patterns/polka-dots"
+import { ChartLoadingOverlay } from "./chart-loading-overlay"
 
 const getTimeBucketStart = (timestampMs: number, range: TimeRange): number => {
   const date = new Date(timestampMs)
@@ -354,7 +355,8 @@ export const UptimeChart: React.FC<UptimeChartProps> = memo(({
     return [0, Math.max(maxCount, 1)]
   }, [processedData, isLoading])
 
-  if (isLoading) {
+  // Show full loading state only when there's no data at all
+  if (isLoading && processedData.length === 0) {
     return (
       <div className="flex items-center justify-center h-full text-muted-foreground">
         Loading chart data...
@@ -382,7 +384,11 @@ export const UptimeChart: React.FC<UptimeChartProps> = memo(({
   }
 
   return (
-    <div className="p-4 py-6 h-full">
+    <div className="p-4 py-6 h-full relative">
+      {/* Show loading overlay on top of existing chart */}
+      {isLoading && processedData.length > 0 && (
+        <ChartLoadingOverlay message="Updating uptime data..." />
+      )}
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={processedData}
