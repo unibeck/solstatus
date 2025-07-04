@@ -34,8 +34,6 @@ pnpm cli --fqdn uptime.example.com --phase destroy
 ```
 
 ## TODO:
-- Fix gutter again
-- Allow for no progress bar and display nothing when auto-refresh is off
 - add auto refresh to the dashboard
 - refresh the data, not the page
 

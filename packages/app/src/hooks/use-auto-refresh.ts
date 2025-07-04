@@ -12,11 +12,18 @@ export function useAutoRefresh({
   onRefresh,
   enabled = true,
 }: UseAutoRefreshOptions) {
-  const { refreshInterval, isRefreshEnabled, setRefreshProgress } =
-    useHeaderContext()
+  const {
+    refreshInterval,
+    isRefreshEnabled,
+    setRefreshProgress,
+    setIsAutoRefreshAvailable,
+  } = useHeaderContext()
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null)
   const startTimeRef = useRef<number>(0)
+
+  // Immediately set auto-refresh as available for the component that uses this hook
+  setIsAutoRefreshAvailable(true)
 
   const clearIntervals = useCallback(() => {
     if (intervalRef.current) {
@@ -28,6 +35,13 @@ export function useAutoRefresh({
       progressIntervalRef.current = null
     }
   }, [])
+
+  useEffect(
+    () => () => {
+      setIsAutoRefreshAvailable(false)
+    },
+    [setIsAutoRefreshAvailable],
+  )
 
   const startRefresh = useCallback(() => {
     if (!isRefreshEnabled || !enabled || refreshInterval === "off") {

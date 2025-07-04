@@ -15,6 +15,8 @@ interface HeaderContextProps {
   isRefreshEnabled: boolean
   refreshProgress: number
   setRefreshProgress: (progress: number) => void
+  isAutoRefreshAvailable: boolean
+  setIsAutoRefreshAvailable: (available: boolean) => void
 }
 
 const HeaderContext = createContext<HeaderContextProps | undefined>(undefined)
@@ -28,6 +30,7 @@ export function HeaderProvider({ children }: { children: ReactNode }) {
     useState<React.ReactNode>(defaultHeaderContent)
   const [refreshInterval, setRefreshInterval] = useState<RefreshInterval>(60)
   const [refreshProgress, setRefreshProgress] = useState(0)
+  const [isAutoRefreshAvailable, setIsAutoRefreshAvailable] = useState(false)
 
   const isRefreshEnabled = refreshInterval !== "off"
 
@@ -43,6 +46,8 @@ export function HeaderProvider({ children }: { children: ReactNode }) {
         isRefreshEnabled,
         refreshProgress,
         setRefreshProgress,
+        isAutoRefreshAvailable,
+        setIsAutoRefreshAvailable,
       }}
     >
       {children}
