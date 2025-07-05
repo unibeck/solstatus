@@ -34,7 +34,6 @@ pnpm cli --fqdn uptime.example.com --phase destroy
 ```
 
 ## TODO:
-- add auto refresh to the dashboard
 - intelligent default for time range based on checkInterval
     - <=1m: 30m
     - <=5m: 1h

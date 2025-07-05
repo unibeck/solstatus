@@ -16,6 +16,7 @@ import { PolkaDots } from "@/components/bg-patterns/polka-dots"
 import { EndpointMonitorDetailHeader } from "@/components/endpoint-monitor-detail-header"
 import { EndpointMonitorSectionCards } from "@/components/endpoint-monitor-section-cards"
 import LatencyRangeChart from "@/components/latency-range-chart"
+import { TimeRangeAccordion } from "@/components/time-range-accordion"
 import { UptimeChart } from "@/components/uptime-chart"
 import {
   defaultHeaderContent,
@@ -25,7 +26,6 @@ import { useAutoRefresh } from "@/hooks/use-auto-refresh"
 import { Badge } from "@/registry/new-york-v4/ui/badge"
 import { Button } from "@/registry/new-york-v4/ui/button"
 import { Card, CardContent } from "@/registry/new-york-v4/ui/card"
-import { Tabs, TabsList, TabsTrigger } from "@/registry/new-york-v4/ui/tabs"
 import {
   Tooltip,
   TooltipContent,
@@ -51,8 +51,9 @@ export default function EndpointMonitorDetailPage() {
   // Initialize timeRange from URL or default to '1d'
   const [timeRange, setTimeRange] = useState<TimeRange>(() => {
     const rangeParam = searchParams.get("range")
-    return rangeParam === "1h" || rangeParam === "1d" || rangeParam === "7d"
-      ? rangeParam
+    const validRanges: TimeRange[] = ["30m", "1h", "3h", "6h", "1d", "2d", "7d"]
+    return validRanges.includes(rangeParam as TimeRange)
+      ? (rangeParam as TimeRange)
       : "1d"
   })
 
@@ -341,28 +342,19 @@ export default function EndpointMonitorDetailPage() {
             onStatusChange={fetchWebsite}
           />
 
-          <Tabs
-            value={timeRange} // Use value instead of defaultValue
-            onValueChange={(value) => {
-              const newTimeRange = value as TimeRange
-              setTimeRange(newTimeRange)
+          <TimeRangeAccordion
+            value={timeRange}
+            onChange={(value) => {
+              setTimeRange(value)
               // Update URL
               const newPath =
-                newTimeRange === "1d"
+                value === "1d"
                   ? `/endpoint-monitors/${endpointMonitorId}`
-                  : `/endpoint-monitors/${endpointMonitorId}?range=${newTimeRange}`
+                  : `/endpoint-monitors/${endpointMonitorId}?range=${value}`
               router.push(newPath as Route, { scroll: false })
             }}
-            className="w-full"
-          >
-            <div className="flex justify-end items-center mb-3">
-              <TabsList>
-                <TabsTrigger value="1h">Last 1 Hour</TabsTrigger>
-                <TabsTrigger value="1d">Last 1 Day</TabsTrigger>
-                <TabsTrigger value="7d">Last 7 Days</TabsTrigger>
-              </TabsList>
-            </div>
-          </Tabs>
+            className="w-full max-w-fit ml-auto"
+          />
 
           <EndpointMonitorSectionCards
             endpointMonitor={endpointMonitor}
