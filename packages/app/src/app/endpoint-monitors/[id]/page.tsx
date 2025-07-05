@@ -10,7 +10,7 @@ import { ArrowLeft } from "lucide-react"
 import type { Route } from "next"
 import Link from "next/link"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState, useTransition } from "react"
 import type { z } from "zod"
 import { PolkaDots } from "@/components/bg-patterns/polka-dots"
 import { EndpointMonitorDetailHeader } from "@/components/endpoint-monitor-detail-header"
@@ -43,6 +43,7 @@ export default function EndpointMonitorDetailPage() {
   const endpointMonitorId = params.id as string
   const { setHeaderLeftContent, setHeaderRightContent } = useHeaderContentOnly()
   const searchParams = useSearchParams()
+  const [_isPending, _startTransition] = useTransition()
 
   const [endpointMonitor, setEndpointMonitor] = useState<z.infer<
     typeof endpointMonitorsSelectSchema
@@ -303,6 +304,16 @@ export default function EndpointMonitorDetailPage() {
     }
   }, [uptimeData])
 
+  const handleTimeRangeChange = useCallback((value: TimeRange) => {
+    setTimeRange(value)
+    // Update URL
+    const newPath =
+      value === "1d"
+        ? `/endpoint-monitors/${endpointMonitorId}`
+        : `/endpoint-monitors/${endpointMonitorId}?range=${value}`
+    router.push(newPath as Route, { scroll: false })
+  }, [endpointMonitorId, router])
+
   if (isLoading) {
     return (
       <div className="container mx-auto py-8 px-4">
@@ -344,15 +355,7 @@ export default function EndpointMonitorDetailPage() {
 
           <TimeRangeAccordion
             value={timeRange}
-            onChange={(value) => {
-              setTimeRange(value)
-              // Update URL
-              const newPath =
-                value === "1d"
-                  ? `/endpoint-monitors/${endpointMonitorId}`
-                  : `/endpoint-monitors/${endpointMonitorId}?range=${value}`
-              router.push(newPath as Route, { scroll: false })
-            }}
+            onChange={handleTimeRangeChange}
             className="w-full max-w-fit ml-auto"
           />
 
