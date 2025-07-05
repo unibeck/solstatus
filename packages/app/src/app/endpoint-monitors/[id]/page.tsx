@@ -10,16 +10,18 @@ import { ArrowLeft } from "lucide-react"
 import type { Route } from "next"
 import Link from "next/link"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import type { z } from "zod"
+import { PolkaDots } from "@/components/bg-patterns/polka-dots"
 import { EndpointMonitorDetailHeader } from "@/components/endpoint-monitor-detail-header"
 import { EndpointMonitorSectionCards } from "@/components/endpoint-monitor-section-cards"
 import LatencyRangeChart from "@/components/latency-range-chart"
 import { UptimeChart } from "@/components/uptime-chart"
 import {
   defaultHeaderContent,
-  useHeaderContext,
+  useHeaderContentOnly,
 } from "@/context/header-context"
+import { useAutoRefresh } from "@/hooks/use-auto-refresh"
 import { Badge } from "@/registry/new-york-v4/ui/badge"
 import { Button } from "@/registry/new-york-v4/ui/button"
 import { Card, CardContent } from "@/registry/new-york-v4/ui/card"
@@ -39,7 +41,7 @@ export default function EndpointMonitorDetailPage() {
   const params = useParams()
   const router = useRouter()
   const endpointMonitorId = params.id as string
-  const { setHeaderLeftContent, setHeaderRightContent } = useHeaderContext()
+  const { setHeaderLeftContent, setHeaderRightContent } = useHeaderContentOnly()
   const searchParams = useSearchParams()
 
   const [endpointMonitor, setEndpointMonitor] = useState<z.infer<
@@ -64,9 +66,10 @@ export default function EndpointMonitorDetailPage() {
   const [avgLatency, setAvgLatency] = useState<number | null>(null)
   const [isUptimeDataLoading, setIsUptimeDataLoading] = useState(true)
   const [uptimeDataError, setUptimeDataError] = useState<string | null>(null)
+  const isInitialRender = useRef(true)
+  const hasLoadedDataOnce = useRef(false)
 
   const fetchWebsite = useCallback(async () => {
-    setIsLoading(true)
     try {
       const response = await fetch(
         `/api/endpoint-monitors/${endpointMonitorId}`,
@@ -89,21 +92,121 @@ export default function EndpointMonitorDetailPage() {
     }
   }, [endpointMonitorId, router])
 
-  useEffect(() => {
-    if (endpointMonitorId) {
-      fetchWebsite()
+  const fetchUptimeData = useCallback(async () => {
+    if (!endpointMonitorId) {
+      return
     }
 
+    // Check if we have existing data before starting the fetch
+    const hasExistingData = uptimeData.length > 0
+
+    setIsUptimeDataLoading(true)
+    setUptimeDataError(null)
+
+    try {
+      const response = await fetch(
+        `/api/endpoint-monitors/${endpointMonitorId}/uptime/range?range=${timeRange}`,
+      )
+      if (!response.ok) {
+        console.error(
+          `Failed to fetch combined data for endpointMonitor ${endpointMonitorId} with error: ${response.statusText}`,
+        )
+        // Don't clear existing data on error during refresh
+        if (!hasExistingData) {
+          setUptimeData([])
+          setUptimePercentage(null)
+          setAvgLatency(null)
+        }
+        setUptimeDataError(`Failed to load data: ${response.statusText}`)
+        return
+      }
+
+      const responseData = (await response.json()) as z.infer<
+        typeof uptimeChecksSelectSchema
+      >[]
+
+      setUptimeData(responseData)
+      setUptimeDataError(null)
+      hasLoadedDataOnce.current = true
+    } catch (error) {
+      console.error("Error fetching combined uptime/latency data:", error)
+      // Don't clear existing data on error during refresh
+      if (!hasExistingData) {
+        setUptimeData([])
+      }
+      setUptimeDataError(
+        "An error occurred while loading endpointMonitor data.",
+      )
+    } finally {
+      setIsUptimeDataLoading(false)
+    }
+  }, [endpointMonitorId, timeRange, uptimeData.length])
+
+  const fetchLatestUptimeCheck = useCallback(async () => {
+    if (!endpointMonitorId) {
+      return
+    }
+
+    try {
+      const response = await fetch(
+        `/api/endpoint-monitors/${endpointMonitorId}/uptime`,
+      )
+      if (!response.ok) {
+        if (response.status !== 404) {
+          console.error(
+            `Failed to fetch latest uptime check: ${response.statusText}`,
+          )
+        }
+        setLatestUptimeCheck(null)
+        return
+      }
+      const data = await response.json()
+      setLatestUptimeCheck(data as LatestUptimeCheck)
+    } catch (error) {
+      console.error("Error fetching latest uptime check:", error)
+      setLatestUptimeCheck(null)
+    }
+  }, [endpointMonitorId])
+
+  // Create a ref to hold the latest fetchUptimeData function.
+  // This allows refreshAllData to remain stable while still calling the latest fetchUptimeData.
+  const fetchUptimeDataRef = useRef(fetchUptimeData)
+  useEffect(() => {
+    fetchUptimeDataRef.current = fetchUptimeData
+  }, [fetchUptimeData])
+
+  const refreshAllData = useCallback(async () => {
+    if (endpointMonitorId) {
+      await Promise.all([
+        fetchWebsite(),
+        fetchUptimeDataRef.current(),
+        fetchLatestUptimeCheck(),
+      ])
+    }
+  }, [endpointMonitorId, fetchWebsite, fetchLatestUptimeCheck])
+
+  useAutoRefresh({
+    onRefresh: refreshAllData,
+    enabled: !!endpointMonitorId,
+  })
+
+  // This effect is now responsible for fetching uptime data when the timeRange changes.
+  // It skips the initial render because useAutoRefresh handles the initial data load.
+  useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false
+      return
+    }
+    fetchUptimeData()
+  }, [fetchUptimeData])
+
+  useEffect(() => {
+    // The useAutoRefresh hook now handles the initial data fetch.
     return () => {
       setHeaderLeftContent(null)
       setHeaderRightContent(defaultHeaderContent)
     }
-  }, [
-    endpointMonitorId,
-    setHeaderLeftContent,
-    setHeaderRightContent,
-    fetchWebsite,
-  ])
+  }, [setHeaderLeftContent, setHeaderRightContent])
 
   useEffect(() => {
     if (endpointMonitor) {
@@ -177,52 +280,6 @@ export default function EndpointMonitorDetailPage() {
   ])
 
   useEffect(() => {
-    if (!endpointMonitorId) {
-      return
-    }
-
-    const fetchUptimeData = async () => {
-      setIsUptimeDataLoading(true)
-      setUptimeDataError(null)
-
-      try {
-        const response = await fetch(
-          `/api/endpoint-monitors/${endpointMonitorId}/uptime/range?range=${timeRange}`,
-        )
-        if (!response.ok) {
-          console.error(
-            `Failed to fetch combined data for endpointMonitor ${endpointMonitorId} with error: ${response.statusText}`,
-          )
-          // Reset states on error
-          setUptimeData([])
-          setUptimePercentage(null)
-          setAvgLatency(null)
-          setUptimeDataError(`Failed to load data: ${response.statusText}`)
-          return
-        }
-
-        const responseData = (await response.json()) as z.infer<
-          typeof uptimeChecksSelectSchema
-        >[]
-
-        setUptimeData(responseData)
-        setUptimeDataError(null)
-      } catch (error) {
-        console.error("Error fetching combined uptime/latency data:", error)
-        // Reset states on error
-        setUptimeData([])
-        setUptimeDataError(
-          "An error occurred while loading endpointMonitor data.",
-        )
-      } finally {
-        setIsUptimeDataLoading(false)
-      }
-    }
-
-    fetchUptimeData()
-  }, [endpointMonitorId, timeRange])
-
-  useEffect(() => {
     if (uptimeData.length > 0) {
       const uptimePercentage =
         (uptimeData.filter((check) => check.isExpectedStatus).length /
@@ -244,39 +301,6 @@ export default function EndpointMonitorDetailPage() {
       setAvgLatency(null)
     }
   }, [uptimeData])
-
-  // Fetch latest uptime check
-  useEffect(() => {
-    if (!endpointMonitorId) {
-      return
-    }
-
-    const fetchLatestUptimeCheck = async () => {
-      // Consider adding loading/error state specifically for this fetch if needed
-      try {
-        const response = await fetch(
-          `/api/endpoint-monitors/${endpointMonitorId}/uptime`,
-        )
-        if (!response.ok) {
-          if (response.status !== 404) {
-            // Don't error if no check exists yet
-            console.error(
-              `Failed to fetch latest uptime check: ${response.statusText}`,
-            )
-          }
-          setLatestUptimeCheck(null)
-          return
-        }
-        const data = await response.json()
-        setLatestUptimeCheck(data as LatestUptimeCheck)
-      } catch (error) {
-        console.error("Error fetching latest uptime check:", error)
-        setLatestUptimeCheck(null) // Reset on error
-      }
-    }
-
-    fetchLatestUptimeCheck()
-  }, [endpointMonitorId])
 
   if (isLoading) {
     return (
@@ -309,7 +333,7 @@ export default function EndpointMonitorDetailPage() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="container mx-auto pt-2 pb-8 px-4">
       <div className="@container/main flex flex-1 flex-col gap-2">
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-4 lg:px-6">
           <EndpointMonitorDetailHeader
@@ -348,25 +372,45 @@ export default function EndpointMonitorDetailPage() {
             error={uptimeDataError}
           />
           <div className="mt-0 flex flex-col gap-6">
-            <Card>
-              <CardContent className="pt-6">
-                <div className="h-[200px]">
-                  <UptimeChart
-                    data={uptimeData}
-                    timeRange={timeRange}
-                    isLoading={isUptimeDataLoading}
-                    error={uptimeDataError}
-                  />
+            {(uptimeData.length > 0 || (isUptimeDataLoading && hasLoadedDataOnce.current)) ? (
+              <>
+                <Card className="p-0">
+                  <CardContent className="p-0">
+                    <div className="h-[200px]">
+                      <UptimeChart
+                        data={uptimeData}
+                        timeRange={timeRange}
+                        isLoading={isUptimeDataLoading}
+                        error={uptimeDataError}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="h-[400px]">
+                      <LatencyRangeChart
+                        data={uptimeData}
+                        timeRange={timeRange}
+                        isLoading={isUptimeDataLoading}
+                        error={uptimeDataError}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </>
+            ) : (
+              <div className="flex items-center justify-center h-full relative overflow-hidden rounded-lg bg-muted/50">
+                <PolkaDots />
+                <div className="relative text-muted-foreground z-10 p-8">
+                  {isUptimeDataLoading ? (
+                    "Loading uptime data..."
+                  ) : (
+                    "No uptime data available for the selected period."
+                  )}
                 </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="pt-6">
-                <div className="h-[400px]">
-                  <LatencyRangeChart data={uptimeData} timeRange={timeRange} />
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+            )}
           </div>
         </div>
       </div>
