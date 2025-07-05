@@ -51,8 +51,9 @@ export default function EndpointMonitorDetailPage() {
   // Initialize timeRange from URL or default to '1d'
   const [timeRange, setTimeRange] = useState<TimeRange>(() => {
     const rangeParam = searchParams.get("range")
-    return rangeParam === "1h" || rangeParam === "1d" || rangeParam === "7d"
-      ? rangeParam
+    const validRanges = ["30m", "1h", "3h", "6h", "1d", "2d", "7d"] as const
+    return validRanges.includes(rangeParam as TimeRange)
+      ? (rangeParam as TimeRange)
       : "1d"
   })
 
@@ -68,6 +69,22 @@ export default function EndpointMonitorDetailPage() {
   const [uptimeDataError, setUptimeDataError] = useState<string | null>(null)
   const isInitialRender = useRef(true)
   const hasLoadedDataOnce = useRef(false)
+
+  // Helper function to get display text for time ranges
+  const getTimeRangeDisplay = (range: TimeRange, isSelected: boolean): string => {
+    if (!isSelected) { return range }
+    
+    const displayMap: Record<TimeRange, string> = {
+      "30m": "30 Minutes",
+      "1h": "1 Hour",
+      "3h": "3 Hours",
+      "6h": "6 Hours",
+      "1d": "1 Day",
+      "2d": "2 Days",
+      "7d": "7 Days"
+    }
+    return displayMap[range]
+  }
 
   const fetchWebsite = useCallback(async () => {
     try {
@@ -357,9 +374,13 @@ export default function EndpointMonitorDetailPage() {
           >
             <div className="flex justify-end items-center mb-3">
               <TabsList>
-                <TabsTrigger value="1h">Last 1 Hour</TabsTrigger>
-                <TabsTrigger value="1d">Last 1 Day</TabsTrigger>
-                <TabsTrigger value="7d">Last 7 Days</TabsTrigger>
+                <TabsTrigger value="30m">{getTimeRangeDisplay("30m", timeRange === "30m")}</TabsTrigger>
+                <TabsTrigger value="1h">{getTimeRangeDisplay("1h", timeRange === "1h")}</TabsTrigger>
+                <TabsTrigger value="3h">{getTimeRangeDisplay("3h", timeRange === "3h")}</TabsTrigger>
+                <TabsTrigger value="6h">{getTimeRangeDisplay("6h", timeRange === "6h")}</TabsTrigger>
+                <TabsTrigger value="1d">{getTimeRangeDisplay("1d", timeRange === "1d")}</TabsTrigger>
+                <TabsTrigger value="2d">{getTimeRangeDisplay("2d", timeRange === "2d")}</TabsTrigger>
+                <TabsTrigger value="7d">{getTimeRangeDisplay("7d", timeRange === "7d")}</TabsTrigger>
               </TabsList>
             </div>
           </Tabs>

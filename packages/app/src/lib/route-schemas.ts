@@ -31,5 +31,5 @@ export const daysQuerySchema = (defaultDays = 1) =>
   })
 
 export const timeRangeQuerySchema = z.object({
-  timeRange: z.enum(["1h", "1d", "7d"]).optional().default("1d"),
+  timeRange: z.enum(["30m", "1h", "3h", "6h", "1d", "2d", "7d"]).optional().default("1d"),
 })

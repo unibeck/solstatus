@@ -9,6 +9,7 @@ import {
   startOfMinute,
   subDays,
   subHours,
+  subMinutes,
   subWeeks,
 } from "date-fns"
 import type React from "react"
@@ -31,12 +32,44 @@ import { ChartLoadingOverlay } from "./chart-loading-overlay"
 const getTimeBucketStart = (timestampMs: number, range: TimeRange): number => {
   const date = new Date(timestampMs)
   switch (range) {
+    case "30m": {
+      // 30 second buckets for 30 minutes
+      const seconds = date.getSeconds()
+      const roundedSeconds = Math.floor(seconds / 30) * 30
+      const startOfMin = startOfMinute(date)
+      startOfMin.setSeconds(roundedSeconds, 0)
+      return getUnixTime(startOfMin)
+    }
     case "1h": {
       return getUnixTime(startOfMinute(date))
+    }
+    case "3h": {
+      // 2 minute buckets for 3 hours
+      const minutes = date.getMinutes()
+      const roundedMinutes = Math.floor(minutes / 2) * 2
+      const startOfHr = startOfHour(date)
+      startOfHr.setMinutes(roundedMinutes, 0, 0)
+      return getUnixTime(startOfHr)
+    }
+    case "6h": {
+      // 5 minute buckets for 6 hours
+      const minutes = date.getMinutes()
+      const roundedMinutes = Math.floor(minutes / 5) * 5
+      const startOfHr = startOfHour(date)
+      startOfHr.setMinutes(roundedMinutes, 0, 0)
+      return getUnixTime(startOfHr)
     }
     case "1d": {
       const minutes = date.getMinutes()
       const roundedMinutes = Math.floor(minutes / 15) * 15
+      const startOfHr = startOfHour(date)
+      startOfHr.setMinutes(roundedMinutes, 0, 0)
+      return getUnixTime(startOfHr)
+    }
+    case "2d": {
+      // 30 minute buckets for 2 days
+      const minutes = date.getMinutes()
+      const roundedMinutes = Math.floor(minutes / 30) * 30
       const startOfHr = startOfHour(date)
       startOfHr.setMinutes(roundedMinutes, 0, 0)
       return getUnixTime(startOfHr)
@@ -77,15 +110,35 @@ const processUptimeData = (
   // let expectedChecksPerBucket: number
 
   switch (range) {
+    case "30m":
+      startTime = subMinutes(endTime, 30)
+      intervalMinutes = 0.5 // 30 seconds
+      expectedPoints = 60 // 30 minutes / 30 seconds
+      break
     case "1h":
       startTime = subHours(endTime, 1)
       intervalMinutes = 1
       expectedPoints = 60
       break
+    case "3h":
+      startTime = subHours(endTime, 3)
+      intervalMinutes = 2
+      expectedPoints = 90 // 3 * (60 / 2)
+      break
+    case "6h":
+      startTime = subHours(endTime, 6)
+      intervalMinutes = 5
+      expectedPoints = 72 // 6 * (60 / 5)
+      break
     case "1d":
       startTime = subDays(endTime, 1)
       intervalMinutes = 15
       expectedPoints = 96 // 24 * (60 / 15)
+      break
+    case "2d":
+      startTime = subDays(endTime, 2)
+      intervalMinutes = 30
+      expectedPoints = 96 // 2 * 24 * (60 / 30)
       break
     case "7d":
       startTime = subWeeks(endTime, 1)
@@ -124,13 +177,37 @@ const processUptimeData = (
 
   // Align start time to the beginning of its bucket based on range
   switch (range) {
+    case "30m": {
+      const seconds = startTime.getSeconds()
+      currentBucketTime = startOfMinute(startTime)
+      currentBucketTime.setSeconds(Math.floor(seconds / 30) * 30, 0)
+      break
+    }
     case "1h":
       currentBucketTime = startOfMinute(startTime)
       break
+    case "3h": {
+      const startMinutes = startTime.getMinutes()
+      currentBucketTime = startOfHour(startTime)
+      currentBucketTime.setMinutes(Math.floor(startMinutes / 2) * 2, 0, 0)
+      break
+    }
+    case "6h": {
+      const startMinutes = startTime.getMinutes()
+      currentBucketTime = startOfHour(startTime)
+      currentBucketTime.setMinutes(Math.floor(startMinutes / 5) * 5, 0, 0)
+      break
+    }
     case "1d": {
       const startMinutes = startTime.getMinutes()
       currentBucketTime = startOfHour(startTime)
       currentBucketTime.setMinutes(Math.floor(startMinutes / 15) * 15, 0, 0)
+      break
+    }
+    case "2d": {
+      const startMinutes = startTime.getMinutes()
+      currentBucketTime = startOfHour(startTime)
+      currentBucketTime.setMinutes(Math.floor(startMinutes / 30) * 30, 0, 0)
       break
     }
     case "7d": {
@@ -206,10 +283,18 @@ const processUptimeData = (
 const formatXAxis = (tickItem: number, range: TimeRange): string => {
   const date = new Date(tickItem * 1000)
   switch (range) {
+    case "30m":
+      return format(date, "HH:mm:ss")
     case "1h":
+      return format(date, "HH:mm")
+    case "3h":
+      return format(date, "HH:mm")
+    case "6h":
       return format(date, "HH:mm")
     case "1d":
       return format(date, "HH:mm")
+    case "2d":
+      return format(date, "M/d HH:mm")
     case "7d":
       return format(date, "M/d")
     default:
@@ -241,10 +326,22 @@ const CustomUptimeTooltip: React.FC<CustomUptimeTooltipProps> = ({
     const date = new Date(label * 1000)
     let formattedTime = ""
     switch (range) {
+      case "30m":
+        formattedTime = format(date, "HH:mm:ss")
+        break
       case "1h":
         formattedTime = format(date, "HH:mm")
         break
+      case "3h":
+        formattedTime = format(date, "MMM d, HH:mm")
+        break
+      case "6h":
+        formattedTime = format(date, "MMM d, HH:mm")
+        break
       case "1d":
+        formattedTime = format(date, "MMM d, HH:mm")
+        break
+      case "2d":
         formattedTime = format(date, "MMM d, HH:mm")
         break
       case "7d":
@@ -322,11 +419,23 @@ export const UptimeChart: React.FC<UptimeChartProps> = memo(({
         processedData[processedData.length - 1]?.timeBucket ?? endTime
 
       switch (timeRange) {
+        case "30m":
+          startTime = getUnixTime(subMinutes(new Date(), 30))
+          break
         case "1h":
           startTime = getUnixTime(subHours(new Date(), 1))
           break
+        case "3h":
+          startTime = getUnixTime(subHours(new Date(), 3))
+          break
+        case "6h":
+          startTime = getUnixTime(subHours(new Date(), 6))
+          break
         case "1d":
           startTime = getUnixTime(subDays(new Date(), 1))
+          break
+        case "2d":
+          startTime = getUnixTime(subDays(new Date(), 2))
           break
         case "7d":
           startTime = getUnixTime(subWeeks(new Date(), 1))
