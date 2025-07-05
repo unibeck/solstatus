@@ -15,7 +15,7 @@ import {
 } from "@tabler/icons-react"
 import { formatDistance } from "date-fns"
 import type * as React from "react"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import type { z } from "zod"
 import { useIsMobile } from "@/registry/new-york-v4/hooks/use-mobile"
 import { Badge } from "@/registry/new-york-v4/ui/badge"
@@ -61,38 +61,42 @@ export function EndpointMonitorDetailDrawer({
   > | null>(null)
   const [isLoadingCheck, setIsLoadingCheck] = useState(false)
   const [checkError, setCheckError] = useState<string | null>(null)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+
+  const fetchLatestCheck = useCallback(async () => {
+    if (!endpointMonitor.id) {
+      return
+    }
+    setIsLoadingCheck(true)
+    setCheckError(null)
+    try {
+      const response = await fetch(
+        `/api/endpoint-monitors/${endpointMonitor.id}/uptime`,
+      )
+      if (!response.ok) {
+        if (response.status === 404) {
+          setLatestUptimeCheck(null) // No check found yet
+        } else {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+      } else {
+        const data = await response.json()
+        setLatestUptimeCheck(data as z.infer<typeof uptimeChecksSelectSchema>)
+      }
+    } catch (error) {
+      console.error("Failed to fetch latest uptime check:", error)
+      setCheckError("Failed to load latest check.")
+    } finally {
+      setIsLoadingCheck(false)
+    }
+  }, [endpointMonitor.id])
 
   useEffect(() => {
-    const fetchLatestCheck = async () => {
-      if (!endpointMonitor.id) {
-        return
-      }
-      setIsLoadingCheck(true)
-      setCheckError(null)
-      try {
-        const response = await fetch(
-          `/api/endpoint-monitors/${endpointMonitor.id}/uptime`,
-        )
-        if (!response.ok) {
-          if (response.status === 404) {
-            setLatestUptimeCheck(null) // No check found yet
-          } else {
-            throw new Error(`HTTP error! status: ${response.status}`)
-          }
-        } else {
-          const data = await response.json()
-          setLatestUptimeCheck(data as z.infer<typeof uptimeChecksSelectSchema>)
-        }
-      } catch (error) {
-        console.error("Failed to fetch latest uptime check:", error)
-        setCheckError("Failed to load latest check.")
-      } finally {
-        setIsLoadingCheck(false)
-      }
+    // Only fetch when drawer is opened
+    if (isDrawerOpen) {
+      fetchLatestCheck()
     }
-
-    fetchLatestCheck()
-  }, [endpointMonitor.id])
+  }, [isDrawerOpen, fetchLatestCheck])
 
   const defaultTrigger = (
     <Button
@@ -107,7 +111,7 @@ export function EndpointMonitorDetailDrawer({
   )
 
   return (
-    <Drawer direction={isMobile ? "bottom" : "right"}>
+    <Drawer direction={isMobile ? "bottom" : "right"} onOpenChange={setIsDrawerOpen}>
       <DrawerTrigger asChild>{trigger || defaultTrigger}</DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="gap-1">
