@@ -44,6 +44,23 @@ import type { TimeRange } from "@/types/endpointMonitor"
 // Define the type for a single uptime check
 type LatestUptimeCheck = z.infer<typeof uptimeChecksSelectSchema>
 
+// Helper function to calculate default time range based on monitor age
+function calculateDefaultTimeRange(createdAt: Date): TimeRange {
+  const now = new Date()
+  const ageInMs = now.getTime() - createdAt.getTime()
+  const ageInMinutes = ageInMs / (1000 * 60)
+  const ageInHours = ageInMinutes / 60
+  const ageInDays = ageInHours / 24
+
+  if (ageInMinutes < 30) { return "30m" }
+  if (ageInHours < 1) { return "1h" }
+  if (ageInHours < 3) { return "3h" }
+  if (ageInHours < 6) { return "6h" }
+  if (ageInDays < 1) { return "1d" }
+  // Max out at 2d for monitors older than 2 days
+  return "2d"
+}
+
 export default function EndpointMonitorDetailPage() {
   const params = useParams()
   const router = useRouter()
@@ -55,14 +72,18 @@ export default function EndpointMonitorDetailPage() {
     typeof endpointMonitorsSelectSchema
   > | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  // Initialize timeRange from URL or default to '1d'
+  
+  // Initialize timeRange with a temporary default
   const [timeRange, setTimeRange] = useState<TimeRange>(() => {
     const rangeParam = searchParams.get("range")
     const validRanges = ["30m", "1h", "3h", "6h", "1d", "2d", "7d"] as const
     return validRanges.includes(rangeParam as TimeRange)
       ? (rangeParam as TimeRange)
-      : "1d"
+      : "1d" // Temporary default until we load the monitor
   })
+
+  // Track if we've set the default based on monitor age
+  const hasSetDefaultTimeRange = useRef(false)
 
   const [uptimeData, setUptimeData] = useState<
     z.infer<typeof uptimeChecksSelectSchema>[]
@@ -98,13 +119,21 @@ export default function EndpointMonitorDetailPage() {
         )
       }
       const data = await response.json()
-      setEndpointMonitor(data as z.infer<typeof endpointMonitorsSelectSchema>)
+      const monitor = data as z.infer<typeof endpointMonitorsSelectSchema>
+      setEndpointMonitor(monitor)
+      
+      // Set default time range based on monitor age if URL doesn't have a range
+      if (!searchParams.get("range") && !hasSetDefaultTimeRange.current && monitor.createdAt) {
+        hasSetDefaultTimeRange.current = true
+        const defaultRange = calculateDefaultTimeRange(new Date(monitor.createdAt))
+        setTimeRange(defaultRange)
+      }
     } catch (error) {
       console.error("Error fetching endpointMonitor:", error)
     } finally {
       setIsLoading(false)
     }
-  }, [endpointMonitorId, router])
+  }, [endpointMonitorId, router, searchParams])
 
   const fetchUptimeData = useCallback(async () => {
     if (!endpointMonitorId) {
@@ -373,7 +402,7 @@ export default function EndpointMonitorDetailPage() {
                     newTimeRange === "1d"
                       ? `/endpoint-monitors/${endpointMonitorId}`
                       : `/endpoint-monitors/${endpointMonitorId}?range=${newTimeRange}`
-                  router.push(newPath, { scroll: false })
+                  router.push(newPath as any, { scroll: false })
 
                   // Clear transitioning state after a delay
                   setTimeout(() => {
