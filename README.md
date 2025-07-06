@@ -33,13 +33,15 @@ pnpm cli --fqdn uptime.example.com --stage prod
 pnpm cli --fqdn uptime.example.com --phase destroy
 ```
 
-## TODO:
+## TODO (v2.1):
 - add auto refresh to the dashboard
 - intelligent default for time range based on checkInterval
     - <=1m: 30m
     - <=5m: 1h
     - <=1h: 1d
     - <=1d: 7d
+- Endpoint details drawer -> make table based
+- Minimize title link div flex
 
 ## Local Dev
 
