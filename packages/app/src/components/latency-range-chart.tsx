@@ -388,169 +388,166 @@ interface LatencyRangeChartProps {
   error?: string | null
 }
 
-const LatencyRangeChart: React.FC<LatencyRangeChartProps> = memo(({
-  data,
-  timeRange,
-  isLoading = false,
-  error = null,
-}) => {
-  const processedData = useMemo(() => {
-    if (data.length === 0) {
-      return []
-    }
-
-    return processData(data, timeRange)
-  }, [data, timeRange])
-
-  const xDomain: [number | "auto", number | "auto"] = useMemo(() => {
-    if (processedData.length > 0) {
-      let startTime: number
-      const endTime = Math.floor(Date.now() / 1000)
-      const lastBucketTime =
-        processedData[processedData.length - 1]?.timeBucket ?? endTime
-
-      switch (timeRange) {
-        case "30m":
-          startTime = getUnixTime(subMinutes(new Date(), 30))
-          break
-        case "1h":
-          startTime = getUnixTime(subHours(new Date(), 1))
-          break
-        case "3h":
-          startTime = getUnixTime(subHours(new Date(), 3))
-          break
-        case "6h":
-          startTime = getUnixTime(subHours(new Date(), 6))
-          break
-        case "1d":
-          startTime = getUnixTime(subDays(new Date(), 1))
-          break
-        case "2d":
-          startTime = getUnixTime(subDays(new Date(), 2))
-          break
-        case "7d":
-          startTime = getUnixTime(subWeeks(new Date(), 1))
-          break
-        default:
-          startTime = processedData[0]?.timeBucket ?? endTime - 3600
+const LatencyRangeChart: React.FC<LatencyRangeChartProps> = memo(
+  ({ data, timeRange, isLoading = false, error = null }) => {
+    const processedData = useMemo(() => {
+      if (data.length === 0) {
+        return []
       }
 
-      return [startTime, Math.max(endTime, lastBucketTime)]
-    }
-    return ["auto", "auto"]
-  }, [processedData, timeRange])
+      return processData(data, timeRange)
+    }, [data, timeRange])
 
-  const yDomain: [number | "auto", number | "auto"] = useMemo(() => {
-    if (processedData.length === 0) {
+    const xDomain: [number | "auto", number | "auto"] = useMemo(() => {
+      if (processedData.length > 0) {
+        let startTime: number
+        const endTime = Math.floor(Date.now() / 1000)
+        const lastBucketTime =
+          processedData[processedData.length - 1]?.timeBucket ?? endTime
+
+        switch (timeRange) {
+          case "30m":
+            startTime = getUnixTime(subMinutes(new Date(), 30))
+            break
+          case "1h":
+            startTime = getUnixTime(subHours(new Date(), 1))
+            break
+          case "3h":
+            startTime = getUnixTime(subHours(new Date(), 3))
+            break
+          case "6h":
+            startTime = getUnixTime(subHours(new Date(), 6))
+            break
+          case "1d":
+            startTime = getUnixTime(subDays(new Date(), 1))
+            break
+          case "2d":
+            startTime = getUnixTime(subDays(new Date(), 2))
+            break
+          case "7d":
+            startTime = getUnixTime(subWeeks(new Date(), 1))
+            break
+          default:
+            startTime = processedData[0]?.timeBucket ?? endTime - 3600
+        }
+
+        return [startTime, Math.max(endTime, lastBucketTime)]
+      }
       return ["auto", "auto"]
-    }
+    }, [processedData, timeRange])
 
-    let minVal = Number.POSITIVE_INFINITY
-    let maxVal = Number.NEGATIVE_INFINITY
-
-    for (const p of processedData) {
-      if (p.avgLatency !== null) {
-        minVal = Math.min(minVal, p.avgLatency)
-        maxVal = Math.max(maxVal, p.avgLatency)
+    const yDomain: [number | "auto", number | "auto"] = useMemo(() => {
+      if (processedData.length === 0) {
+        return ["auto", "auto"]
       }
-      if (p.minLatency !== null) {
-        minVal = Math.min(minVal, p.minLatency)
+
+      let minVal = Number.POSITIVE_INFINITY
+      let maxVal = Number.NEGATIVE_INFINITY
+
+      for (const p of processedData) {
+        if (p.avgLatency !== null) {
+          minVal = Math.min(minVal, p.avgLatency)
+          maxVal = Math.max(maxVal, p.avgLatency)
+        }
+        if (p.minLatency !== null) {
+          minVal = Math.min(minVal, p.minLatency)
+        }
+        if (p.maxLatency !== null) {
+          maxVal = Math.max(maxVal, p.maxLatency)
+        }
       }
-      if (p.maxLatency !== null) {
-        maxVal = Math.max(maxVal, p.maxLatency)
+
+      if (
+        minVal === Number.POSITIVE_INFINITY ||
+        maxVal === Number.NEGATIVE_INFINITY
+      ) {
+        return [0, 100]
       }
+
+      const padding = 0
+      const domainMin = 0
+      const domainMax = Math.ceil(maxVal + padding)
+
+      if (domainMin === domainMax) {
+        return [Math.max(0, domainMin - 10), domainMax + 10]
+      }
+
+      return [domainMin, domainMax]
+    }, [processedData])
+
+    // Show full loading state only when there's no data at all
+    if (isLoading && processedData.length === 0) {
+      return (
+        <div className="flex items-center justify-center h-full text-muted-foreground">
+          Loading latency data...
+        </div>
+      )
     }
 
-    if (
-      minVal === Number.POSITIVE_INFINITY ||
-      maxVal === Number.NEGATIVE_INFINITY
-    ) {
-      return [0, 100]
+    if (error) {
+      return (
+        <div className="flex items-center justify-center h-full text-red-600">
+          Error loading latency data: {error}
+        </div>
+      )
     }
 
-    const padding = 0
-    const domainMin = 0
-    const domainMax = Math.ceil(maxVal + padding)
-
-    if (domainMin === domainMax) {
-      return [Math.max(0, domainMin - 10), domainMax + 10]
-    }
-
-    return [domainMin, domainMax]
-  }, [processedData])
-
-  // Show full loading state only when there's no data at all
-  if (isLoading && processedData.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-muted-foreground">
-        Loading latency data...
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center h-full text-red-600">
-        Error loading latency data: {error}
-      </div>
-    )
-  }
-
-  return (
-    <div className="relative h-full">
-      {/* Show loading overlay on top of existing chart */}
-      {isLoading && processedData.length > 0 && (
-        <ChartLoadingOverlay message="Updating latency data..." />
-      )}
-      <ResponsiveContainer width="100%" height={400}>
-        <AreaChart
-          data={processedData}
-          margin={{
-            top: 8,
-            left: 16,
-            bottom: 16,
-          }}
-        >
-          <XAxis
-            dataKey="timeBucket"
-            type="number"
-            domain={xDomain}
-            tickFormatter={(tick) => formatXAxis(tick, timeRange)}
-            scale="time"
-          />
-          <YAxis
-            label={{
-              value: "Latency",
-              angle: -90,
-              position: "insideLeft",
-              style: { textAnchor: "middle" },
-              offset: -8,
+      <div className="relative h-full">
+        {/* Show loading overlay on top of existing chart */}
+        {isLoading && processedData.length > 0 && (
+          <ChartLoadingOverlay message="Updating latency data..." />
+        )}
+        <ResponsiveContainer width="100%" height={400}>
+          <AreaChart
+            data={processedData}
+            margin={{
+              top: 8,
+              left: 16,
+              bottom: 16,
             }}
-            domain={yDomain}
-            allowDecimals={false}
-            tickFormatter={(value) => msToHumanReadable(value, true)}
-          />
-          <Tooltip content={<CustomTooltip range={timeRange} />} />
-          <Legend />
-          <Area
-            type="bump"
-            dataKey={(data: ProcessedDataPoint) =>
-              data.minLatency !== null && data.maxLatency !== null
-                ? [data.minLatency, data.maxLatency]
-                : null
-            }
-            stroke="#8884d8"
-            strokeWidth={2}
-            fill="#8884d8"
-            fillOpacity={0.2}
-            name="Min/Max Range"
-            connectNulls={true}
-            isAnimationActive={false}
-          />
-        </AreaChart>
-      </ResponsiveContainer>
-    </div>
-  )
-})
+          >
+            <XAxis
+              dataKey="timeBucket"
+              type="number"
+              domain={xDomain}
+              tickFormatter={(tick) => formatXAxis(tick, timeRange)}
+              scale="time"
+            />
+            <YAxis
+              label={{
+                value: "Latency",
+                angle: -90,
+                position: "insideLeft",
+                style: { textAnchor: "middle" },
+                offset: -8,
+              }}
+              domain={yDomain}
+              allowDecimals={false}
+              tickFormatter={(value) => msToHumanReadable(value, true)}
+            />
+            <Tooltip content={<CustomTooltip range={timeRange} />} />
+            <Legend />
+            <Area
+              type="bump"
+              dataKey={(data: ProcessedDataPoint) =>
+                data.minLatency !== null && data.maxLatency !== null
+                  ? [data.minLatency, data.maxLatency]
+                  : null
+              }
+              stroke="#8884d8"
+              strokeWidth={2}
+              fill="#8884d8"
+              fillOpacity={0.2}
+              name="Min/Max Range"
+              connectNulls={true}
+              isAnimationActive={false}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+    )
+  },
+)
 
 export default LatencyRangeChart

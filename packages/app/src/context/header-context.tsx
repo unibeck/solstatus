@@ -1,7 +1,13 @@
 "use client"
 
 import type React from "react"
-import { createContext, type ReactNode, useContext, useMemo, useState } from "react"
+import {
+  createContext,
+  type ReactNode,
+  useContext,
+  useMemo,
+  useState,
+} from "react"
 
 export type RefreshInterval = 10 | 30 | 60 | "off"
 
@@ -23,8 +29,12 @@ interface RefreshProgressContextProps {
   setRefreshProgress: (progress: number) => void
 }
 
-const HeaderContentContext = createContext<HeaderContentContextProps | undefined>(undefined)
-const RefreshProgressContext = createContext<RefreshProgressContextProps | undefined>(undefined)
+const HeaderContentContext = createContext<
+  HeaderContentContextProps | undefined
+>(undefined)
+const RefreshProgressContext = createContext<
+  RefreshProgressContextProps | undefined
+>(undefined)
 
 export const defaultHeaderContent: React.ReactNode = <div />
 
@@ -58,7 +68,7 @@ export function HeaderProvider({ children }: { children: ReactNode }) {
       refreshInterval,
       isRefreshEnabled,
       isAutoRefreshAvailable,
-    ]
+    ],
   )
 
   const refreshProgressValue = useMemo(
@@ -66,7 +76,7 @@ export function HeaderProvider({ children }: { children: ReactNode }) {
       refreshProgress,
       setRefreshProgress,
     }),
-    [refreshProgress]
+    [refreshProgress],
   )
 
   return (
@@ -82,11 +92,11 @@ export function HeaderProvider({ children }: { children: ReactNode }) {
 export function useHeaderContext() {
   const headerContext = useContext(HeaderContentContext)
   const progressContext = useContext(RefreshProgressContext)
-  
+
   if (headerContext === undefined || progressContext === undefined) {
     throw new Error("useHeaderContext must be used within a HeaderProvider")
   }
-  
+
   // For backward compatibility, combine both contexts
   return {
     ...headerContext,

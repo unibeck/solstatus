@@ -60,7 +60,7 @@ export function useAutoRefresh({
     const updateProgress = () => {
       const elapsed = Date.now() - startTimeRef.current
       const progress = Math.min((elapsed / intervalMs) * 100, 100)
-      
+
       // Use requestAnimationFrame for smoother updates
       rafIdRef.current = requestAnimationFrame(() => {
         setRefreshProgress(progress)

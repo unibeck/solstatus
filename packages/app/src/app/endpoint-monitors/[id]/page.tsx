@@ -9,7 +9,14 @@ import { IconPointFilled } from "@tabler/icons-react"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
-import { startTransition, useCallback, useDeferredValue, useEffect, useRef, useState } from "react"
+import {
+  startTransition,
+  useCallback,
+  useDeferredValue,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 import type { z } from "zod"
 import { PolkaDots } from "@/components/bg-patterns/polka-dots"
 import { EndpointMonitorDetailHeader } from "@/components/endpoint-monitor-detail-header"
@@ -352,22 +359,22 @@ export default function EndpointMonitorDetailPage() {
             value={timeRange}
             onValueChange={(value) => {
               const newTimeRange = value
-              
+
               // Mark as transitioning immediately
               setIsTransitioning(true)
-              
+
               // Delay the state update to allow tab animation to complete
               requestAnimationFrame(() => {
                 startTransition(() => {
                   setTimeRange(newTimeRange)
-                  
+
                   // Update URL
                   const newPath =
                     newTimeRange === "1d"
                       ? `/endpoint-monitors/${endpointMonitorId}`
                       : `/endpoint-monitors/${endpointMonitorId}?range=${newTimeRange}`
                   router.push(newPath, { scroll: false })
-                  
+
                   // Clear transitioning state after a delay
                   setTimeout(() => {
                     setIsTransitioning(false)
@@ -385,33 +392,42 @@ export default function EndpointMonitorDetailPage() {
             error={uptimeDataError}
           />
           <div className="mt-0 flex flex-col gap-6">
-            {(deferredUptimeData.length > 0 || (isUptimeDataLoading && hasLoadedDataOnce.current)) ? (
+            {deferredUptimeData.length > 0 ||
+            (isUptimeDataLoading && hasLoadedDataOnce.current) ? (
               <>
-                <Card className={cn(
-                  "p-0 transition-opacity duration-300",
-                  deferredIsTransitioning && "opacity-50"
-                )}>
+                <Card
+                  className={cn(
+                    "p-0 transition-opacity duration-300",
+                    deferredIsTransitioning && "opacity-50",
+                  )}
+                >
                   <CardContent className="p-0">
                     <div className="h-[200px]">
                       <UptimeChart
                         data={deferredUptimeData}
                         timeRange={deferredTimeRange}
-                        isLoading={isUptimeDataLoading || deferredIsTransitioning}
+                        isLoading={
+                          isUptimeDataLoading || deferredIsTransitioning
+                        }
                         error={uptimeDataError}
                       />
                     </div>
                   </CardContent>
                 </Card>
-                <Card className={cn(
-                  "transition-opacity duration-300",
-                  deferredIsTransitioning && "opacity-50"
-                )}>
+                <Card
+                  className={cn(
+                    "transition-opacity duration-300",
+                    deferredIsTransitioning && "opacity-50",
+                  )}
+                >
                   <CardContent className="pt-6">
                     <div className="h-[400px]">
                       <LatencyRangeChart
                         data={deferredUptimeData}
                         timeRange={deferredTimeRange}
-                        isLoading={isUptimeDataLoading || deferredIsTransitioning}
+                        isLoading={
+                          isUptimeDataLoading || deferredIsTransitioning
+                        }
                         error={uptimeDataError}
                       />
                     </div>
@@ -422,11 +438,9 @@ export default function EndpointMonitorDetailPage() {
               <div className="flex items-center justify-center h-full relative overflow-hidden rounded-lg bg-muted/50">
                 <PolkaDots />
                 <div className="relative text-muted-foreground z-10 p-8">
-                  {isUptimeDataLoading ? (
-                    "Loading uptime data..."
-                  ) : (
-                    "No uptime data available for the selected period."
-                  )}
+                  {isUptimeDataLoading
+                    ? "Loading uptime data..."
+                    : "No uptime data available for the selected period."}
                 </div>
               </div>
             )}

@@ -397,190 +397,187 @@ interface UptimeChartProps {
   error?: string | null
 }
 
-export const UptimeChart: React.FC<UptimeChartProps> = memo(({
-  data,
-  timeRange,
-  isLoading = false,
-  error = null,
-}) => {
-  const processedData = useMemo(() => {
-    if (!data || data.length === 0) {
-      return []
-    }
-
-    return processUptimeData(data, timeRange)
-  }, [data, timeRange])
-
-  const xDomain: [number | "auto", number | "auto"] = useMemo(() => {
-    if (processedData.length > 0) {
-      let startTime: number
-      const endTime = Math.floor(Date.now() / 1000)
-      const lastBucketTime =
-        processedData[processedData.length - 1]?.timeBucket ?? endTime
-
-      switch (timeRange) {
-        case "30m":
-          startTime = getUnixTime(subMinutes(new Date(), 30))
-          break
-        case "1h":
-          startTime = getUnixTime(subHours(new Date(), 1))
-          break
-        case "3h":
-          startTime = getUnixTime(subHours(new Date(), 3))
-          break
-        case "6h":
-          startTime = getUnixTime(subHours(new Date(), 6))
-          break
-        case "1d":
-          startTime = getUnixTime(subDays(new Date(), 1))
-          break
-        case "2d":
-          startTime = getUnixTime(subDays(new Date(), 2))
-          break
-        case "7d":
-          startTime = getUnixTime(subWeeks(new Date(), 1))
-          break
-        default:
-          startTime = processedData[0]?.timeBucket ?? endTime - 3600
+export const UptimeChart: React.FC<UptimeChartProps> = memo(
+  ({ data, timeRange, isLoading = false, error = null }) => {
+    const processedData = useMemo(() => {
+      if (!data || data.length === 0) {
+        return []
       }
-      // Ensure the domain covers the full range, even if data is sparse at the end
-      return [startTime, Math.max(endTime, lastBucketTime)]
-    }
-    return ["auto", "auto"] // Fallback if no data
-  }, [processedData, timeRange])
 
-  const yDomain: [number | "auto", number | "auto"] = useMemo(() => {
-    if (processedData.length === 0 && !isLoading) {
-      return [0, 1]
-    }
+      return processUptimeData(data, timeRange)
+    }, [data, timeRange])
 
-    let maxCount = 0
-    for (const p of processedData) {
-      const totalInBucket =
-        p.count2xx + p.count3xx + p.count4xx + p.count5xx + p.countNoData
-      maxCount = Math.max(maxCount, totalInBucket)
-    }
+    const xDomain: [number | "auto", number | "auto"] = useMemo(() => {
+      if (processedData.length > 0) {
+        let startTime: number
+        const endTime = Math.floor(Date.now() / 1000)
+        const lastBucketTime =
+          processedData[processedData.length - 1]?.timeBucket ?? endTime
 
-    return [0, Math.max(maxCount, 1)]
-  }, [processedData, isLoading])
+        switch (timeRange) {
+          case "30m":
+            startTime = getUnixTime(subMinutes(new Date(), 30))
+            break
+          case "1h":
+            startTime = getUnixTime(subHours(new Date(), 1))
+            break
+          case "3h":
+            startTime = getUnixTime(subHours(new Date(), 3))
+            break
+          case "6h":
+            startTime = getUnixTime(subHours(new Date(), 6))
+            break
+          case "1d":
+            startTime = getUnixTime(subDays(new Date(), 1))
+            break
+          case "2d":
+            startTime = getUnixTime(subDays(new Date(), 2))
+            break
+          case "7d":
+            startTime = getUnixTime(subWeeks(new Date(), 1))
+            break
+          default:
+            startTime = processedData[0]?.timeBucket ?? endTime - 3600
+        }
+        // Ensure the domain covers the full range, even if data is sparse at the end
+        return [startTime, Math.max(endTime, lastBucketTime)]
+      }
+      return ["auto", "auto"] // Fallback if no data
+    }, [processedData, timeRange])
 
-  // Show full loading state only when there's no data at all
-  if (isLoading && processedData.length === 0) {
-    return (
-      <div className="flex items-center justify-center h-full text-muted-foreground">
-        Loading chart data...
-      </div>
-    )
-  }
+    const yDomain: [number | "auto", number | "auto"] = useMemo(() => {
+      if (processedData.length === 0 && !isLoading) {
+        return [0, 1]
+      }
 
-  if (error) {
-    return (
-      <div className="flex items-center justify-center h-full text-red-600">
-        Error loading chart data: {error}
-      </div>
-    )
-  }
+      let maxCount = 0
+      for (const p of processedData) {
+        const totalInBucket =
+          p.count2xx + p.count3xx + p.count4xx + p.count5xx + p.countNoData
+        maxCount = Math.max(maxCount, totalInBucket)
+      }
 
-  if (processedData.length === 0 && !isLoading) {
-    return (
-      <div className="flex items-center justify-center h-full relative overflow-hidden rounded-lg bg-muted/50">
-        <PolkaDots />
-        <div className="relative text-muted-foreground z-10 p-8">
-          No uptime data available for the selected period.
+      return [0, Math.max(maxCount, 1)]
+    }, [processedData, isLoading])
+
+    // Show full loading state only when there's no data at all
+    if (isLoading && processedData.length === 0) {
+      return (
+        <div className="flex items-center justify-center h-full text-muted-foreground">
+          Loading chart data...
         </div>
+      )
+    }
+
+    if (error) {
+      return (
+        <div className="flex items-center justify-center h-full text-red-600">
+          Error loading chart data: {error}
+        </div>
+      )
+    }
+
+    if (processedData.length === 0 && !isLoading) {
+      return (
+        <div className="flex items-center justify-center h-full relative overflow-hidden rounded-lg bg-muted/50">
+          <PolkaDots />
+          <div className="relative text-muted-foreground z-10 p-8">
+            No uptime data available for the selected period.
+          </div>
+        </div>
+      )
+    }
+
+    return (
+      <div className="p-4 py-6 h-full relative">
+        {/* Show loading overlay on top of existing chart */}
+        {isLoading && processedData.length > 0 && (
+          <ChartLoadingOverlay message="Updating uptime data..." />
+        )}
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={processedData}
+            margin={{
+              top: 16,
+              right: 8,
+              left: 16,
+              bottom: 4,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+            <XAxis
+              dataKey="timeBucket"
+              type="number"
+              domain={xDomain}
+              tickFormatter={(tick) => formatXAxis(tick, timeRange)}
+              scale="time"
+              axisLine={false}
+              tickLine={false}
+            />
+            <YAxis
+              allowDecimals={false}
+              domain={yDomain}
+              axisLine={false}
+              tickLine={false}
+              width={30}
+              label={{
+                value: "# of Checks",
+                angle: -90,
+                position: "insideLeft",
+                style: { textAnchor: "middle" },
+                offset: -10,
+              }}
+            />
+            <Tooltip
+              content={<CustomUptimeTooltip range={timeRange} />}
+              cursor={{ fill: "hsl(var(--muted))", fillOpacity: 0.3 }}
+            />
+            <Legend wrapperStyle={{ paddingTop: "10px" }} />
+
+            {/* Stacked Bars */}
+            <Bar
+              dataKey="count2xx"
+              stackId="a"
+              name="2xx"
+              fill="#22c55e"
+              radius={[2, 2, 0, 0]}
+              isAnimationActive={false}
+            />
+            <Bar
+              dataKey="count3xx"
+              stackId="a"
+              name="3xx"
+              fill="#facc15"
+              radius={[0, 0, 0, 0]}
+              isAnimationActive={false}
+            />
+            <Bar
+              dataKey="count4xx"
+              stackId="a"
+              name="4xx"
+              fill="#f97316"
+              radius={[0, 0, 0, 0]}
+              isAnimationActive={false}
+            />
+            <Bar
+              dataKey="count5xx"
+              stackId="a"
+              name="5xx"
+              fill="#ef4444"
+              radius={[0, 0, 0, 0]}
+              isAnimationActive={false}
+            />
+            <Bar
+              dataKey="countNoData"
+              stackId="a"
+              name="No Data"
+              fill="#ccc"
+              radius={[0, 0, 2, 2]}
+              isAnimationActive={false}
+            />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
     )
-  }
-
-  return (
-    <div className="p-4 py-6 h-full relative">
-      {/* Show loading overlay on top of existing chart */}
-      {isLoading && processedData.length > 0 && (
-        <ChartLoadingOverlay message="Updating uptime data..." />
-      )}
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          data={processedData}
-          margin={{
-            top: 16,
-            right: 8,
-            left: 16,
-            bottom: 4,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis
-            dataKey="timeBucket"
-            type="number"
-            domain={xDomain}
-            tickFormatter={(tick) => formatXAxis(tick, timeRange)}
-            scale="time"
-            axisLine={false}
-            tickLine={false}
-          />
-          <YAxis
-            allowDecimals={false}
-            domain={yDomain}
-            axisLine={false}
-            tickLine={false}
-            width={30}
-            label={{
-              value: "# of Checks",
-              angle: -90,
-              position: "insideLeft",
-              style: { textAnchor: "middle" },
-              offset: -10,
-            }}
-          />
-          <Tooltip
-            content={<CustomUptimeTooltip range={timeRange} />}
-            cursor={{ fill: "hsl(var(--muted))", fillOpacity: 0.3 }}
-          />
-          <Legend wrapperStyle={{ paddingTop: "10px" }} />
-
-          {/* Stacked Bars */}
-          <Bar
-            dataKey="count2xx"
-            stackId="a"
-            name="2xx"
-            fill="#22c55e"
-            radius={[2, 2, 0, 0]}
-            isAnimationActive={false}
-          />
-          <Bar
-            dataKey="count3xx"
-            stackId="a"
-            name="3xx"
-            fill="#facc15"
-            radius={[0, 0, 0, 0]}
-            isAnimationActive={false}
-          />
-          <Bar
-            dataKey="count4xx"
-            stackId="a"
-            name="4xx"
-            fill="#f97316"
-            radius={[0, 0, 0, 0]}
-            isAnimationActive={false}
-          />
-          <Bar
-            dataKey="count5xx"
-            stackId="a"
-            name="5xx"
-            fill="#ef4444"
-            radius={[0, 0, 0, 0]}
-            isAnimationActive={false}
-          />
-          <Bar
-            dataKey="countNoData"
-            stackId="a"
-            name="No Data"
-            fill="#ccc"
-            radius={[0, 0, 2, 2]}
-            isAnimationActive={false}
-          />
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
-  )
-})
+  },
+)

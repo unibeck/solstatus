@@ -111,7 +111,10 @@ export function EndpointMonitorDetailDrawer({
   )
 
   return (
-    <Drawer direction={isMobile ? "bottom" : "right"} onOpenChange={setIsDrawerOpen}>
+    <Drawer
+      direction={isMobile ? "bottom" : "right"}
+      onOpenChange={setIsDrawerOpen}
+    >
       <DrawerTrigger asChild>{trigger || defaultTrigger}</DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="gap-1">

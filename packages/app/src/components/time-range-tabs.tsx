@@ -32,4 +32,4 @@ export function TimeRangeTabs({ value, onValueChange }: TimeRangeTabsProps) {
       </div>
     </Tabs>
   )
-} 
+}

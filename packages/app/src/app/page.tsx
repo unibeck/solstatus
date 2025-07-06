@@ -22,10 +22,7 @@ export default function Page() {
   )
 
   const refreshDashboardData = useCallback(async () => {
-    await Promise.all([
-      fetchEndpointMonitors(),
-      fetchDashboardStats(),
-    ])
+    await Promise.all([fetchEndpointMonitors(), fetchDashboardStats()])
   }, [fetchEndpointMonitors, fetchDashboardStats])
 
   useAutoRefresh({
