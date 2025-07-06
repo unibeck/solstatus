@@ -1,6 +1,5 @@
 "use client"
 
-import { useState, useEffect } from "react"
 import { Tabs, TabsList, TabsTrigger } from "@/registry/new-york-v4/ui/tabs"
 import type { TimeRange } from "@/types/endpointMonitor"
 
@@ -27,18 +26,6 @@ const getTimeRangeDisplay = (range: TimeRange, isSelected: boolean): string => {
 }
 
 export function TimeRangeTabs({ value, onValueChange }: TimeRangeTabsProps) {
-  // Track the display text separately to control timing
-  const [displayedRange, setDisplayedRange] = useState(value)
-  
-  useEffect(() => {
-    // Delay text change slightly for smoother animation
-    const timer = setTimeout(() => {
-      setDisplayedRange(value)
-    }, 100)
-    
-    return () => clearTimeout(timer)
-  }, [value])
-  
   return (
     <Tabs
       value={value}
@@ -46,23 +33,18 @@ export function TimeRangeTabs({ value, onValueChange }: TimeRangeTabsProps) {
       className="w-full"
     >
       <div className="flex justify-end items-center mb-3">
-        <TabsList className="h-auto p-1 gap-1">
+        <TabsList className="h-auto p-1 gap-0.5">
           {timeRanges.map((range) => {
             const isActive = value === range
-            const isDisplayActive = displayedRange === range
             
             return (
               <TabsTrigger
                 key={range}
                 value={range}
-                className="relative overflow-hidden px-3 py-1.5 text-sm font-medium transition-all duration-300 ease-out will-change-transform data-[state=active]:scale-x-110 data-[state=active]:px-4"
+                className="relative px-3 py-1.5 text-sm font-medium transition-all duration-200 ease-out data-[state=active]:px-4"
               >
-                <span 
-                  className={`block transition-opacity duration-200 ${
-                    isActive ? 'opacity-100' : 'opacity-80'
-                  }`}
-                >
-                  {getTimeRangeDisplay(range, isDisplayActive)}
+                <span className="relative z-10">
+                  {getTimeRangeDisplay(range, isActive)}
                 </span>
               </TabsTrigger>
             )

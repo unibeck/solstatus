@@ -7,10 +7,9 @@ import type {
 import { msToHumanReadable, secsToHumanReadable } from "@solstatus/common/utils"
 import { IconPointFilled } from "@tabler/icons-react"
 import { ArrowLeft } from "lucide-react"
-import type { Route } from "next"
 import Link from "next/link"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useDeferredValue, useEffect, useRef, useState } from "react"
 import type { z } from "zod"
 import { PolkaDots } from "@/components/bg-patterns/polka-dots"
 import { EndpointMonitorDetailHeader } from "@/components/endpoint-monitor-detail-header"
@@ -57,10 +56,6 @@ export default function EndpointMonitorDetailPage() {
       : "1d"
   })
 
-  // Add a pending time range to handle rapid tab switches
-  const [pendingTimeRange, setPendingTimeRange] = useState<TimeRange | null>(null)
-  const timeRangeDebounceRef = useRef<NodeJS.Timeout>()
-
   const [uptimeData, setUptimeData] = useState<
     z.infer<typeof uptimeChecksSelectSchema>[]
   >([])
@@ -73,6 +68,10 @@ export default function EndpointMonitorDetailPage() {
   const [uptimeDataError, setUptimeDataError] = useState<string | null>(null)
   const isInitialRender = useRef(true)
   const hasLoadedDataOnce = useRef(false)
+
+  // Defer chart data updates to prevent blocking tab animations
+  const deferredUptimeData = useDeferredValue(uptimeData)
+  const deferredTimeRange = useDeferredValue(timeRange)
 
   const fetchWebsite = useCallback(async () => {
     try {
@@ -307,28 +306,6 @@ export default function EndpointMonitorDetailPage() {
     }
   }, [uptimeData])
 
-  // Handle debounced time range changes
-  useEffect(() => {
-    if (pendingTimeRange && pendingTimeRange !== timeRange) {
-      // Clear any existing timeout
-      if (timeRangeDebounceRef.current) {
-        clearTimeout(timeRangeDebounceRef.current)
-      }
-      
-      // Set a new timeout
-      timeRangeDebounceRef.current = setTimeout(() => {
-        setTimeRange(pendingTimeRange)
-        setPendingTimeRange(null)
-      }, 300) // 300ms debounce
-    }
-    
-    return () => {
-      if (timeRangeDebounceRef.current) {
-        clearTimeout(timeRangeDebounceRef.current)
-      }
-    }
-  }, [pendingTimeRange, timeRange])
-
   if (isLoading) {
     return (
       <div className="container mx-auto py-8 px-4">
@@ -369,19 +346,21 @@ export default function EndpointMonitorDetailPage() {
           />
 
           <TimeRangeTabs
-            value={pendingTimeRange || timeRange}
+            value={timeRange}
             onValueChange={(value) => {
               const newTimeRange = value
               
-              // Update URL immediately for smooth tab transition
-              const newPath =
-                newTimeRange === "1d"
-                  ? `/endpoint-monitors/${endpointMonitorId}`
-                  : `/endpoint-monitors/${endpointMonitorId}?range=${newTimeRange}`
-              router.push(newPath as Route, { scroll: false })
+              // Update state immediately for tab visual feedback
+              setTimeRange(newTimeRange)
               
-              // Set pending time range for debounced update
-              setPendingTimeRange(newTimeRange)
+              // Update URL in transition to not block UI
+              // startTransition(() => {
+              //   const newPath =
+              //     newT_newPathe === "1d"
+              //       ? `/endpoint-monitors/${endpointMonitorId}`
+              //       : `/endpoint-monitors/${endpointMonitorId}?range=${newTimeRange}`
+              //   // router.push(newPath as Route, { scroll: false })
+              // })
             }}
           />
 
@@ -393,14 +372,14 @@ export default function EndpointMonitorDetailPage() {
             error={uptimeDataError}
           />
           <div className="mt-0 flex flex-col gap-6">
-            {(uptimeData.length > 0 || (isUptimeDataLoading && hasLoadedDataOnce.current)) ? (
+            {(deferredUptimeData.length > 0 || (isUptimeDataLoading && hasLoadedDataOnce.current)) ? (
               <>
                 <Card className="p-0 transition-opacity duration-300">
                   <CardContent className="p-0">
                     <div className="h-[200px]">
                       <UptimeChart
-                        data={uptimeData}
-                        timeRange={timeRange}
+                        data={deferredUptimeData}
+                        timeRange={deferredTimeRange}
                         isLoading={isUptimeDataLoading}
                         error={uptimeDataError}
                       />
@@ -411,8 +390,8 @@ export default function EndpointMonitorDetailPage() {
                   <CardContent className="pt-6">
                     <div className="h-[400px]">
                       <LatencyRangeChart
-                        data={uptimeData}
-                        timeRange={timeRange}
+                        data={deferredUptimeData}
+                        timeRange={deferredTimeRange}
                         isLoading={isUptimeDataLoading}
                         error={uptimeDataError}
                       />
