@@ -9,7 +9,7 @@ import { IconPointFilled } from "@tabler/icons-react"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
-import { useCallback, useDeferredValue, useEffect, useRef, useState } from "react"
+import { startTransition, useCallback, useDeferredValue, useEffect, useRef, useState } from "react"
 import type { z } from "zod"
 import { PolkaDots } from "@/components/bg-patterns/polka-dots"
 import { EndpointMonitorDetailHeader } from "@/components/endpoint-monitor-detail-header"
@@ -22,6 +22,7 @@ import {
   useHeaderContentOnly,
 } from "@/context/header-context"
 import { useAutoRefresh } from "@/hooks/use-auto-refresh"
+import { cn } from "@/lib/utils"
 import { Badge } from "@/registry/new-york-v4/ui/badge"
 import { Button } from "@/registry/new-york-v4/ui/button"
 import { Card, CardContent } from "@/registry/new-york-v4/ui/card"
@@ -68,10 +69,12 @@ export default function EndpointMonitorDetailPage() {
   const [uptimeDataError, setUptimeDataError] = useState<string | null>(null)
   const isInitialRender = useRef(true)
   const hasLoadedDataOnce = useRef(false)
+  const [isTransitioning, setIsTransitioning] = useState(false)
 
   // Defer chart data updates to prevent blocking tab animations
   const deferredUptimeData = useDeferredValue(uptimeData)
   const deferredTimeRange = useDeferredValue(timeRange)
+  const deferredIsTransitioning = useDeferredValue(isTransitioning)
 
   const fetchWebsite = useCallback(async () => {
     try {
@@ -350,17 +353,27 @@ export default function EndpointMonitorDetailPage() {
             onValueChange={(value) => {
               const newTimeRange = value
               
-              // Update state immediately for tab visual feedback
-              setTimeRange(newTimeRange)
+              // Mark as transitioning immediately
+              setIsTransitioning(true)
               
-              // Update URL in transition to not block UI
-              // startTransition(() => {
-              //   const newPath =
-              //     newT_newPathe === "1d"
-              //       ? `/endpoint-monitors/${endpointMonitorId}`
-              //       : `/endpoint-monitors/${endpointMonitorId}?range=${newTimeRange}`
-              //   // router.push(newPath as Route, { scroll: false })
-              // })
+              // Delay the state update to allow tab animation to complete
+              requestAnimationFrame(() => {
+                startTransition(() => {
+                  setTimeRange(newTimeRange)
+                  
+                  // Update URL
+                  const newPath =
+                    newTimeRange === "1d"
+                      ? `/endpoint-monitors/${endpointMonitorId}`
+                      : `/endpoint-monitors/${endpointMonitorId}?range=${newTimeRange}`
+                  router.push(newPath, { scroll: false })
+                  
+                  // Clear transitioning state after a delay
+                  setTimeout(() => {
+                    setIsTransitioning(false)
+                  }, 300) // Match tab animation duration
+                })
+              })
             }}
           />
 
@@ -374,25 +387,31 @@ export default function EndpointMonitorDetailPage() {
           <div className="mt-0 flex flex-col gap-6">
             {(deferredUptimeData.length > 0 || (isUptimeDataLoading && hasLoadedDataOnce.current)) ? (
               <>
-                <Card className="p-0 transition-opacity duration-300">
+                <Card className={cn(
+                  "p-0 transition-opacity duration-300",
+                  deferredIsTransitioning && "opacity-50"
+                )}>
                   <CardContent className="p-0">
                     <div className="h-[200px]">
                       <UptimeChart
                         data={deferredUptimeData}
                         timeRange={deferredTimeRange}
-                        isLoading={isUptimeDataLoading}
+                        isLoading={isUptimeDataLoading || deferredIsTransitioning}
                         error={uptimeDataError}
                       />
                     </div>
                   </CardContent>
                 </Card>
-                <Card className="transition-opacity duration-300">
+                <Card className={cn(
+                  "transition-opacity duration-300",
+                  deferredIsTransitioning && "opacity-50"
+                )}>
                   <CardContent className="pt-6">
                     <div className="h-[400px]">
                       <LatencyRangeChart
                         data={deferredUptimeData}
                         timeRange={deferredTimeRange}
-                        isLoading={isUptimeDataLoading}
+                        isLoading={isUptimeDataLoading || deferredIsTransitioning}
                         error={uptimeDataError}
                       />
                     </div>
