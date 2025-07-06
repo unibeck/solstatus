@@ -1,6 +1,6 @@
 "use client"
 
-import { Tabs, TabsList, TabsTrigger } from "@/registry/new-york-v4/ui/tabs"
+import { Tabs, TabsList, TabsTrigger } from "@/components/animated-tabs"
 import type { TimeRange } from "@/types/endpointMonitor"
 
 interface TimeRangeTabsProps {
@@ -33,7 +33,7 @@ export function TimeRangeTabs({ value, onValueChange }: TimeRangeTabsProps) {
       className="w-full"
     >
       <div className="flex justify-end items-center mb-3">
-        <TabsList className="h-auto p-1 gap-0.5">
+        <TabsList className="h-auto p-1">
           {timeRanges.map((range) => {
             const isActive = value === range
             
@@ -41,11 +41,9 @@ export function TimeRangeTabs({ value, onValueChange }: TimeRangeTabsProps) {
               <TabsTrigger
                 key={range}
                 value={range}
-                className="relative px-3 py-1.5 text-sm font-medium transition-all duration-200 ease-out data-[state=active]:px-4"
+                className="px-4 py-1.5 text-sm font-medium transition-colors duration-200"
               >
-                <span className="relative z-10">
-                  {getTimeRangeDisplay(range, isActive)}
-                </span>
+                {getTimeRangeDisplay(range, isActive)}
               </TabsTrigger>
             )
           })}
