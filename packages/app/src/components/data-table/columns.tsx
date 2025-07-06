@@ -12,6 +12,7 @@ import { LatencyLimitChart } from "@/components/latency-limit-chart"
 import { Badge } from "@/registry/new-york-v4/ui/badge"
 import { Button } from "@/registry/new-york-v4/ui/button"
 import { Checkbox } from "@/registry/new-york-v4/ui/checkbox"
+import { useDataTableStore } from "@/store/data-table-store"
 import { DataTableColumnHeader } from "./column-header"
 import { EndpointMonitorDetailDrawer } from "./endpoint-monitor-detail-drawer"
 
@@ -96,9 +97,11 @@ export const columns: AppColumnDef<
     headerLabel: "Latency",
     maxSize: 300,
     cell: ({ row }) => {
+      const lastRefreshed = useDataTableStore((state) => state.lastRefreshed)
       return (
         <div className="w-[300px]">
           <LatencyLimitChart
+            key={`${row.original.id}-${lastRefreshed}`}
             endpointMonitorId={row.original.id}
             limit={30}
             height={40}
