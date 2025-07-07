@@ -146,7 +146,7 @@ export function EndpointMonitorDetailDrawer({
             {/* Metadata Section */}
             <table className="w-full">
               <tbody className="divide-y">
-                <tr>
+                <tr className="hover:bg-muted">
                   <td className="py-2 font-medium text-sm pr-4">Operational</td>
                   <td className="py-2 text-sm text-right">
                     {endpointMonitor.isRunning ? (
@@ -163,13 +163,13 @@ export function EndpointMonitorDetailDrawer({
                     )}
                   </td>
                 </tr>
-                <tr>
+                <tr className="hover:bg-muted">
                   <td className="py-2 font-medium text-sm pr-4">Check Interval</td>
                   <td className="py-2 text-sm text-right">
                     {secsToHumanReadable(endpointMonitor.checkInterval)}
                   </td>
                 </tr>
-                <tr>
+                <tr className="hover:bg-muted">
                   <td className="py-2 font-medium text-sm pr-4">Alert Status</td>
                   <td className="py-2 text-sm text-right">
                     <Badge
@@ -181,7 +181,7 @@ export function EndpointMonitorDetailDrawer({
                     </Badge>
                   </td>
                 </tr>
-                <tr>
+                <tr className="hover:bg-muted">
                   <td className="py-2 font-medium text-sm pr-4">Consecutive Failures</td>
                   <td className="py-2 text-sm text-right">
                     <div className="flex items-center gap-1 justify-end">
@@ -192,7 +192,7 @@ export function EndpointMonitorDetailDrawer({
                     </div>
                   </td>
                 </tr>
-                <tr>
+                <tr className="hover:bg-muted">
                   <td className="py-2 font-medium text-sm pr-4">Expected Status Code</td>
                   <td className="py-2 text-sm text-right">
                     {endpointMonitor.expectedStatusCode ? (
@@ -219,7 +219,7 @@ export function EndpointMonitorDetailDrawer({
               ) : latestUptimeCheck ? (
                 <table className="w-full mt-2">
                   <tbody className="divide-y">
-                    <tr>
+                    <tr className="hover:bg-muted">
                       <td className="py-2 font-medium text-sm pr-4">Status</td>
                       <td className="py-2 text-sm text-right">
                         <div className="flex items-center gap-1 justify-end">
@@ -241,7 +241,7 @@ export function EndpointMonitorDetailDrawer({
                         </div>
                       </td>
                     </tr>
-                    <tr>
+                    <tr className="hover:bg-muted">
                       <td className="py-2 font-medium text-sm pr-4">
                         HTTP Status Code
                       </td>
@@ -302,7 +302,7 @@ export function EndpointMonitorDetailDrawer({
                         )}
                       </td>
                     </tr>
-                    <tr>
+                    <tr className="hover:bg-muted">
                       <td className="py-2 font-medium text-sm pr-4">
                         Checked At
                       </td>
@@ -337,7 +337,7 @@ export function EndpointMonitorDetailDrawer({
                         </TooltipProvider>
                       </td>
                     </tr>
-                    <tr>
+                    <tr className="hover:bg-muted">
                       <td className="py-2 font-medium text-sm pr-4">
                         Response Time
                       </td>

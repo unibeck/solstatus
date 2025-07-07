@@ -33,9 +33,6 @@ pnpm cli --fqdn uptime.example.com --stage prod
 pnpm cli --fqdn uptime.example.com --phase destroy
 ```
 
-## TODO (v2.1):
-- Minimize title link div flex
-
 ## Local Dev
 
 For a holistic dev experience, it is best to run dev from the root of the repo.

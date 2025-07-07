@@ -16,7 +16,10 @@ import {
   IconSparkles,
   IconTargetArrow,
 } from "@tabler/icons-react"
+import Image from "next/image"
+import { useTheme } from "next-themes"
 import type * as React from "react"
+import { useState } from "react"
 import SolStatusLogo from "@/components/icons/solstatus-logo"
 
 import { NavMain } from "@/components/nav-main"
@@ -127,14 +130,35 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { theme } = useTheme()
+  const [isHovered, setIsHovered] = useState(false)
+  const gifSrc =
+    theme === "dark"
+      ? "/liquid-metal-solstatus-dark.gif"
+      : "/liquid-metal-solstatus-light.gif"
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild variant="ghost" className="h-14">
-              <a href="/">
-                <SolStatusLogo className="!size-8 fill-black dark:fill-white" />
+              <a
+                href="/"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
+                {isHovered ? (
+                  <Image
+                    src={gifSrc}
+                    alt="SolStatus Animated Logo"
+                    width={32}
+                    height={32}
+                    className="!size-8"
+                    priority={false}
+                  />
+                ) : (
+                  <SolStatusLogo className="!size-8 fill-black dark:fill-white" />
+                )}
                 <span className="text-lg font-semibold font-unbounded">
                   SolStatus
                 </span>
