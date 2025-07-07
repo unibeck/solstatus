@@ -34,7 +34,6 @@ pnpm cli --fqdn uptime.example.com --phase destroy
 ```
 
 ## TODO (v2.1):
-- Endpoint details drawer -> make table based
 - Minimize title link div flex
 
 ## Local Dev

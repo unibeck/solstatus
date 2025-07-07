@@ -118,240 +118,246 @@ export function EndpointMonitorDetailDrawer({
       <DrawerTrigger asChild>{trigger || defaultTrigger}</DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="gap-1">
-          <DrawerTitle>{endpointMonitor.name}</DrawerTitle>
+          <DrawerTitle className="break-all">{endpointMonitor.name}</DrawerTitle>
           <DrawerDescription>
             Monitor details and configuration
           </DrawerDescription>
         </DrawerHeader>
         <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
           <div className="grid gap-4">
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 min-w-0">
               <span className="font-medium">Id</span>
-              <span>{endpointMonitor.id}</span>
+              <span className="break-all">{endpointMonitor.id}</span>
             </div>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 min-w-0">
               <span className="font-medium">URL</span>
               <a
                 href={endpointMonitor.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-500 hover:underline"
+                className="text-blue-500 hover:underline break-all"
               >
                 {endpointMonitor.url}
               </a>
             </div>
 
-            <Separator />
+            {/* <Separator className="bg-black dark:bg-white"/> */}
 
             {/* Metadata Section */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col gap-1">
-                <span className="font-medium">Status</span>
-                {endpointMonitor.isRunning ? (
-                  <Badge
-                    variant="secondary"
-                    className="w-fit !bg-green-400 dark:!bg-green-700"
-                  >
-                    Running
-                  </Badge>
-                ) : (
-                  <Badge variant="destructive" className="w-fit">
-                    Paused
-                  </Badge>
-                )}
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="font-medium">Check Interval</span>
-                <span>
-                  {secsToHumanReadable(endpointMonitor.checkInterval)}
-                </span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col gap-1">
-                <span className="font-medium">Alert Status</span>
-                <Badge
-                  variant={
-                    endpointMonitor.activeAlert ? "destructive" : "outline"
-                  }
-                  className="w-fit"
-                >
-                  {endpointMonitor.activeAlert ? "Alert Active" : "No Alert"}
-                </Badge>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="font-medium">Consecutive Failures</span>
-                <div className="flex items-center gap-1">
-                  {endpointMonitor.consecutiveFailures > 0 && (
-                    <IconAlertTriangle className="h-4 w-4 text-amber-500" />
-                  )}
-                  <span>{endpointMonitor.consecutiveFailures}</span>
-                </div>
-              </div>
-              <div className="flex flex-col gap-1 col-span-2 sm:col-span-1">
-                <span className="font-medium">Expected Status Code</span>
-                <span>
-                  {endpointMonitor.expectedStatusCode ? (
-                    <Badge variant="secondary">
-                      {endpointMonitor.expectedStatusCode}
+            <table className="w-full">
+              <tbody className="divide-y">
+                <tr>
+                  <td className="py-2 font-medium text-sm pr-4">Operational</td>
+                  <td className="py-2 text-sm text-right">
+                    {endpointMonitor.isRunning ? (
+                      <Badge
+                        variant="secondary"
+                        className="!bg-green-400 dark:!bg-green-700"
+                      >
+                        Active
+                      </Badge>
+                    ) : (
+                      <Badge variant="destructive">
+                        Paused
+                      </Badge>
+                    )}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="py-2 font-medium text-sm pr-4">Check Interval</td>
+                  <td className="py-2 text-sm text-right">
+                    {secsToHumanReadable(endpointMonitor.checkInterval)}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="py-2 font-medium text-sm pr-4">Alert Status</td>
+                  <td className="py-2 text-sm text-right">
+                    <Badge
+                      variant={
+                        endpointMonitor.activeAlert ? "destructive" : "outline"
+                      }
+                    >
+                      {endpointMonitor.activeAlert ? "Alert Active" : "No Alert"}
                     </Badge>
-                  ) : (
-                    <Badge variant="secondary">2xx/3xx</Badge>
-                  )}
-                </span>
-              </div>
-            </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="py-2 font-medium text-sm pr-4">Consecutive Failures</td>
+                  <td className="py-2 text-sm text-right">
+                    <div className="flex items-center gap-1 justify-end">
+                      {endpointMonitor.consecutiveFailures > 0 && (
+                        <IconAlertTriangle className="h-4 w-4 text-amber-500" />
+                      )}
+                      <span>{endpointMonitor.consecutiveFailures}</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="py-2 font-medium text-sm pr-4">Expected Status Code</td>
+                  <td className="py-2 text-sm text-right">
+                    {endpointMonitor.expectedStatusCode ? (
+                      <Badge variant="secondary">
+                        {endpointMonitor.expectedStatusCode}
+                      </Badge>
+                    ) : (
+                      <Badge variant="secondary">2xx/3xx</Badge>
+                    )}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
 
-            <Separator />
+            <Separator className="bg-black dark:bg-white"/>
 
             {/* Latest Check Section */}
             <div className="flex flex-col gap-1">
-              <span className="font-medium">Latest Check</span>
+              <span className="font-bold text-center">Latest Check</span>
               {isLoadingCheck ? (
                 <IconLoader2 className="animate-spin h-4 w-4" />
               ) : checkError ? (
                 <span className="text-red-500 text-xs">{checkError}</span>
               ) : latestUptimeCheck ? (
-                <div className="grid grid-cols-2 gap-4 mt-2">
-                  {/* Status Item */}
-                  <div className="flex flex-col gap-1">
-                    <span className="font-medium text-xs">Status</span>
-                    <div className="flex items-center gap-1">
-                      <Badge
-                        variant={
-                          latestUptimeCheck.isExpectedStatus
-                            ? "outline"
-                            : "destructive"
-                        }
-                        className="w-fit text-xs px-1.5 py-0.5"
-                      >
-                        {latestUptimeCheck.isExpectedStatus ? (
-                          <IconRosetteDiscountCheckFilled className="h-3 w-3 mr-1" />
-                        ) : (
-                          <IconAlertTriangle className="h-3 w-3 mr-1 text-red-500" />
-                        )}
-                        {latestUptimeCheck.isExpectedStatus ? "OK" : "Down"}
-                      </Badge>
-                    </div>
-                  </div>
-
-                  {/* Status Code Item */}
-                  <div className="flex flex-col gap-1">
-                    <span className="font-medium text-xs">
-                      HTTP Status Code
-                    </span>
-                    <div className="text-sm">
-                      {latestUptimeCheck.status === null ? (
-                        <span className="text-gray-500">N/A</span>
-                      ) : endpointMonitor.expectedStatusCode ? (
-                        latestUptimeCheck.status ===
-                        endpointMonitor.expectedStatusCode ? (
-                          <span className="text-green-500">
-                            {latestUptimeCheck.status}
-                          </span>
-                        ) : (
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <span className="text-red-500 underline decoration-dashed cursor-help">
-                                  {latestUptimeCheck.status}
-                                </span>
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>
-                                  Expected: {endpointMonitor.expectedStatusCode}
-                                </p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        )
-                      ) : (
-                        <>
-                          {" "}
-                          {/* Fallback to original range-based coloring */}
-                          {latestUptimeCheck.status <= 299 && (
+                <table className="w-full mt-2">
+                  <tbody className="divide-y">
+                    <tr>
+                      <td className="py-2 font-medium text-sm pr-4">Status</td>
+                      <td className="py-2 text-sm text-right">
+                        <div className="flex items-center gap-1 justify-end">
+                          <Badge
+                            variant={
+                              latestUptimeCheck.isExpectedStatus
+                                ? "outline"
+                                : "destructive"
+                            }
+                            className="text-xs px-1.5 py-0.5"
+                          >
+                            {latestUptimeCheck.isExpectedStatus ? (
+                              <IconRosetteDiscountCheckFilled className="h-3 w-3 mr-1" />
+                            ) : (
+                              <IconAlertTriangle className="h-3 w-3 mr-1  " />
+                            )}
+                            {latestUptimeCheck.isExpectedStatus ? "OK" : "Down"}
+                          </Badge>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-2 font-medium text-sm pr-4">
+                        HTTP Status Code
+                      </td>
+                      <td className="py-2 text-sm text-right">
+                        {latestUptimeCheck.status === null ? (
+                          <span className="text-gray-500">N/A</span>
+                        ) : endpointMonitor.expectedStatusCode ? (
+                          latestUptimeCheck.status ===
+                          endpointMonitor.expectedStatusCode ? (
                             <span className="text-green-500">
                               {latestUptimeCheck.status}
                             </span>
-                          )}
-                          {latestUptimeCheck.status >= 300 &&
-                            latestUptimeCheck.status <= 399 && (
-                              <span className="text-yellow-500">
-                                3xx Redirect: {latestUptimeCheck.status}
+                          ) : (
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <span className="text-red-500 underline decoration-dashed cursor-help">
+                                    {latestUptimeCheck.status}
+                                  </span>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>
+                                    Expected:{" "}
+                                    {endpointMonitor.expectedStatusCode}
+                                  </p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          )
+                        ) : (
+                          <>
+                            {" "}
+                            {/* Fallback to original range-based coloring */}
+                            {latestUptimeCheck.status <= 299 && (
+                              <span className="text-green-500">
+                                {latestUptimeCheck.status}
                               </span>
                             )}
-                          {latestUptimeCheck.status >= 400 &&
-                            latestUptimeCheck.status <= 499 && (
-                              <span className="text-orange-500">
-                                4xx Error: {latestUptimeCheck.status}
-                              </span>
-                            )}
-                          {latestUptimeCheck.status >= 500 &&
-                            latestUptimeCheck.status <= 599 && (
-                              <span className="text-red-500">
-                                5xx Error: {latestUptimeCheck.status}
-                              </span>
-                            )}
-                        </>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Timestamp Item */}
-                  <div className="flex flex-col gap-1">
-                    <span className="font-medium text-xs">Checked At</span>
-                    <span className="flex items-center gap-1 text-xs">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <span className="underline decoration-dashed cursor-help">
-                              {formatDistance(
-                                new Date(latestUptimeCheck.timestamp),
-                                new Date(),
-                                { addSuffix: true },
+                            {latestUptimeCheck.status >= 300 &&
+                              latestUptimeCheck.status <= 399 && (
+                                <span className="text-yellow-500">
+                                  3xx Redirect: {latestUptimeCheck.status}
+                                </span>
                               )}
-                            </span>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>
-                              {new Date(
-                                latestUptimeCheck.timestamp,
-                              ).toLocaleString(undefined, {
-                                year: "numeric",
-                                month: "numeric",
-                                day: "numeric",
-                                hour: "numeric",
-                                minute: "numeric",
-                                second: "numeric",
-                                timeZoneName: "short",
-                              })}
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </span>
-                  </div>
-
-                  {/* Response Time Item */}
-                  <div className="flex flex-col gap-1">
-                    <span className="font-medium text-xs">Response Time</span>
-                    <span className="text-xs">
-                      {msToHumanReadable(
-                        latestUptimeCheck.responseTime ?? 0,
-                        true,
-                      )}
-                    </span>
-                  </div>
-                </div>
+                            {latestUptimeCheck.status >= 400 &&
+                              latestUptimeCheck.status <= 499 && (
+                                <span className="text-orange-500">
+                                  4xx Error: {latestUptimeCheck.status}
+                                </span>
+                              )}
+                            {latestUptimeCheck.status >= 500 &&
+                              latestUptimeCheck.status <= 599 && (
+                                <span className="text-red-500">
+                                  5xx Error: {latestUptimeCheck.status}
+                                </span>
+                              )}
+                          </>
+                        )}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-2 font-medium text-sm pr-4">
+                        Checked At
+                      </td>
+                      <td className="py-2 text-sm text-right">
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span className="underline decoration-dashed cursor-help">
+                                {formatDistance(
+                                  new Date(latestUptimeCheck.timestamp),
+                                  new Date(),
+                                  { addSuffix: true },
+                                )}
+                              </span>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>
+                                {new Date(
+                                  latestUptimeCheck.timestamp,
+                                ).toLocaleString(undefined, {
+                                  year: "numeric",
+                                  month: "numeric",
+                                  day: "numeric",
+                                  hour: "numeric",
+                                  minute: "numeric",
+                                  second: "numeric",
+                                  timeZoneName: "short",
+                                })}
+                              </p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-2 font-medium text-sm pr-4">
+                        Response Time
+                      </td>
+                      <td className="py-2 text-sm text-right">
+                        {msToHumanReadable(
+                          latestUptimeCheck.responseTime ?? 0,
+                          true,
+                        )}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               ) : (
                 <span className="text-xs">No check data available.</span>
               )}
             </div>
 
-            <Separator />
+            <Separator className="bg-black dark:bg-white"/>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 pb-4">
               <div className="flex flex-col gap-1">
                 <span className="font-medium text-muted-foreground">
                   Created
@@ -411,8 +417,6 @@ export function EndpointMonitorDetailDrawer({
                 </TooltipProvider>
               </div>
             </div>
-
-            <Separator />
           </div>
         </div>
         <DrawerFooter className="flex-col gap-4">
