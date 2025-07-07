@@ -21,8 +21,8 @@ import type { z } from "zod"
 import { PolkaDots } from "@/components/bg-patterns/polka-dots"
 import { EndpointMonitorDetailHeader } from "@/components/endpoint-monitor-detail-header"
 import { EndpointMonitorSectionCards } from "@/components/endpoint-monitor-section-cards"
-import LatencyRangeChart from "@/components/latency-range-chart"
 import { TimeRangeTabs } from "@/components/time-range-tabs"
+import LatencyRangeChart from "@/components/latency-range-chart"
 import { UptimeChart } from "@/components/uptime-chart"
 import {
   defaultHeaderContent,

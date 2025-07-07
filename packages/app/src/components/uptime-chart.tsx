@@ -95,6 +95,14 @@ interface ProcessedUptimeDataPoint {
   count5xx: number
   countNoData: number
   countTotalChecksInBucket: number
+  totalHeight: number
+  segments: Array<{
+    start: number
+    height: number
+    fill: string
+    name: string
+    count: number
+  }>
 }
 
 const processUptimeData = (
@@ -260,6 +268,30 @@ const processUptimeData = (
       // TODO: Calculate countNoData based on expected checksPerBucket - countTotalChecksInBucket
       // For now, we'll just use the counts based on actual data.
 
+      const totalHeight = count2xx + count3xx + count4xx + count5xx + countNoData
+      const segments: ProcessedUptimeDataPoint['segments'] = []
+      
+      let currentY = 0
+      if (count2xx > 0) {
+        segments.push({ start: currentY, height: count2xx, fill: "#22c55e", name: "2xx", count: count2xx })
+        currentY += count2xx
+      }
+      if (count3xx > 0) {
+        segments.push({ start: currentY, height: count3xx, fill: "#facc15", name: "3xx", count: count3xx })
+        currentY += count3xx
+      }
+      if (count4xx > 0) {
+        segments.push({ start: currentY, height: count4xx, fill: "#f97316", name: "4xx", count: count4xx })
+        currentY += count4xx
+      }
+      if (count5xx > 0) {
+        segments.push({ start: currentY, height: count5xx, fill: "#ef4444", name: "5xx", count: count5xx })
+        currentY += count5xx
+      }
+      if (countNoData > 0) {
+        segments.push({ start: currentY, height: countNoData, fill: "#ccc", name: "No Data", count: countNoData })
+      }
+
       processedData.push({
         timeBucket: currentBucketTimestampSeconds,
         count2xx,
@@ -268,6 +300,8 @@ const processUptimeData = (
         count5xx,
         countNoData,
         countTotalChecksInBucket,
+        totalHeight,
+        segments,
       })
     }
 
@@ -397,6 +431,32 @@ interface UptimeChartProps {
   error?: string | null
 }
 
+// Custom bar shape that renders all segments in one pass
+const CustomBar = (props: any) => {
+  const { x, y, width, height, payload } = props
+  
+  if (!payload || !payload.segments || payload.totalHeight === 0) {
+    return null
+  }
+
+  const scale = height / payload.totalHeight
+
+  return (
+    <g>
+      {payload.segments.map((segment: any, index: number) => (
+        <rect
+          key={index}
+          x={x}
+          y={y + height - (segment.start + segment.height) * scale}
+          width={width}
+          height={segment.height * scale}
+          fill={segment.fill}
+        />
+      ))}
+    </g>
+  )
+}
+
 export const UptimeChart: React.FC<UptimeChartProps> = memo(
   ({ data, timeRange, isLoading = false, error = null }) => {
     const processedData = useMemo(() => {
@@ -489,21 +549,22 @@ export const UptimeChart: React.FC<UptimeChartProps> = memo(
     }
 
     return (
-      <div className="p-4 py-6 h-full relative">
+      <div className="relative h-full" style={{ contain: "layout size paint" }}>
         {/* Show loading overlay on top of existing chart */}
         {isLoading && processedData.length > 0 && (
           <ChartLoadingOverlay message="Updating uptime data..." />
         )}
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={processedData}
-            margin={{
-              top: 16,
-              right: 8,
-              left: 16,
-              bottom: 4,
-            }}
-          >
+        <div className="p-4 py-6 h-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={processedData}
+              margin={{
+                top: 16,
+                right: 8,
+                left: 16,
+                bottom: 4,
+              }}
+            >
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis
               dataKey="timeBucket"
@@ -532,51 +593,26 @@ export const UptimeChart: React.FC<UptimeChartProps> = memo(
               content={<CustomUptimeTooltip range={timeRange} />}
               cursor={{ fill: "hsl(var(--muted))", fillOpacity: 0.3 }}
             />
-            <Legend wrapperStyle={{ paddingTop: "10px" }} />
+            <Legend 
+              wrapperStyle={{ paddingTop: "10px" }}
+              payload={[
+                { value: '2xx', type: 'rect', color: '#22c55e' },
+                { value: '3xx', type: 'rect', color: '#facc15' },
+                { value: '4xx', type: 'rect', color: '#f97316' },
+                { value: '5xx', type: 'rect', color: '#ef4444' },
+                { value: 'No Data', type: 'rect', color: '#ccc' },
+              ]}
+            />
 
-            {/* Stacked Bars */}
+            {/* Single Bar with custom shape renderer */}
             <Bar
-              dataKey="count2xx"
-              stackId="a"
-              name="2xx"
-              fill="#22c55e"
-              radius={[2, 2, 0, 0]}
-              isAnimationActive={false}
-            />
-            <Bar
-              dataKey="count3xx"
-              stackId="a"
-              name="3xx"
-              fill="#facc15"
-              radius={[0, 0, 0, 0]}
-              isAnimationActive={false}
-            />
-            <Bar
-              dataKey="count4xx"
-              stackId="a"
-              name="4xx"
-              fill="#f97316"
-              radius={[0, 0, 0, 0]}
-              isAnimationActive={false}
-            />
-            <Bar
-              dataKey="count5xx"
-              stackId="a"
-              name="5xx"
-              fill="#ef4444"
-              radius={[0, 0, 0, 0]}
-              isAnimationActive={false}
-            />
-            <Bar
-              dataKey="countNoData"
-              stackId="a"
-              name="No Data"
-              fill="#ccc"
-              radius={[0, 0, 2, 2]}
+              dataKey="totalHeight"
+              shape={CustomBar}
               isAnimationActive={false}
             />
           </BarChart>
         </ResponsiveContainer>
+        </div>
       </div>
     )
   },
