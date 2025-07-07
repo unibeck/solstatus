@@ -268,28 +268,59 @@ const processUptimeData = (
       // TODO: Calculate countNoData based on expected checksPerBucket - countTotalChecksInBucket
       // For now, we'll just use the counts based on actual data.
 
-      const totalHeight = count2xx + count3xx + count4xx + count5xx + countNoData
-      const segments: ProcessedUptimeDataPoint['segments'] = []
-      
+      const totalHeight =
+        count2xx + count3xx + count4xx + count5xx + countNoData
+      const segments: ProcessedUptimeDataPoint["segments"] = []
+
       let currentY = 0
       if (count2xx > 0) {
-        segments.push({ start: currentY, height: count2xx, fill: "#22c55e", name: "2xx", count: count2xx })
+        segments.push({
+          start: currentY,
+          height: count2xx,
+          fill: "#22c55e",
+          name: "2xx",
+          count: count2xx,
+        })
         currentY += count2xx
       }
       if (count3xx > 0) {
-        segments.push({ start: currentY, height: count3xx, fill: "#facc15", name: "3xx", count: count3xx })
+        segments.push({
+          start: currentY,
+          height: count3xx,
+          fill: "#facc15",
+          name: "3xx",
+          count: count3xx,
+        })
         currentY += count3xx
       }
       if (count4xx > 0) {
-        segments.push({ start: currentY, height: count4xx, fill: "#f97316", name: "4xx", count: count4xx })
+        segments.push({
+          start: currentY,
+          height: count4xx,
+          fill: "#f97316",
+          name: "4xx",
+          count: count4xx,
+        })
         currentY += count4xx
       }
       if (count5xx > 0) {
-        segments.push({ start: currentY, height: count5xx, fill: "#ef4444", name: "5xx", count: count5xx })
+        segments.push({
+          start: currentY,
+          height: count5xx,
+          fill: "#ef4444",
+          name: "5xx",
+          count: count5xx,
+        })
         currentY += count5xx
       }
       if (countNoData > 0) {
-        segments.push({ start: currentY, height: countNoData, fill: "#ccc", name: "No Data", count: countNoData })
+        segments.push({
+          start: currentY,
+          height: countNoData,
+          fill: "#ccc",
+          name: "No Data",
+          count: countNoData,
+        })
       }
 
       processedData.push({
@@ -431,21 +462,37 @@ interface UptimeChartProps {
   error?: string | null
 }
 
+interface CustomBarProps {
+  x: number
+  y: number
+  width: number
+  height: number
+  payload: {
+    segments: Array<{
+      start: number
+      height: number
+      fill: string
+      name: string
+    }>
+    totalHeight: number
+  }
+}
+
 // Custom bar shape that renders all segments in one pass
-const CustomBar = (props: any) => {
-  const { x, y, width, height, payload } = props
-  
+const CustomBar = (props: unknown) => {
+  const { x, y, width, height, payload } = props as CustomBarProps
+
   if (!payload || !payload.segments || payload.totalHeight === 0) {
-    return null
+    return <g />
   }
 
   const scale = height / payload.totalHeight
 
   return (
     <g>
-      {payload.segments.map((segment: any, index: number) => (
+      {payload.segments.map((segment, _index) => (
         <rect
-          key={index}
+          key={`${segment.name}-${segment.start}`}
           x={x}
           y={y + height - (segment.start + segment.height) * scale}
           width={width}
@@ -565,53 +612,53 @@ export const UptimeChart: React.FC<UptimeChartProps> = memo(
                 bottom: 4,
               }}
             >
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <XAxis
-              dataKey="timeBucket"
-              type="number"
-              domain={xDomain}
-              tickFormatter={(tick) => formatXAxis(tick, timeRange)}
-              scale="time"
-              axisLine={false}
-              tickLine={false}
-            />
-            <YAxis
-              allowDecimals={false}
-              domain={yDomain}
-              axisLine={false}
-              tickLine={false}
-              width={30}
-              label={{
-                value: "# of Checks",
-                angle: -90,
-                position: "insideLeft",
-                style: { textAnchor: "middle" },
-                offset: -10,
-              }}
-            />
-            <Tooltip
-              content={<CustomUptimeTooltip range={timeRange} />}
-              cursor={{ fill: "hsl(var(--muted))", fillOpacity: 0.3 }}
-            />
-            <Legend 
-              wrapperStyle={{ paddingTop: "10px" }}
-              payload={[
-                { value: '2xx', type: 'rect', color: '#22c55e' },
-                { value: '3xx', type: 'rect', color: '#facc15' },
-                { value: '4xx', type: 'rect', color: '#f97316' },
-                { value: '5xx', type: 'rect', color: '#ef4444' },
-                { value: 'No Data', type: 'rect', color: '#ccc' },
-              ]}
-            />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <XAxis
+                dataKey="timeBucket"
+                type="number"
+                domain={xDomain}
+                tickFormatter={(tick) => formatXAxis(tick, timeRange)}
+                scale="time"
+                axisLine={false}
+                tickLine={false}
+              />
+              <YAxis
+                allowDecimals={false}
+                domain={yDomain}
+                axisLine={false}
+                tickLine={false}
+                width={30}
+                label={{
+                  value: "# of Checks",
+                  angle: -90,
+                  position: "insideLeft",
+                  style: { textAnchor: "middle" },
+                  offset: -10,
+                }}
+              />
+              <Tooltip
+                content={<CustomUptimeTooltip range={timeRange} />}
+                cursor={{ fill: "hsl(var(--muted))", fillOpacity: 0.3 }}
+              />
+              <Legend
+                wrapperStyle={{ paddingTop: "10px" }}
+                payload={[
+                  { value: "2xx", type: "rect", color: "#22c55e" },
+                  { value: "3xx", type: "rect", color: "#facc15" },
+                  { value: "4xx", type: "rect", color: "#f97316" },
+                  { value: "5xx", type: "rect", color: "#ef4444" },
+                  { value: "No Data", type: "rect", color: "#ccc" },
+                ]}
+              />
 
-            {/* Single Bar with custom shape renderer */}
-            <Bar
-              dataKey="totalHeight"
-              shape={CustomBar}
-              isAnimationActive={false}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+              {/* Single Bar with custom shape renderer */}
+              <Bar
+                dataKey="totalHeight"
+                shape={CustomBar}
+                isAnimationActive={false}
+              />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
     )

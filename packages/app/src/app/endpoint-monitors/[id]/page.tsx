@@ -7,6 +7,7 @@ import type {
 import { msToHumanReadable, secsToHumanReadable } from "@solstatus/common/utils"
 import { IconPointFilled } from "@tabler/icons-react"
 import { ArrowLeft } from "lucide-react"
+import type { Route } from "next"
 import Link from "next/link"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
 import {
@@ -21,8 +22,8 @@ import type { z } from "zod"
 import { PolkaDots } from "@/components/bg-patterns/polka-dots"
 import { EndpointMonitorDetailHeader } from "@/components/endpoint-monitor-detail-header"
 import { EndpointMonitorSectionCards } from "@/components/endpoint-monitor-section-cards"
-import { TimeRangeTabs } from "@/components/time-range-tabs"
 import LatencyRangeChart from "@/components/latency-range-chart"
+import { TimeRangeTabs } from "@/components/time-range-tabs"
 import { UptimeChart } from "@/components/uptime-chart"
 import {
   defaultHeaderContent,
@@ -52,11 +53,21 @@ function calculateDefaultTimeRange(createdAt: Date): TimeRange {
   const ageInHours = ageInMinutes / 60
   const ageInDays = ageInHours / 24
 
-  if (ageInMinutes < 30) { return "30m" }
-  if (ageInHours < 1) { return "1h" }
-  if (ageInHours < 3) { return "3h" }
-  if (ageInHours < 6) { return "6h" }
-  if (ageInDays < 1) { return "1d" }
+  if (ageInMinutes < 30) {
+    return "30m"
+  }
+  if (ageInHours < 1) {
+    return "1h"
+  }
+  if (ageInHours < 3) {
+    return "3h"
+  }
+  if (ageInHours < 6) {
+    return "6h"
+  }
+  if (ageInDays < 1) {
+    return "1d"
+  }
   // Max out at 2d for monitors older than 2 days
   return "2d"
 }
@@ -72,7 +83,7 @@ export default function EndpointMonitorDetailPage() {
     typeof endpointMonitorsSelectSchema
   > | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  
+
   // Initialize timeRange with a temporary default
   const [timeRange, setTimeRange] = useState<TimeRange>(() => {
     const rangeParam = searchParams.get("range")
@@ -121,11 +132,17 @@ export default function EndpointMonitorDetailPage() {
       const data = await response.json()
       const monitor = data as z.infer<typeof endpointMonitorsSelectSchema>
       setEndpointMonitor(monitor)
-      
+
       // Set default time range based on monitor age if URL doesn't have a range
-      if (!searchParams.get("range") && !hasSetDefaultTimeRange.current && monitor.createdAt) {
+      if (
+        !searchParams.get("range") &&
+        !hasSetDefaultTimeRange.current &&
+        monitor.createdAt
+      ) {
         hasSetDefaultTimeRange.current = true
-        const defaultRange = calculateDefaultTimeRange(new Date(monitor.createdAt))
+        const defaultRange = calculateDefaultTimeRange(
+          new Date(monitor.createdAt),
+        )
         setTimeRange(defaultRange)
       }
     } catch (error) {
@@ -402,7 +419,7 @@ export default function EndpointMonitorDetailPage() {
                     newTimeRange === "1d"
                       ? `/endpoint-monitors/${endpointMonitorId}`
                       : `/endpoint-monitors/${endpointMonitorId}?range=${newTimeRange}`
-                  router.push(newPath as any, { scroll: false })
+                  router.push(newPath as Route, { scroll: false })
 
                   // Clear transitioning state after a delay
                   setTimeout(() => {
