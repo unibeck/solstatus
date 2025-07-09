@@ -257,7 +257,7 @@ export function EndpointMonitorDetailHeader({
         {!isInfraMetadataPending && infraMetadata && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="default" disabled={isLoading}>
+              <Button variant="outline" disabled={isLoading}>
                 Logs
                 <IconLogs className="h-4 w-4" />
               </Button>

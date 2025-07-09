@@ -7,11 +7,15 @@ interface PolkaDotsProps {
 export function PolkaDots({
   className = "",
   color = "transparent",
-  dotColor = "#ffffff33",
+  dotColor = "currentColor",
 }: PolkaDotsProps) {
   return (
     <div
-      className={`absolute inset-0 bg-[radial-gradient(${dotColor}_1px,${color}_2px)] bg-[size:16px_16px] ${className}`}
+      className={`absolute inset-0 opacity-20 ${className}`}
+      style={{
+        backgroundImage: `radial-gradient(${dotColor} 1px, ${color} 1px)`,
+        backgroundSize: "16px 16px",
+      }}
     />
   )
 }

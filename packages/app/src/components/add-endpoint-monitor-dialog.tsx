@@ -7,7 +7,7 @@ import {
 } from "@solstatus/common/db"
 import { IconPlus } from "@tabler/icons-react"
 import { StatusCodes } from "http-status-codes"
-import React from "react"
+import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import type { z } from "zod"
@@ -40,6 +40,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/registry/new-york-v4/ui/select"
+import { useDialogStore } from "@/store/dialog-store"
 import type { ConflictEndpointMonitorResponse } from "@/types/endpointMonitor"
 
 type WebsiteFormData = z.infer<typeof endpointMonitorsInsertDTOSchema>
@@ -60,6 +61,7 @@ export function AddEndpointMonitorDialog({
   const [open, setOpen] = React.useState(false)
   const formId = "add-endpoint-monitor-form"
   const isEditing = !!endpointMonitor
+  const { setEditEndpointMonitorDialogOpen } = useDialogStore()
 
   const checkIntervalOptions = [
     { label: "10 seconds", value: 10 },
@@ -122,6 +124,20 @@ export function AddEndpointMonitorDialog({
       )
     }
   }, [open, endpointMonitor, isEditing, form])
+
+  // Sync dialog state with store
+  useEffect(() => {
+    if (isEditing) {
+      setEditEndpointMonitorDialogOpen(open)
+    }
+
+    // Cleanup on unmount
+    return () => {
+      if (isEditing) {
+        setEditEndpointMonitorDialogOpen(false)
+      }
+    }
+  }, [open, isEditing, setEditEndpointMonitorDialogOpen])
 
   const onSubmit = async (data: WebsiteFormData) => {
     setIsSubmitting(true)

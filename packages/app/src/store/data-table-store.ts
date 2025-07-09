@@ -15,6 +15,7 @@ interface DataTableState {
   data: z.infer<typeof endpointMonitorsSelectSchema>[]
   totalEndpointMonitors: number
   isLoading: boolean
+  lastRefreshed: number // Add timestamp for forcing refresh
 
   // Table state
   sorting: SortingState
@@ -46,6 +47,7 @@ export const useDataTableStore = create<DataTableState>((set, get) => ({
   data: [],
   totalEndpointMonitors: 0,
   isLoading: false,
+  lastRefreshed: Date.now(), // Initialize with current timestamp
   sorting: [{ id: "consecutiveFailures", desc: true }],
   columnFilters: [],
   columnVisibility: {
@@ -116,12 +118,13 @@ export const useDataTableStore = create<DataTableState>((set, get) => ({
       // Extract data and totalCount from the response
       const { data: endpointMonitorsData, totalCount } = responseData
 
-      // Update state with received data
+      // Update state with received data and update lastRefreshed timestamp
       set({
         data: endpointMonitorsData as z.infer<
           typeof endpointMonitorsSelectSchema
         >[],
         totalEndpointMonitors: totalCount,
+        lastRefreshed: Date.now(), // Update refresh timestamp
       })
     } catch (error) {
       console.error("Error fetching endpointMonitors:", error)

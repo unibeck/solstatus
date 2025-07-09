@@ -33,15 +33,6 @@ pnpm cli --fqdn uptime.example.com --stage prod
 pnpm cli --fqdn uptime.example.com --phase destroy
 ```
 
-## v2 TODO:
-- Release notes:
-    - Imperative to update to latest v1.x version before upgrading to v2
-    - Migration code for a breaking change from v1.5 to v1.6 has been removed
-    - to adopt previous services to IaC you need to rename the services to the new format:
-        - Worker: `monitor-exec-production` -> `solstatus-prod-monitor-exec`
-        - Worker: `monitor-trigger-production` -> `solstatus-prod-monitor-trigger`
-        - Worker: `solstatus-production` -> `solstatus-prod-app`
-
 ## Local Dev
 
 For a holistic dev experience, it is best to run dev from the root of the repo.
