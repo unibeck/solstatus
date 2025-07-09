@@ -40,6 +40,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/registry/new-york-v4/ui/tooltip"
+import { useDialogStore } from "@/store/dialog-store"
 import type { TimeRange } from "@/types/endpointMonitor"
 
 // Define the type for a single uptime check
@@ -78,6 +79,7 @@ export default function EndpointMonitorDetailPage() {
   const endpointMonitorId = params.id as string
   const { setHeaderLeftContent, setHeaderRightContent } = useHeaderContentOnly()
   const searchParams = useSearchParams()
+  const { isEditEndpointMonitorDialogOpen } = useDialogStore()
 
   const [endpointMonitor, setEndpointMonitor] = useState<z.infer<
     typeof endpointMonitorsSelectSchema
@@ -247,7 +249,7 @@ export default function EndpointMonitorDetailPage() {
 
   useAutoRefresh({
     onRefresh: refreshAllData,
-    enabled: !!endpointMonitorId,
+    enabled: !!endpointMonitorId && !isEditEndpointMonitorDialogOpen,
   })
 
   // This effect is now responsible for fetching uptime data when the timeRange changes.

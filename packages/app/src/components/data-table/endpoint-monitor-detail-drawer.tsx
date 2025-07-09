@@ -118,7 +118,9 @@ export function EndpointMonitorDetailDrawer({
       <DrawerTrigger asChild>{trigger || defaultTrigger}</DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="gap-1">
-          <DrawerTitle className="break-all">{endpointMonitor.name}</DrawerTitle>
+          <DrawerTitle className="break-all">
+            {endpointMonitor.name}
+          </DrawerTitle>
           <DrawerDescription>
             Monitor details and configuration
           </DrawerDescription>
@@ -157,32 +159,38 @@ export function EndpointMonitorDetailDrawer({
                         Active
                       </Badge>
                     ) : (
-                      <Badge variant="destructive">
-                        Paused
-                      </Badge>
+                      <Badge variant="destructive">Paused</Badge>
                     )}
                   </td>
                 </tr>
                 <tr className="hover:bg-muted">
-                  <td className="py-2 font-medium text-sm pr-4">Check Interval</td>
+                  <td className="py-2 font-medium text-sm pr-4">
+                    Check Interval
+                  </td>
                   <td className="py-2 text-sm text-right">
                     {secsToHumanReadable(endpointMonitor.checkInterval)}
                   </td>
                 </tr>
                 <tr className="hover:bg-muted">
-                  <td className="py-2 font-medium text-sm pr-4">Alert Status</td>
+                  <td className="py-2 font-medium text-sm pr-4">
+                    Alert Status
+                  </td>
                   <td className="py-2 text-sm text-right">
                     <Badge
                       variant={
                         endpointMonitor.activeAlert ? "destructive" : "outline"
                       }
                     >
-                      {endpointMonitor.activeAlert ? "Alert Active" : "No Alert"}
+                      {endpointMonitor.activeAlert
+                        ? "Alert Active"
+                        : "No Alert"}
                     </Badge>
                   </td>
                 </tr>
                 <tr className="hover:bg-muted">
-                  <td className="py-2 font-medium text-sm pr-4">Consecutive Failures</td>
+                  <td className="py-2 font-medium text-sm pr-4">
+                    Consecutive Failures
+                  </td>
                   <td className="py-2 text-sm text-right">
                     <div className="flex items-center gap-1 justify-end">
                       {endpointMonitor.consecutiveFailures > 0 && (
@@ -193,7 +201,9 @@ export function EndpointMonitorDetailDrawer({
                   </td>
                 </tr>
                 <tr className="hover:bg-muted">
-                  <td className="py-2 font-medium text-sm pr-4">Expected Status Code</td>
+                  <td className="py-2 font-medium text-sm pr-4">
+                    Expected Status Code
+                  </td>
                   <td className="py-2 text-sm text-right">
                     {endpointMonitor.expectedStatusCode ? (
                       <Badge variant="secondary">
@@ -207,7 +217,7 @@ export function EndpointMonitorDetailDrawer({
               </tbody>
             </table>
 
-            <Separator className="bg-black dark:bg-white"/>
+            <Separator className="bg-black dark:bg-white" />
 
             {/* Latest Check Section */}
             <div className="flex flex-col gap-1">
@@ -355,7 +365,7 @@ export function EndpointMonitorDetailDrawer({
               )}
             </div>
 
-            <Separator className="bg-black dark:bg-white"/>
+            <Separator className="bg-black dark:bg-white" />
 
             <div className="grid grid-cols-2 gap-4 pb-4">
               <div className="flex flex-col gap-1">
