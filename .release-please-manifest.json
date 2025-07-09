@@ -1,7 +1,7 @@
 {
   "packages/app": "2.0.0",
   "packages/api": "2.0.0",
-  "packages/infra": "2.0.0",
+  "packages/infra": "2.1.0",
   "packages/common": "2.1.0",
   ".": "2.0.0"
 }
