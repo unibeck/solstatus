@@ -5,6 +5,16 @@
 
 ### Features
 
+* Added additional time ranges to endpoint monitor details page
+* Added auto refresh progress bar
+* Added auto refresh to endpoint monitor details page
+* Added auto refresh to dashboard
+* Added liquid metal animation to solstatus logo
+* Refined endpoint monitor details drawer
+* Improved loading states and error handling in endpoint monitor charts
+* Improved endpoint monitor uptime chart performance
+* Fixed scroll bar layout shift during drawers, dropdown, dialogs, etc
+* Fixed eager endpoint monitor metadata fetching for details drawer
 * alert threshold per endpoint monitor ([f16284a](https://github.com/unibeck/solstatus/commit/f16284a7bbd3e803f21fbf6e0ea4d9e01e9422fc))
 * display app version ([#35](https://github.com/unibeck/solstatus/issues/35)) ([774efa9](https://github.com/unibeck/solstatus/commit/774efa9bab2eac9bec64a51a2e42e3737c7d9456))
 * **front:** call zustand store fetch functions on endpoint creation ([27109d1](https://github.com/unibeck/solstatus/commit/27109d17ea55a24bbfcad72c3e3456406023cb42))
